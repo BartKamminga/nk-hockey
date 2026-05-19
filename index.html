@@ -379,7 +379,6 @@ function O14OverzichtTab({data,filteredData,myTeam,nkSchedule}){
   var showB=!filteredData||myNKPoule==='B';
 
   return(<div>
-    <div className="legend"><span><span className="dot dot-a"></span> → NK Poulefase A</span><span><span className="dot dot-b"></span> → NK Poulefase B</span></div>
     <div className="section-label" style={{marginTop:0}}>Super — huidige stand</div>
     <div className={displayPk.length<=2?'grid-2':displayPk.length<=4?'grid-4':'grid-5'}>{displayPk.map(id=><PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam} slots={NK14_SLOTS[id]}/>)}</div>
     <div className="section-label">NK Poulefase — verwachte indeling</div>
@@ -674,8 +673,11 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.9.3';
+const VERSION='4.9.4';
 const CHANGELOG=[
+  {version:'4.9.4',date:'19 mei 2026',changes:[
+    'O14: legend "→ NK Poulefase A / B" verwijderd',
+  ]},
   {version:'4.9.3',date:'19 mei 2026',changes:[
     'O14 Focus mode: NK Speelschema toont alleen wedstrijden van focus club',
     'Ronde-nummering blijft correct (originele rondenummers behouden)',
