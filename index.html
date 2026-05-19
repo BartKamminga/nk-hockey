@@ -673,8 +673,12 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.12.2';
+const VERSION='4.13';
 const CHANGELOG=[
+  {version:'4.13',date:'19 mei 2026',changes:[
+    'Gekozen competitie wordt onthouden via localStorage',
+    'Bij openen van de website wordt de laatst gekozen competitie weer geselecteerd',
+  ]},
   {version:'4.12.2',date:'19 mei 2026',changes:[
     'Fix: afgelaste/discontinued wedstrijden worden niet meer getoond bij resterende wedstrijden',
     'Alleen wedstrijden met status "scheduled" tellen als resterend',
@@ -797,8 +801,11 @@ function ChangelogTab(){return(<div style={{maxWidth:700}}><div className="secti
 // ════════════════════════════════════════════
 const DEFAULT_CLUB='Victoria';
 const STORAGE_KEY_CLUB='nk_focus_club';
+const STORAGE_KEY_COMP='nk_active_comp';
 function getSavedClub(){try{return localStorage.getItem(STORAGE_KEY_CLUB)||DEFAULT_CLUB}catch(e){return DEFAULT_CLUB}}
 function saveClub(name){try{localStorage.setItem(STORAGE_KEY_CLUB,name)}catch(e){}}
+function getSavedComp(){try{return localStorage.getItem(STORAGE_KEY_COMP)||null}catch(e){return null}}
+function saveComp(name){try{localStorage.setItem(STORAGE_KEY_COMP,name)}catch(e){}}
 
 function getAllClubs(comps){
   var clubs={};
@@ -838,8 +845,10 @@ function App(){
     Promise.all(promises).then(function(){
       if(Object.keys(merged).length>0){
         setComps(merged);
-        var first=COMP_ORDER.find(function(k){return merged[k]});
+        var saved=getSavedComp();
+        var first=saved&&merged[saved]?saved:COMP_ORDER.find(function(k){return merged[k]});
         setActiveComp(function(prev){return first||(prev&&merged[prev]?prev:Object.keys(merged)[0])});
+        saveComp(first);
         setDataSource('server');
       }
       setLoading(false);
@@ -850,8 +859,10 @@ function App(){
 
   const handleImport=function(c){
     setComps(c);
-    var first=COMP_ORDER.find(function(k){return c[k]});
+    var saved=getSavedComp();
+    var first=saved&&c[saved]?saved:COMP_ORDER.find(function(k){return c[k]});
     setActiveComp(first||Object.keys(c)[0]);
+    saveComp(first||Object.keys(c)[0]);
     setDataSource('manual');
   };
   const handleReload=function(){fetchFromServer()};
@@ -899,7 +910,7 @@ function App(){
         </div>
       </div>
       <div className="top-comp-row">{visibleTypes.map(t=>(<button key={t} className={`top-comp-btn ${effectiveComp===t?'active':''}`}
-        onClick={()=>{setActiveComp(t);setMainTab('overzicht')}}>{COMP_LABELS[t]||t}</button>))}</div>
+        onClick={()=>{setActiveComp(t);saveComp(t);setMainTab('overzicht')}}>{COMP_LABELS[t]||t}</button>))}</div>
     </div>
     {showVersion&&<><div className="version-overlay" onClick={function(){setShowVersion(false)}}></div><div className="version-popup">
       <div className="version-popup-header"><span>Versiegeschiedenis</span><button className="version-close" onClick={function(){setShowVersion(false)}}>✕</button></div>
