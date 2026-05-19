@@ -633,8 +633,13 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.4';
+const VERSION='4.5';
 const CHANGELOG=[
+  {version:'4.5',date:'19 mei 2026',changes:[
+    'Competitie-knoppen korter: MO14, JO14, MO16, JO16',
+    'Tab "Monte Carlo" hernoemd naar "Simulaties"',
+    'Tab "Changelog" hernoemd naar "Versiegeschiedenis"',
+  ]},
   {version:'4.4',date:'19 mei 2026',changes:[
     '↻ knop herlaadt data van GitHub in plaats van naar import-scherm te gaan',
     'Cache-busting: ?t=timestamp aan data-URLs zodat altijd de nieuwste versie wordt geladen',
@@ -685,7 +690,8 @@ function ChangelogTab(){return(<div style={{maxWidth:700}}><div className="secti
 // ════════════════════════════════════════════
 const MY_TEAMS=['Victoria'];
 const DATA_URLS=['data/mo14.json','data/jo14.json','data/mo16.json','data/jo16.json'];
-const COMP_LABELS={MO14:'Meisjes O14',JO14:'Jongens O14',MO16:'Meisjes O16',JO16:'Jongens O16'};
+const COMP_LABELS={MO14:'MO14',JO14:'JO14',MO16:'MO16',JO16:'JO16'};
+const COMP_LABELS_LONG={MO14:'Meisjes O14',JO14:'Jongens O14',MO16:'Meisjes O16',JO16:'Jongens O16'};
 const COMP_ORDER=['MO14','JO14','MO16','JO16'];
 const IS_O16=t=>t==='MO16'||t==='JO16';
 
@@ -729,7 +735,7 @@ function App(){
 
   const types=COMP_ORDER.filter(k=>comps[k]);
   const data=comps[activeComp]||{};
-  const label=COMP_LABELS[activeComp]||activeComp;
+  const label=COMP_LABELS_LONG[activeComp]||activeComp;
   const myTeam=MY_TEAMS.find(t=>findMyTeam(comps,t));
   const o16=IS_O16(activeComp);
   const pouleOrder=o16?POULE_ORDER_16:POULE_ORDER_14;
@@ -753,7 +759,7 @@ function App(){
       <div className="top-end"><span className="top-version">v{VERSION}{dataSource==='server'?' · auto':''}</span><button className="reload-btn" onClick={handleReload} title="Herlaad data van server">↻</button></div>
     </div>
     <div className="main-tabs">
-      {[['overzicht','📋 Overzicht'],['schema','📅 Speelschema'],['sim','🎲 Monte Carlo'],['changelog','📝 Changelog']].map(([id,lbl])=>(
+      {[['overzicht','📋 Overzicht'],['schema','📅 Speelschema'],['sim','🎲 Simulaties'],['changelog','📝 Versiegeschiedenis']].map(([id,lbl])=>(
         <button key={id} className={`main-tab ${mainTab===id?'active':''}`} onClick={()=>setMainTab(id)}>{lbl}</button>))}
     </div>
     {mainTab==='overzicht'&&(o16?<O16OverzichtTab data={data} myTeam={myTeam}/>:<O14OverzichtTab data={data} myTeam={myTeam} nkSchedule={NK_SCHEDULES[activeComp]}/>)}
