@@ -352,10 +352,23 @@ function O14OverzichtTab({data,filteredData,myTeam,nkSchedule}){
       <div className="match-teams"><div className="match-team right" style={hMy?{fontWeight:600,color:'#1d4ed8'}:{}}>{hT}<span className="origin"> {m.home}</span></div><div className="match-vs">vs</div><div className="match-team" style={aMy?{fontWeight:600,color:'#1d4ed8'}:{}}>{aT}<span className="origin"> {m.away}</span></div></div>
       {m.field&&<span className="origin" style={{flexShrink:0}}>{m.field}</span>}</div>)};
   const sA=(nkSchedule&&nkSchedule.schedA)||[],sB=(nkSchedule&&nkSchedule.schedB)||[],tA=(nkSchedule&&nkSchedule.timesA)||[],tB=(nkSchedule&&nkSchedule.timesB)||[],fins=(nkSchedule&&nkSchedule.finales)||[],pD=(nkSchedule&&nkSchedule.poulefaseDate)||'',fD=(nkSchedule&&nkSchedule.finaleDate)||'';
-  const SC=({schedule,times,hc,lbl})=>(<div className="card"><div className={`card-header ${hc}`}>{lbl}</div>
-    {times.map((time,ri)=>{const ms=schedule.filter(m=>m.time===time);if(!ms.length)return null;
-      return(<div key={ri}><div style={{padding:'5px 12px',fontSize:11,fontWeight:600,fontFamily:"'DM Mono',monospace",color:'#555',background:'#f0ede8',borderBottom:'1px solid #e0ddd8',borderTop:ri>0?'1px solid #e0ddd8':'none',letterSpacing:'.5px',display:'flex',justifyContent:'space-between'}}><span>Ronde {ri+1}</span><span style={{fontWeight:400,color:'#999'}}>{time}</span></div>
-        {ms.map((m,i)=><MR key={i} m={m}/>)}</div>)})}</div>);
+  const SC=({schedule,times,hc,lbl})=>{
+    // In focus mode: only show matches where focus club plays
+    var filteredSchedule=schedule;
+    if(filteredData&&myTeam){
+      filteredSchedule=schedule.filter(function(m){
+        var hT=slot2t[m.home]||m.home,aT=slot2t[m.away]||m.away;
+        return hT===myTeam||aT===myTeam;
+      });
+    }
+    var filteredTimes=[...new Set(filteredSchedule.map(function(m){return m.time}))];
+    // Re-number rounds based on original times
+    var timeToRound={};for(var ti=0;ti<times.length;ti++){timeToRound[times[ti]]=ti+1}
+    return(<div className="card"><div className={`card-header ${hc}`}>{lbl}</div>
+      {filteredTimes.map(function(time,ri){var ms=filteredSchedule.filter(function(m){return m.time===time});if(!ms.length)return null;
+        return(<div key={ri}><div style={{padding:'5px 12px',fontSize:11,fontWeight:600,fontFamily:"'DM Mono',monospace",color:'#555',background:'#f0ede8',borderBottom:'1px solid #e0ddd8',borderTop:ri>0?'1px solid #e0ddd8':'none',letterSpacing:'.5px',display:'flex',justifyContent:'space-between'}}><span>Ronde {timeToRound[time]||ri+1}</span><span style={{fontWeight:400,color:'#999'}}>{time}</span></div>
+          {ms.map(function(m,i){return <MR key={i} m={m}/>})}</div>)})}</div>)
+  };
   // Determine which NK poule the focus club is in (if filtering)
   var myNKPoule=null;
   if(filteredData&&myTeam){
@@ -661,8 +674,12 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.9.2';
+const VERSION='4.9.3';
 const CHANGELOG=[
+  {version:'4.9.3',date:'19 mei 2026',changes:[
+    'O14 Focus mode: NK Speelschema toont alleen wedstrijden van focus club',
+    'Ronde-nummering blijft correct (originele rondenummers behouden)',
+  ]},
   {version:'4.9.2',date:'19 mei 2026',changes:[
     'O16: NK Kwartfinales indeling en wedstrijden altijd volledig zichtbaar (ook in focus mode)',
   ]},
