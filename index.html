@@ -633,8 +633,13 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.3';
+const VERSION='4.4';
 const CHANGELOG=[
+  {version:'4.4',date:'19 mei 2026',changes:[
+    '↻ knop herlaadt data van GitHub in plaats van naar import-scherm te gaan',
+    'Cache-busting: ?t=timestamp aan data-URLs zodat altijd de nieuwste versie wordt geladen',
+    'Behoudt actieve competitie-tab bij herladen',
+  ]},
   {version:'4.3',date:'19 mei 2026',changes:[
     'GitHub Pages hosting: data-URLs relatief (werkt op GitHub Pages en lokaal)',
     'NK schedules volledig embedded in HTML — geen externe bestanden meer',
@@ -689,15 +694,28 @@ function App(){
   const[activeComp,setActiveComp]=useState(null);const[mainTab,setMainTab]=useState('overzicht');
   const[loading,setLoading]=useState(true);const[dataSource,setDataSource]=useState(null);
 
-  useEffect(()=>{let c=false;(async()=>{
-    const merged={};
-    for(const url of DATA_URLS){try{const r=await fetch(url);if(!r.ok)continue;const raw=await r.text();
-      let parsed=parseO16(raw);if(Object.keys(parsed).length===0)parsed=parseO14(raw);
-      for(const[t,d]of Object.entries(parsed)){if(!merged[t])merged[t]={};Object.assign(merged[t],d)}}catch(e){}}
-    if(c)return;
-    if(Object.keys(merged).length>0){setComps(merged);
-      const first=COMP_ORDER.find(k=>merged[k]);setActiveComp(first||Object.keys(merged)[0]);setDataSource('server')}
-    setLoading(false)})();return()=>{c=true}},[]);
+  function fetchFromServer(){
+    setLoading(true);
+    var merged={};
+    var promises=DATA_URLS.map(function(url){
+      return fetch(url+'?t='+Date.now()).then(function(r){return r.ok?r.text():null}).then(function(raw){
+        if(!raw)return;
+        var parsed=parseO16(raw);if(Object.keys(parsed).length===0)parsed=parseO14(raw);
+        for(var t in parsed){if(!merged[t])merged[t]={};Object.assign(merged[t],parsed[t])}
+      }).catch(function(){});
+    });
+    Promise.all(promises).then(function(){
+      if(Object.keys(merged).length>0){
+        setComps(merged);
+        var first=COMP_ORDER.find(function(k){return merged[k]});
+        setActiveComp(function(prev){return first||(prev&&merged[prev]?prev:Object.keys(merged)[0])});
+        setDataSource('server');
+      }
+      setLoading(false);
+    });
+  }
+
+  useEffect(function(){fetchFromServer()},[]);
 
   const handleImport=function(c){
     setComps(c);
@@ -705,7 +723,7 @@ function App(){
     setActiveComp(first||Object.keys(c)[0]);
     setDataSource('manual');
   };
-  const handleReset=()=>{setComps(null);setMainTab('overzicht');setDataSource(null);setLoading(false)};
+  const handleReload=function(){fetchFromServer()};
   if(loading)return(<div className="import-screen"><h2>🏑 NK Simulatie</h2><p>Data laden...</p></div>);
   if(!comps)return<ImportScreen onImport={handleImport}/>;
 
@@ -732,7 +750,7 @@ function App(){
         <div className="top-team-name">{myTeam}</div>
         <div className="top-team-meta">Poule {myInfo.pouleId} · #{myInfo.rank} · {myInfo.pts}pt · DS {myInfo.ds>=0?'+':''}{myInfo.ds}{myInfo.nk&&` · → NK ${myInfo.nk}`}{myInfo.rem>0?` · nog ${myInfo.rem}r`:' · ✓'}</div>
       </div></div>}
-      <div className="top-end"><span className="top-version">v{VERSION}{dataSource==='server'?' · auto':''}</span><button className="reload-btn" onClick={handleReset}>↻</button></div>
+      <div className="top-end"><span className="top-version">v{VERSION}{dataSource==='server'?' · auto':''}</span><button className="reload-btn" onClick={handleReload} title="Herlaad data van server">↻</button></div>
     </div>
     <div className="main-tabs">
       {[['overzicht','📋 Overzicht'],['schema','📅 Speelschema'],['sim','🎲 Monte Carlo'],['changelog','📝 Changelog']].map(([id,lbl])=>(
