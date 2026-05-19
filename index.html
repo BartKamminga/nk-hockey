@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NK O-14/O-16 · Overzicht & Simulaties</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:#f0ede8;padding:32px;color:#1a1a1a}
+  #root{max-width:1400px;margin:0 auto}
+
+  .top-bar{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #e0ddd8;border-radius:10px;padding:10px 16px;margin-bottom:20px;flex-wrap:wrap}
+  .top-title{font-size:18px;font-weight:600;letter-spacing:-.3px;white-space:nowrap}
+  .top-comp-tabs{display:flex;gap:4px;flex-wrap:wrap}
+  .top-comp-btn{padding:4px 12px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid #e0ddd8;background:#fff;border-radius:99px;font-family:'DM Sans',sans-serif;color:#888;transition:all .12s}
+  .top-comp-btn.active{border-color:#333;color:#1a1a1a;background:#f7f5f2}
+  .top-comp-btn:hover{border-color:#888}
+  .top-divider{width:1px;height:24px;background:#e0ddd8}
+  .top-team{display:flex;align-items:center;gap:8px}
+  .top-team-icon{width:28px;height:28px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+  .top-team-name{font-size:13px;font-weight:600}
+  .top-team-meta{font-size:11px;color:#888;font-family:'DM Mono',monospace}
+  .top-end{margin-left:auto;display:flex;gap:6px;align-items:center;flex-shrink:0}
+  .top-version{font-size:10px;color:#bbb;font-family:'DM Mono',monospace}
+  .reload-btn{background:none;border:1px solid #ddd;padding:4px 10px;border-radius:5px;font-size:11px;color:#888;cursor:pointer;font-family:'DM Mono',monospace}
+  .reload-btn:hover{border-color:#999;color:#555}
+
+  .main-tabs{display:flex;border-bottom:2px solid #1a1a1a;margin-bottom:28px;overflow-x:auto;overflow-y:hidden}
+  .main-tab{padding:10px 28px;font-size:14px;font-weight:500;cursor:pointer;border:none;background:none;color:#888;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;white-space:nowrap}
+  .main-tab.active{color:#1a1a1a;border-bottom-color:#1a1a1a;font-weight:600}
+  .sub-tabs{display:flex;border-bottom:1px solid #e0ddd8;margin-bottom:16px}
+  .sub-tab{padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;color:#888;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:'DM Sans',sans-serif}
+  .sub-tab.active{color:#1a1a1a;border-bottom-color:#1a1a1a}
+
+  .legend{display:flex;gap:20px;margin-bottom:20px;font-size:12px;color:#555;flex-wrap:wrap}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .dot-a{background:#2563eb}.dot-b{background:#16a34a}
+  .section-label{font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:#888;margin-bottom:10px;margin-top:28px}
+  .section-label:first-child{margin-top:0}
+  .grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:6px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:6px}
+  .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .card{background:#fff;border-radius:10px;overflow:hidden;border:1px solid #e0ddd8}
+  .card-header{padding:7px 12px;font-size:12px;font-weight:600;background:#f7f5f2;color:#555;border-bottom:1px solid #e0ddd8;display:flex;align-items:center;gap:8px}
+  .card-header-a{background:#dbeafe;color:#1d4ed8}.card-header-b{background:#dcfce7;color:#15803d}
+  .card table{width:100%;border-collapse:collapse}
+  .card td{padding:5px 12px;font-size:12.5px;color:#1a1a1a;border-bottom:1px solid #f0ede8}
+  .card tr:last-child td{border-bottom:none}
+  .td-rank{color:#aaa;width:16px;font-family:'DM Mono',monospace;font-size:11px}
+  .td-pts{text-align:right;color:#888;font-family:'DM Mono',monospace;font-size:11px;width:28px}
+  .td-ds{text-align:right;font-family:'DM Mono',monospace;font-size:10px;width:28px}
+  .bold{font-weight:600}
+  .origin{font-size:10px;color:#aaa;margin-left:4px;font-family:'DM Mono',monospace}
+  .played-count{font-size:10px;color:#aaa;font-family:'DM Mono',monospace;margin-left:auto}
+  .match-row{display:flex;align-items:center;gap:10px;padding:6px 12px;font-size:12.5px;border-bottom:1px solid #f0ede8}
+  .match-row:last-child{border-bottom:none}
+  .match-row.played{background:#f7f5f2}
+  .match-teams{display:flex;align-items:center;gap:8px;flex:1}
+  .match-team{flex:1;font-size:12px}.match-team.right{text-align:right}
+  .match-vs{font-size:10px;color:#ccc;min-width:18px;text-align:center}
+  .match-score{font-family:'DM Mono',monospace;font-size:12px;font-weight:600;min-width:36px;text-align:center;color:#1a1a1a}
+  .sim-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fff;padding:12px 16px;border-radius:10px;border:1px solid #e0ddd8;margin-bottom:16px}
+  .ctrl-label{font-size:12px;color:#555}.ctrl-val{font-size:12px;font-family:'DM Mono',monospace;color:#1a1a1a;font-weight:500;min-width:50px}
+  .divider-v{width:1px;height:24px;background:#e0ddd8}
+  .run-btn{padding:8px 20px;background:#1a1a1a;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-left:auto}
+  .run-btn:hover{background:#333}.run-btn:disabled{background:#999;cursor:wait}
+  .sim-table-wrap{overflow-x:auto;margin-bottom:8px}
+  .sim-table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;border:1px solid #e0ddd8}
+  .sim-table thead th{padding:7px 12px;font-size:11px;font-weight:600;color:#888;background:#f7f5f2;border-bottom:1px solid #e0ddd8;text-align:right;font-family:'DM Mono',monospace}
+  .sim-table thead th:first-child{text-align:left}
+  .sim-table td{padding:7px 12px;vertical-align:middle;text-align:right;font-variant-numeric:tabular-nums;font-size:12px;border-bottom:1px solid #f0ede8}
+  .sim-table td:first-child{text-align:left}
+  .sim-table td.team{font-weight:500;text-align:left}
+  .sim-table tr:last-child td{border-bottom:none}
+  .prob-hi{color:#16a34a;font-weight:600;font-family:'DM Mono',monospace;font-size:12px}
+  .prob-mid{color:#b45309;font-family:'DM Mono',monospace;font-size:12px}
+  .prob-low{color:#aaa;font-family:'DM Mono',monospace;font-size:12px}
+  tr.row-gold td{background:#fffbeb}tr.row-silver td{background:#f8fafc}tr.row-bronze td{background:#fdf6ee}
+  tr.row-my td{background:#eff6ff}
+  .alt-header td{font-size:11px;color:#999;background:#f7f5f2;padding:4px 12px}
+  .alt-row td{opacity:.6}
+  .nk-badge{font-size:10px;font-weight:500;padding:1px 6px;border-radius:99px;margin-left:3px;display:inline-block}
+  .nk-a{background:#dbeafe;color:#1d4ed8}.nk-b{background:#dcfce7;color:#15803d}
+  .poule-sim-label{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:#888;margin-bottom:6px;margin-top:18px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .poule-sim-label:first-child{margin-top:0}
+  .sim-note{font-size:11px;color:#aaa;font-family:'DM Mono',monospace;margin-top:10px;text-align:right}
+  .bar-wrap{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+  .bar-track{width:72px;height:7px;background:#f0ede8;border-radius:4px;overflow:hidden;flex-shrink:0}
+  .bar-fill{height:100%;border-radius:4px}
+  .bar-val{font-size:11px;min-width:32px;text-align:right;font-family:'DM Mono',monospace;color:#555}
+  .import-screen{max-width:600px;margin:80px auto;text-align:center}
+  .import-screen h2{font-size:20px;margin-bottom:8px}
+  .import-screen p{font-size:13px;color:#666;margin-bottom:20px;line-height:1.6}
+  .import-area{width:100%;min-height:180px;padding:16px;border:2px dashed #ccc;border-radius:10px;font-family:'DM Mono',monospace;font-size:11px;background:#fff;color:#333;resize:vertical}
+  .import-area:focus{border-color:#2563eb;outline:none}
+  .import-btn{margin-top:12px;padding:10px 28px;background:#1a1a1a;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+  .import-btn:hover{background:#333}.import-btn:disabled{background:#ccc;cursor:not-allowed}
+  .import-error{color:#dc2626;font-size:12px;margin-top:8px;font-family:'DM Mono',monospace}
+  .import-hint{font-size:11px;color:#999;margin-top:6px}
+  .demo-btn{background:none;border:1px solid #ccc;padding:6px 14px;border-radius:6px;font-size:12px;color:#888;cursor:pointer;margin-top:8px}
+  .demo-btn:hover{border-color:#999;color:#555}
+  footer{margin-top:28px;font-size:11px;color:#aaa;text-align:right;font-family:'DM Mono',monospace;border-top:1px solid #ddd;padding-top:10px}
+  @media(max-width:1100px){.grid-5{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:768px){body{padding:16px}.grid-5,.grid-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.main-tab{padding:8px 16px;font-size:13px}.sim-controls{flex-direction:column;align-items:flex-start;gap:8px}.sim-controls .divider-v{display:none}.run-btn{margin-left:0;width:100%}.import-screen{margin:40px auto}}
+  @media(max-width:500px){body{padding:10px}.grid-5,.grid-4{grid-template-columns:1fr}.main-tab{padding:8px 12px;font-size:12px}.card td{padding:4px 8px;font-size:11.5px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const{useState,useEffect,useCallback,useRef}=React;
+
+// ════════════════════════════════════════════
+// CONSTANTS
+// ════════════════════════════════════════════
+const NK14_SLOTS={A:['A','B'],B:['B','A'],C:['A','B'],D:['B','A'],E:['A','B']};
+const POULE_ORDER_14=['A','B','C','D','E'];
+const POULE_ORDER_16=['A','B','C','D'];
+const POS_COLORS=['#22c55e','#3b82f6','#f59e0b','#f87171','#c084fc','#94a3b8'];
+
+// ════════════════════════════════════════════
+// SIMULATION CORE
+// ════════════════════════════════════════════
+const simMatch=(ha)=>{const a=(ha||0)/100,rW=.38+a,rD=.23,rL=Math.max(.39-a,.05),t=rW+rD+rL,pW=rW/t,pD=rD/t,r=Math.random();return r<pW?[3,0]:r<pW+pD?[1,1]:[0,3]};
+const simGD=()=>1+Math.floor(Math.random()*4);
+const simKO=()=>Math.random()<.5?'home':'away';
+
+function simPoule(poule,ha){
+  const pts=[...poule.pts],ds=[...poule.ds];
+  for(const[h,a]of poule.remaining){const hi=poule.teams.indexOf(h),ai=poule.teams.indexOf(a);if(hi<0||ai<0)continue;const[hp,ap]=simMatch(ha);pts[hi]+=hp;pts[ai]+=ap;const gd=simGD();if(hp>ap){ds[hi]+=gd;ds[ai]-=gd}else if(ap>hp){ds[ai]+=gd;ds[hi]-=gd}}
+  return pts.map((_,i)=>i).sort((a,b)=>pts[b]!==pts[a]?pts[b]-pts[a]:ds[b]-ds[a]);
+}
+
+function simNKPoule(names){
+  const n=names.length,pts=Array(n).fill(0),ds=Array(n).fill(0);
+  for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const[hp,ap]=simMatch(0);pts[i]+=hp;pts[j]+=ap;const gd=simGD();if(hp>ap){ds[i]+=gd;ds[j]-=gd}else if(ap>hp){ds[j]+=gd;ds[i]-=gd}}
+  return pts.map((_,i)=>i).sort((a,b)=>pts[b]!==pts[a]?pts[b]-pts[a]:ds[b]-ds[a]);
+}
+
+// ════════════════════════════════════════════
+// O14 SIMULATION
+// ════════════════════════════════════════════
+function runSimO14(data,N,ha){
+  const ss={};for(const id of Object.keys(data))ss[id]=data[id].teams.map(()=>Array(6).fill(0));
+  const nkAp={},nkBp={},nkAa={},nkBa={},fin={};
+  const ensF=t=>{if(!fin[t])fin[t]={appear:0,sfReach:0,finalist:0,p1:0,p2:0,p3:0,p4:0}};
+  const pk=POULE_ORDER_14.filter(k=>data[k]);
+  for(let s=0;s<N;s++){
+    const st={};
+    for(const id of pk){const o=simPoule(data[id],ha);st[id]=o.map(i=>data[id].teams[i]);for(let r=0;r<data[id].teams.length;r++)ss[id][o[r]][r]++}
+    const nkA=pk.filter(k=>NK14_SLOTS[k][0]==='A').map(k=>st[k][0]).concat(pk.filter(k=>NK14_SLOTS[k][1]==='A').map(k=>st[k][1]));
+    const nkB=pk.filter(k=>NK14_SLOTS[k][0]==='B').map(k=>st[k][0]).concat(pk.filter(k=>NK14_SLOTS[k][1]==='B').map(k=>st[k][1]));
+    for(const t of nkA){nkAa[t]=(nkAa[t]||0)+1;if(!nkAp[t])nkAp[t]=Array(5).fill(0);ensF(t);fin[t].appear++}
+    for(const t of nkB){nkBa[t]=(nkBa[t]||0)+1;if(!nkBp[t])nkBp[t]=Array(5).fill(0);ensF(t);fin[t].appear++}
+    const oA=simNKPoule(nkA),oB=simNKPoule(nkB);
+    for(let r=0;r<nkA.length;r++)nkAp[nkA[oA[r]]][r]++;
+    for(let r=0;r<nkB.length;r++)nkBp[nkB[oB[r]]][r]++;
+    const[a1,a2,b1,b2]=[nkA[oA[0]],nkA[oA[1]],nkB[oB[0]],nkB[oB[1]]];
+    for(const t of[a1,a2,b1,b2])fin[t].sfReach++;
+    const w1=simKO()==='home'?a1:b2,l1=w1===a1?b2:a1;
+    const w2=simKO()==='home'?b1:a2,l2=w2===b1?a2:b1;
+    fin[w1].finalist++;fin[w2].finalist++;
+    const fW=Math.random()<.5?w1:w2,fL=fW===w1?w2:w1;
+    const tW=Math.random()<.5?l1:l2,tL=tW===l1?l2:l1;
+    fin[fW].p1++;fin[fL].p2++;fin[tW].p3++;fin[tL].p4++
+  }
+  return{ss,nkAp,nkBp,nkAa,nkBa,fin}
+}
+
+// ════════════════════════════════════════════
+// O16 SIMULATION
+// ════════════════════════════════════════════
+function runSimO16(data,N,ha){
+  const ss={};for(const id of Object.keys(data))ss[id]=data[id].teams.map(()=>Array(6).fill(0));
+  const fin={};
+  const ensF=t=>{if(!fin[t])fin[t]={appear:0,kf:0,hf:0,finalist:0,p1:0,p2:0}};
+  const pk=POULE_ORDER_16.filter(k=>data[k]);
+
+  for(let s=0;s<N;s++){
+    const st={};
+    for(const id of pk){const o=simPoule(data[id],ha);st[id]=o.map(i=>data[id].teams[i]);for(let r=0;r<data[id].teams.length;r++)ss[id][o[r]][r]++}
+    // Rank #1s and #2s across poules by current sim points (approximate by original pts)
+    const nr1s=pk.map(k=>({team:st[k][0],poule:k,pts:data[k].pts[data[k].teams.indexOf(st[k][0])]||0}));
+    const nr2s=pk.map(k=>({team:st[k][1],poule:k,pts:data[k].pts[data[k].teams.indexOf(st[k][1])]||0}));
+    // Sort by random tiebreak (simulated ranking)
+    nr1s.sort((a,b)=>b.pts!==a.pts?b.pts-a.pts:Math.random()-.5);
+    nr2s.sort((a,b)=>b.pts!==a.pts?b.pts-a.pts:Math.random()-.5);
+    // KF: Beste#1 vs 4e#2, 2e#1 vs 3e#2, 3e#1 vs 2e#2, 4e#1 vs Beste#2
+    const kf=[[nr1s[0].team,nr2s[3].team],[nr1s[1].team,nr2s[2].team],[nr1s[2].team,nr2s[1].team],[nr1s[3].team,nr2s[0].team]];
+    for(const[h,a]of kf){ensF(h);ensF(a);fin[h].appear++;fin[a].appear++;fin[h].kf++;fin[a].kf++}
+    // KF results
+    const kfW=kf.map(([h,a])=>simKO()==='home'?h:a);
+    // HF: W(KF1) vs W(KF4), W(KF2) vs W(KF3)
+    for(const t of kfW){fin[t].hf++}
+    const hf1w=simKO()==='home'?kfW[0]:kfW[3],hf2w=simKO()==='home'?kfW[1]:kfW[2];
+    const hf1l=hf1w===kfW[0]?kfW[3]:kfW[0],hf2l=hf2w===kfW[1]?kfW[2]:kfW[1];
+    fin[hf1w].finalist++;fin[hf2w].finalist++;
+    const fW=Math.random()<.5?hf1w:hf2w,fL=fW===hf1w?hf2w:hf1w;
+    fin[fW].p1++;fin[fL].p2++
+  }
+  return{ss,fin}
+}
+
+// ════════════════════════════════════════════
+// PARSERS
+// ════════════════════════════════════════════
+const pct=(c,N)=>Math.round(c/N*100);
+const pc=(p,hi,mid)=>p>=hi?'prob-hi':p>=mid?'prob-mid':'prob-low';
+const clean16=n=>n.replace(/ [MJ]O\d+-\d+/g,'').trim();
+const clean14=n=>n.replace(/ [A-Z]?O?\d+-\d+/g,'').trim();
+
+function parseO14(raw){
+  const parsed=JSON.parse(raw);const comps={};
+  for(const[key,val]of Object.entries(parsed)){
+    const ld=key.replace(/_.*/,'');
+    if(POULE_ORDER_14.includes(ld)&&val.teams){
+      const comp=val.competition||'';const type=comp.includes('Jongens')?'JO14':'MO14';
+      if(!comps[type])comps[type]={};
+      comps[type][ld]={teams:val.teams,pts:val.pts,ds:val.ds,remaining:val.remaining,played_count:val.played_count||0,standings:val.standings||[],matches_played:val.matches_played||[],poule_id:val.poule_id,competition:val.competition||''};
+      continue;
+    }
+    if(val.data&&val.data.data&&val.data.data.poule){
+      const d=val.data.data,pn=(d.poule.name||'').replace('Poule ','');
+      if(!POULE_ORDER_14.includes(pn))continue;
+      const comp=val.competition||(d.poule.competition&&d.poule.competition.name)||'',cls=val.class_name||(d.poule.competition&&d.poule.competition.class_name)||'';
+      if(!comp.includes('O14')||cls!=='Super')continue;
+      const type=comp.includes('Jongens')?'JO14':'MO14';
+      const st=d.poule.standings||[],ma=d.poule.matches||[],pl=ma.filter(m=>m.status==='final'),re=ma.filter(m=>m.status!=='final');
+      if(!comps[type])comps[type]={};
+      comps[type][pn]={teams:st.map(s=>clean14(s.team.name)),pts:st.map(s=>s.points),ds:st.map(s=>s.goals_for-s.goals_against),
+        remaining:re.map(m=>[clean14(m.home.name),clean14(m.away.name)]),played_count:pl.length,
+        standings:st.map(s=>({rank:s.rank,team:clean14(s.team.name),team_id:s.team.id,points:s.points,wins:s.wins,draws:s.draws,losses:s.losses,gf:s.goals_for,ga:s.goals_against,gd:s.goals_for-s.goals_against})),
+        matches_played:pl.map(m=>({round:m.round,home:clean14(m.home.name),away:clean14(m.away.name),score:`${m.score.home}-${m.score.away}`})),
+        poule_id:parseInt(key),competition:`${comp} · ${cls}`};
+    }
+  }
+  return comps;
+}
+
+function parseO16(raw){
+  const parsed=JSON.parse(raw);
+  // Handle both direct format and wrapped {comp_XX: {data: ...}} format
+  let d=parsed;
+  if(parsed.data&&parsed.data.poules)d=parsed;
+  else{const k=Object.keys(parsed)[0];if(parsed[k]&&parsed[k].data&&parsed[k].data.data)d=parsed[k].data;else if(parsed[k]&&parsed[k].data&&parsed[k].data.poules)d=parsed[k].data;else return{}}
+  if(!(d&&d.data&&d.data.poules)&&!(d&&d.poules))return{};
+  const root=d.data||d;
+  const name=root.name||'';
+  const type=name.includes('Jongens')?'JO16':name.includes('Meisjes')?'MO16':'O16';
+  const poules=root.poules||[];
+  const result={};
+  for(const p of poules){
+    const cls=(p.competition&&p.competition.class_name)||'';
+    if(cls!=='Landelijk')continue;
+    const letter=(p.name||'').replace('Poule ','');
+    if(!POULE_ORDER_16.includes(letter))continue;
+    const st=p.standings||[],ma=p.matches||[];
+    const pl=ma.filter(m=>m.status==='final'),re=ma.filter(m=>m.status!=='final');
+    result[letter]={teams:st.map(s=>clean16(s.team.name)),pts:st.map(s=>s.points),ds:st.map(s=>s.goals_for-s.goals_against),
+      remaining:re.map(m=>[clean16(m.home.name),clean16(m.away.name)]),played_count:pl.length,
+      standings:st.map(s=>({rank:s.rank,team:clean16(s.team.name),team_id:s.team.id,points:s.points,wins:s.wins,draws:s.draws,losses:s.losses,gf:s.goals_for,ga:s.goals_against,gd:s.goals_for-s.goals_against})),
+      matches_played:pl.map(m=>({round:m.round,home:clean16(m.home.name),away:clean16(m.away.name),score:`${m.score.home}-${m.score.away}`})),
+      competition:name};
+  }
+  return{[type]:result};
+}
+
+// NK Schedules — pre-parsed, embedded (these don't change)
+const NK_SCHEDULES={
+MO14:{"schedA":[{"time":"09:30","date":"20 juni","home":"A nr 1","away":"C nr 1","field":"2. Broekhuis veld"},{"time":"09:30","date":"20 juni","home":"B nr 2","away":"E nr 1","field":"1. Rabobank veld"},{"time":"11:10","date":"20 juni","home":"A nr 1","away":"D nr 2","field":"1. Rabobank veld"},{"time":"11:10","date":"20 juni","home":"C nr 1","away":"E nr 1","field":"2. Broekhuis veld"},{"time":"12:50","date":"20 juni","home":"B nr 2","away":"A nr 1","field":"2. Broekhuis veld"},{"time":"12:50","date":"20 juni","home":"D nr 2","away":"C nr 1","field":"1. Rabobank veld"},{"time":"14:30","date":"20 juni","home":"C nr 1","away":"B nr 2","field":"1. Rabobank veld"},{"time":"14:30","date":"20 juni","home":"E nr 1","away":"D nr 2","field":"2. Broekhuis veld"},{"time":"16:10","date":"20 juni","home":"D nr 2","away":"B nr 2","field":"2. Broekhuis veld"},{"time":"16:10","date":"20 juni","home":"E nr 1","away":"A nr 1","field":"1. Rabobank veld"}],"schedB":[{"time":"09:30","date":"20 juni","home":"A nr 2","away":"C nr 2","field":"Veld 2"},{"time":"09:30","date":"20 juni","home":"B nr 1","away":"E nr 2","field":"Veld 1 Topfund"},{"time":"11:10","date":"20 juni","home":"A nr 2","away":"D nr 1","field":"Veld 1 Topfund"},{"time":"11:10","date":"20 juni","home":"C nr 2","away":"E nr 2","field":"Veld 2"},{"time":"12:50","date":"20 juni","home":"B nr 1","away":"A nr 2","field":"Veld 2"},{"time":"12:50","date":"20 juni","home":"D nr 1","away":"C nr 2","field":"Veld 1 Topfund"},{"time":"14:30","date":"20 juni","home":"C nr 2","away":"B nr 1","field":"Veld 1 Topfund"},{"time":"14:30","date":"20 juni","home":"E nr 2","away":"D nr 1","field":"Veld 2"},{"time":"16:10","date":"20 juni","home":"D nr 1","away":"B nr 1","field":"Veld 2"},{"time":"16:10","date":"20 juni","home":"E nr 2","away":"A nr 2","field":"Veld 1 Topfund"}],"timesA":["09:30","11:10","12:50","14:30","16:10"],"timesB":["09:30","11:10","12:50","14:30","16:10"],"finales":[{"time":"10:00","date":"27 juni","home":"NK Poule A nr 1","away":"NK Poule B nr 2","field":"1. Rabobank veld","type":"Halve Finales"},{"time":"10:00","date":"27 juni","home":"NK Poule B nr 1","away":"NK Poule A nr 2","field":"2. Broekhuis veld","type":"Halve Finales"},{"time":"12:30","date":"27 juni","home":"NK Verliezer Halve Finale 1","away":"NK Verliezer Halve Finale 2","field":"2. Broekhuis veld","type":"3e/4e plaats"},{"time":"12:30","date":"27 juni","home":"NK Winnaar Halve Finale 1","away":"NK Winnaar Halve Finale 2","field":"1. Rabobank veld","type":"Finale"}],"poulefaseDate":"20 juni","finaleDate":"27 juni"},
+JO14:{"schedA":[{"time":"10:20","date":"20 juni","home":"A nr 1","away":"C nr 1","field":"2. Broekhuis veld"},{"time":"10:20","date":"20 juni","home":"B nr 2","away":"E nr 1","field":"1. Rabobank veld"},{"time":"12:00","date":"20 juni","home":"A nr 1","away":"D nr 2","field":"1. Rabobank veld"},{"time":"12:00","date":"20 juni","home":"C nr 1","away":"E nr 1","field":"2. Broekhuis veld"},{"time":"13:40","date":"20 juni","home":"B nr 2","away":"A nr 1","field":"2. Broekhuis veld"},{"time":"13:40","date":"20 juni","home":"D nr 2","away":"C nr 1","field":"1. Rabobank veld"},{"time":"15:20","date":"20 juni","home":"C nr 1","away":"B nr 2","field":"1. Rabobank veld"},{"time":"15:20","date":"20 juni","home":"E nr 1","away":"D nr 2","field":"2. Broekhuis veld"},{"time":"17:00","date":"20 juni","home":"D nr 2","away":"B nr 2","field":"2. Broekhuis veld"},{"time":"17:00","date":"20 juni","home":"E nr 1","away":"A nr 1","field":"1. Rabobank veld"}],"schedB":[{"time":"10:20","date":"20 juni","home":"A nr 2","away":"C nr 2","field":"Veld 2"},{"time":"10:20","date":"20 juni","home":"B nr 1","away":"E nr 2","field":"Veld 1 Topfund"},{"time":"12:00","date":"20 juni","home":"A nr 2","away":"D nr 1","field":"Veld 1 Topfund"},{"time":"12:00","date":"20 juni","home":"C nr 2","away":"E nr 2","field":"Veld 2"},{"time":"13:40","date":"20 juni","home":"B nr 1","away":"A nr 2","field":"Veld 2"},{"time":"13:40","date":"20 juni","home":"D nr 1","away":"C nr 2","field":"Veld 1 Topfund"},{"time":"15:20","date":"20 juni","home":"C nr 2","away":"B nr 1","field":"Veld 1 Topfund"},{"time":"15:20","date":"20 juni","home":"E nr 2","away":"D nr 1","field":"Veld 2"},{"time":"17:00","date":"20 juni","home":"D nr 1","away":"B nr 1","field":"Veld 2"},{"time":"17:00","date":"20 juni","home":"E nr 2","away":"A nr 2","field":"Veld 1 Topfund"}],"timesA":["10:20","12:00","13:40","15:20","17:00"],"timesB":["10:20","12:00","13:40","15:20","17:00"],"finales":[{"time":"11:15","date":"27 juni","home":"NK Poule A nr 1","away":"NK Poule B nr 2","field":"1. Rabobank veld","type":"Halve Finales"},{"time":"11:15","date":"27 juni","home":"NK Poule B nr 1","away":"NK Poule A nr 2","field":"2. Broekhuis veld","type":"Halve Finales"},{"time":"14:00","date":"27 juni","home":"NK Verliezer Halve Finale 1","away":"NK Verliezer Halve Finale 2","field":"2. Broekhuis veld","type":"3e/4e plaats"},{"time":"14:00","date":"27 juni","home":"NK Winnaar Halve Finale 1","away":"NK Winnaar Halve Finale 2","field":"1. Rabobank veld","type":"Finale"}],"poulefaseDate":"20 juni","finaleDate":"27 juni"}
+};
+
+
+function findMyTeam(allComps,name){for(const[t,d]of Object.entries(allComps)){for(const[p,poule]of Object.entries(d)){const i=poule.teams.indexOf(name);if(i>=0)return{type:t,pouleId:p,rank:i+1,poule}}}return null}
+
+// ════════════════════════════════════════════
+// SHARED COMPONENTS
+// ════════════════════════════════════════════
+function PouleCard({id,poule,myTeam,slots}){
+  const mpr=Math.floor(poule.teams.length/2);const remR=mpr>0?Math.round(poule.remaining.length/mpr):0;
+  return(<div className="card"><div className="card-header">Poule {id}<span className="played-count">{remR>0?`nog ${remR} ronde${remR>1?'s':''}`:'✓ klaar'}</span></div>
+    <table><tbody>{poule.teams.map((team,i)=>{const rank=i+1,is1=rank===1,is2=rank===2,slot=slots?(is1?slots[0]:is2?slots[1]:null):null,isMy=team===myTeam;
+      return(<tr key={team} style={isMy?{background:'#eff6ff'}:{}}><td className="td-rank">{rank}</td>
+        <td className={is1?'bold':''} style={{...(!slot?{paddingLeft:17}:{}),fontWeight:isMy?600:undefined}}>
+          {slot&&<span className={`dot dot-${slot.toLowerCase()}`} style={{marginRight:5}}></span>}{team}
+        </td><td className="td-pts">{poule.pts[i]}</td>
+        <td className="td-ds" style={{color:poule.ds[i]>=0?'#16a34a':'#dc2626'}}>{poule.ds[i]>=0?'+':''}{poule.ds[i]}</td></tr>)
+    })}</tbody></table></div>);
+}
+
+function SchemaTab({data,myTeam,pouleOrder}){
+  const pk=pouleOrder.filter(k=>data[k]);const gridCls=pk.length<=4?'grid-4':'grid-5';
+  return(<div>
+    <div className="section-label" style={{marginTop:0}}>Resterende wedstrijden</div>
+    <div className={gridCls}>{pk.map(id=><RemainingCard key={id} id={id} poule={data[id]} myTeam={myTeam}/>)}</div>
+    <div className="section-label">Gespeelde wedstrijden</div>
+    <div className={gridCls}>{pk.map(id=><PlayedCard key={id} id={id} poule={data[id]} myTeam={myTeam}/>)}</div>
+  </div>);
+}
+function PlayedCard({id,poule,myTeam}){
+  const ma=poule.matches_played||[];const rounds={};ma.forEach(m=>{const r=m.round||'?';if(!rounds[r])rounds[r]=[];rounds[r].push(m)});
+  const sorted=Object.keys(rounds).sort((a,b)=>parseInt(b)-parseInt(a));
+  return(<div className="card"><div className="card-header">Poule {id}<span className="played-count">{ma.length} gespeeld</span></div>
+    {ma.length===0&&<div style={{padding:12,color:'#aaa',fontSize:12}}>Geen data</div>}
+    {sorted.map(r=>(<div key={r}><div style={{padding:'5px 12px',fontSize:11,fontWeight:600,fontFamily:"'DM Mono',monospace",color:'#888',background:'#f0ede8',borderBottom:'1px solid #e0ddd8',borderTop:'1px solid #e0ddd8',letterSpacing:'.5px'}}>Ronde {r}</div>
+      {rounds[r].map((m,i)=>{const isMy=m.home===myTeam||m.away===myTeam;return(<div className="match-row played" key={i} style={isMy?{background:'#eff6ff'}:{}}><div className="match-teams"><div className="match-team right" style={m.home===myTeam?{fontWeight:600}:{}}>{m.home}</div><div className="match-score">{m.score}</div><div className="match-team" style={m.away===myTeam?{fontWeight:600}:{}}>{m.away}</div></div></div>)})}</div>))}
+  </div>);
+}
+function RemainingCard({id,poule,myTeam}){
+  const mpr=Math.floor(poule.teams.length/2),lr=poule.matches_played&&poule.matches_played.length>0?Math.max(...poule.matches_played.map(m=>parseInt(m.round)||0)):0;
+  const rounds=[];if(mpr>0)for(let i=0;i<poule.remaining.length;i+=mpr)rounds.push(poule.remaining.slice(i,i+mpr));
+  return(<div className="card"><div className="card-header">Poule {id}<span className="played-count">{rounds.length>0?`nog ${rounds.length} ronde${rounds.length>1?'s':''}`:'✓ klaar'}</span></div>
+    {rounds.length===0&&<div style={{padding:12,color:'#16a34a',fontSize:12,fontWeight:600}}>✓ Afgerond</div>}
+    {rounds.map((ms,ri)=>{const rn=lr+ri+1;return(<div key={ri}><div style={{padding:'5px 12px',fontSize:11,fontWeight:600,fontFamily:"'DM Mono',monospace",color:'#854d0e',background:'#fef9c3',borderBottom:'1px solid #fde68a',borderTop:'1px solid #fde68a',letterSpacing:'.5px'}}>Ronde {rn}</div>
+      {ms.map(([h,a],mi)=>{const isMy=h===myTeam||a===myTeam;return(<div className="match-row" key={mi} style={isMy?{background:'#eff6ff'}:{}}><div className="match-teams"><div className="match-team right" style={h===myTeam?{fontWeight:600}:{}}>{h}</div><div className="match-vs">vs</div><div className="match-team" style={a===myTeam?{fontWeight:600}:{}}>{a}</div></div></div>)})}</div>)})}
+  </div>);
+}
+
+// ════════════════════════════════════════════
+// O14 TABS
+// ════════════════════════════════════════════
+function O14OverzichtTab({data,myTeam,nkSchedule}){
+  const pk=POULE_ORDER_14.filter(k=>data[k]);
+  const nkA=[],nkB=[];
+  for(const id of pk){const sl=NK14_SLOTS[id],t1=data[id].teams[0],t2=data[id].teams[1];
+    (sl[0]==='A'?nkA:nkB).push({team:t1,origin:`${id} nr 1`});(sl[1]==='A'?nkA:nkB).push({team:t2,origin:`${id} nr 2`});
+  }
+  const slot2t={};for(const id of pk){slot2t[`${id} nr 1`]=data[id].teams[0];slot2t[`${id} nr 2`]=data[id].teams[1]}
+  const MR=({m})=>{const hT=slot2t[m.home]||m.home,aT=slot2t[m.away]||m.away,hMy=hT===myTeam,aMy=aT===myTeam;
+    return(<div className="match-row" style={(hMy||aMy)?{background:'#eff6ff'}:{}}><div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#888',minWidth:38}}>{m.time}</div>
+      <div className="match-teams"><div className="match-team right" style={hMy?{fontWeight:600,color:'#1d4ed8'}:{}}>{hT}<span className="origin"> {m.home}</span></div><div className="match-vs">vs</div><div className="match-team" style={aMy?{fontWeight:600,color:'#1d4ed8'}:{}}>{aT}<span className="origin"> {m.away}</span></div></div>
+      {m.field&&<span className="origin" style={{flexShrink:0}}>{m.field}</span>}</div>)};
+  const sA=(nkSchedule&&nkSchedule.schedA)||[],sB=(nkSchedule&&nkSchedule.schedB)||[],tA=(nkSchedule&&nkSchedule.timesA)||[],tB=(nkSchedule&&nkSchedule.timesB)||[],fins=(nkSchedule&&nkSchedule.finales)||[],pD=(nkSchedule&&nkSchedule.poulefaseDate)||'',fD=(nkSchedule&&nkSchedule.finaleDate)||'';
+  const SC=({schedule,times,hc,lbl})=>(<div className="card"><div className={`card-header ${hc}`}>{lbl}</div>
+    {times.map((time,ri)=>{const ms=schedule.filter(m=>m.time===time);if(!ms.length)return null;
+      return(<div key={ri}><div style={{padding:'5px 12px',fontSize:11,fontWeight:600,fontFamily:"'DM Mono',monospace",color:'#555',background:'#f0ede8',borderBottom:'1px solid #e0ddd8',borderTop:ri>0?'1px solid #e0ddd8':'none',letterSpacing:'.5px',display:'flex',justifyContent:'space-between'}}><span>Ronde {ri+1}</span><span style={{fontWeight:400,color:'#999'}}>{time}</span></div>
+        {ms.map((m,i)=><MR key={i} m={m}/>)}</div>)})}</div>);
+  return(<div>
+    <div className="legend"><span><span className="dot dot-a"></span> → NK Poulefase A</span><span><span className="dot dot-b"></span> → NK Poulefase B</span></div>
+    <div className="section-label" style={{marginTop:0}}>Super — huidige stand</div>
+    <div className="grid-5">{pk.map(id=><PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam} slots={NK14_SLOTS[id]}/>)}</div>
+    <div className="section-label">NK Poulefase — verwachte indeling</div>
+    <div className="grid-2">
+      <div className="card"><div className="card-header card-header-a">Poulefase A{pD&&` · ${pD}`}</div><table><tbody>{nkA.map((e,i)=><tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{i+1}</td><td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> {e.origin}</span></td></tr>)}</tbody></table></div>
+      <div className="card"><div className="card-header card-header-b">Poulefase B{pD&&` · ${pD}`}</div><table><tbody>{nkB.map((e,i)=><tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{i+1}</td><td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> {e.origin}</span></td></tr>)}</tbody></table></div>
+    </div>
+    {sA.length>0&&<><div className="section-label">NK Speelschema{pD&&` · ${pD}`}</div><div className="grid-2"><SC schedule={sA} times={tA} hc="card-header-a" lbl="Poule A"/><SC schedule={sB} times={tB} hc="card-header-b" lbl="Poule B"/></div></>}
+    {fins.length>0&&<><div className="section-label">NK Finales{fD&&` · ${fD}`}</div><div className="card" style={{maxWidth:500}}><div className="card-header">Halve finales & Finale</div>
+      {fins.map((f,i)=>(<div key={i} className="match-row" style={f.type==='Finale'?{borderTop:'1px solid #e0ddd8'}:{}}><div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#888',minWidth:38}}>{f.time}</div>
+        <div className="match-teams"><div className="match-team right"><strong>{f.home}</strong></div><div className="match-vs">vs</div><div className="match-team"><strong>{f.away}</strong></div></div>
+        <span className="origin">{f.type==='Halve Finales'?'HF':f.type==='3e/4e plaats'?'3e/4e':'🏆'}</span>{f.field&&<span className="origin">{f.field}</span>}</div>))}
+    </div></>}
+  </div>);
+}
+
+// ════════════════════════════════════════════
+// O16 TABS
+// ════════════════════════════════════════════
+function O16OverzichtTab({data,myTeam}){
+  const pk=POULE_ORDER_16.filter(k=>data[k]);
+
+  // Rank #1s and #2s across poules by points then DS
+  const nr1s=pk.map(k=>({team:data[k].teams[0],poule:k,pts:data[k].pts[0],ds:data[k].ds[0]}))
+    .sort((a,b)=>b.pts!==a.pts?b.pts-a.pts:b.ds-a.ds);
+  const nr2s=pk.map(k=>({team:data[k].teams[1],poule:k,pts:data[k].pts[1],ds:data[k].ds[1]}))
+    .sort((a,b)=>b.pts!==a.pts?b.pts-a.pts:b.ds-a.ds);
+
+  // KF matchups: Beste#1 vs 4e#2, 2e#1 vs 3e#2, 3e#1 vs 2e#2, 4e#1 vs Beste#2
+  var kfMatches = [];
+  if(nr1s.length>=4 && nr2s.length>=4){
+    kfMatches = [
+      {label:'KF 1',home:nr1s[0],away:nr2s[3],desc:'Beste #1 vs 4e #2'},
+      {label:'KF 2',home:nr1s[1],away:nr2s[2],desc:'2e #1 vs 3e #2'},
+      {label:'KF 3',home:nr1s[2],away:nr2s[1],desc:'3e #1 vs 2e #2'},
+      {label:'KF 4',home:nr1s[3],away:nr2s[0],desc:'4e #1 vs Beste #2'},
+    ];
+  }
+
+  return(<div>
+    <div className="section-label" style={{marginTop:0}}>Landelijk — huidige stand</div>
+    <div className="grid-4">{pk.map(id=><PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam}/>)}</div>
+
+    {nr1s.length>=4&&<>
+    <div className="section-label">NK Kwartfinales — verwachte indeling</div>
+    <div className="grid-2">
+      <div className="card">
+        <div className="card-header">Ranking #1 per poule</div>
+        <table><tbody>{nr1s.map(function(e,i){var label=i===0?'Beste':i===1?'2e':i===2?'3e':'4e';
+          return(<tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{label}</td>
+            <td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> Poule {e.poule} · {e.pts}pt · DS {e.ds>=0?'+':''}{e.ds}</span></td></tr>)})}</tbody></table>
+      </div>
+      <div className="card">
+        <div className="card-header">Ranking #2 per poule</div>
+        <table><tbody>{nr2s.map(function(e,i){var label=i===0?'Beste':i===1?'2e':i===2?'3e':'4e';
+          return(<tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{label}</td>
+            <td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> Poule {e.poule} · {e.pts}pt · DS {e.ds>=0?'+':''}{e.ds}</span></td></tr>)})}</tbody></table>
+      </div>
+    </div>
+
+    <div className="section-label">NK Kwartfinales — verwachte wedstrijden</div>
+    <div className="card" style={{maxWidth:600}}>
+      <div className="card-header">Kwartfinales</div>
+      {kfMatches.map(function(kf,i){var hMy=kf.home.team===myTeam,aMy=kf.away.team===myTeam,isMy=hMy||aMy;
+        return(<div key={i} className="match-row" style={isMy?{background:'#eff6ff'}:{}}>
+          <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#888',minWidth:36}}>{kf.label}</div>
+          <div className="match-teams">
+            <div className="match-team right" style={hMy?{fontWeight:600,color:'#1d4ed8'}:{}}>{kf.home.team}<span className="origin"> {kf.home.poule}#1</span></div>
+            <div className="match-vs">vs</div>
+            <div className="match-team" style={aMy?{fontWeight:600,color:'#1d4ed8'}:{}}>{kf.away.team}<span className="origin"> {kf.away.poule}#2</span></div>
+          </div>
+          <span className="origin">{kf.desc}</span>
+        </div>)
+      })}
+      <div className="match-row" style={{borderTop:'1px solid #e0ddd8'}}><div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#888',minWidth:36}}>HF 1</div><div className="match-teams"><div className="match-team right"><strong>Winnaar KF 1</strong></div><div className="match-vs">vs</div><div className="match-team"><strong>Winnaar KF 4</strong></div></div></div>
+      <div className="match-row"><div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#888',minWidth:36}}>HF 2</div><div className="match-teams"><div className="match-team right"><strong>Winnaar KF 2</strong></div><div className="match-vs">vs</div><div className="match-team"><strong>Winnaar KF 3</strong></div></div></div>
+      <div className="match-row" style={{borderTop:'1px solid #e0ddd8'}}><div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#888',minWidth:36}}>🏆</div><div className="match-teams"><div className="match-team right"><strong>Winnaar HF 1</strong></div><div className="match-vs">vs</div><div className="match-team"><strong>Winnaar HF 2</strong></div></div></div>
+    </div>
+    </>}
+  </div>);
+}
+
+function O16SimTab({data,myTeam}){
+  const[N,setN]=useState(20000);const[ha,setHa]=useState(0);const[results,setResults]=useState(null);const[running,setRunning]=useState(false);const[simNote,setSimNote]=useState('');
+  const run=useCallback(()=>{setRunning(true);setTimeout(()=>{const r=runSimO16(data,N,ha);setResults(r);setSimNote(`${N.toLocaleString('nl-NL')} sim · ${new Date().toLocaleString('nl-NL')}`);setRunning(false)},20)},[data,N,ha]);
+  useEffect(()=>{run()},[]);
+  return(<div>
+    <div className="sim-controls">
+      <span className="ctrl-label">Simulaties:</span><input type="range" min="2000" max="500000" step="2000" value={N} onChange={e=>setN(parseInt(e.target.value))} style={{width:180}}/><span className="ctrl-val">{N.toLocaleString('nl-NL')}</span>
+      <button className="run-btn" onClick={run} disabled={running}>{running?'Bezig...':'Herbereken'}</button>
+    </div>
+    {results&&<O16SimResults data={data} results={results} N={N} myTeam={myTeam}/>}
+    {simNote&&<div className="sim-note">{simNote}</div>}
+  </div>);
+}
+
+function O16SimResults({data,results,N,myTeam}){
+  const{ss,fin}=results;const pk=POULE_ORDER_16.filter(k=>data[k]);
+  const Bar=({p,col})=>(<div className="bar-wrap"><div className="bar-track"><div className="bar-fill" style={{width:`${p}%`,background:col}}></div></div><span className="bar-val">{p}%</span></div>);
+  return(<div>
+    {pk.map(id=>{const poule=data[id],pa=ss[id];
+      const order=poule.teams.map((_,i)=>i).sort((a,b)=>pa[b][0]!==pa[a][0]?pa[b][0]-pa[a][0]:poule.pts[b]-poule.pts[a]);
+      return(<div key={id}><div className="poule-sim-label">Poule {id}<span style={{fontSize:10,color:'#aaa',fontWeight:400}}>{poule.remaining.length} wedstr. rest</span></div>
+        <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>#</th><th>Team</th><th>PT</th><th>DS</th><th>P(1e)</th><th>P(2e)</th><th>P(top2)</th></tr></thead><tbody>
+          {order.map((idx,rank)=>{const p1=pct(pa[idx][0],N),p2=pct(pa[idx][1],N),top2=p1+p2,isMy=poule.teams[idx]===myTeam;
+            return(<tr key={idx} className={isMy?'row-my':p1>50?'row-gold':''}><td style={{color:'#aaa',fontSize:11}}>{rank+1}</td><td className="team" style={isMy?{fontWeight:700}:{}}>{poule.teams[idx]}</td>
+              <td style={{textAlign:'right',color:'#888',fontFamily:"'DM Mono',monospace",fontSize:12}}>{poule.pts[idx]}</td>
+              <td style={{textAlign:'right',fontFamily:"'DM Mono',monospace",fontSize:11,color:poule.ds[idx]>=0?'#16a34a':'#dc2626'}}>{poule.ds[idx]>=0?'+':''}{poule.ds[idx]}</td>
+              <td className={pc(p1,50,20)}>{p1}%</td><td className={pc(p2,40,20)}>{p2}%</td><td className={pc(top2,60,30)}>{top2}%</td></tr>)})}
+        </tbody></table></div></div>)
+    })}
+    <div className="poule-sim-label" style={{marginTop:24}}>NK Eindkansen</div>
+    <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(KF)</th><th>P(HF)</th><th>P(finale)</th><th>P(1e 🥇)</th><th>P(2e 🥈)</th></tr></thead><tbody>
+      {Object.keys(fin).sort((a,b)=>fin[b].p1-fin[a].p1).filter(t=>fin[t].kf/N>.02).map(t=>{
+        const s=fin[t],pKF=pct(s.kf,N),pHF=pct(s.hf,N),pFin=pct(s.finalist,N),p1=pct(s.p1,N),p2=pct(s.p2,N),isMy=t===myTeam;
+        return(<tr key={t} className={isMy?'row-my':p1>=10?'row-gold':''}><td className="team" style={isMy?{fontWeight:700}:{}}>{t}</td>
+          <td className={pc(pKF,30,15)}>{pKF}%</td><td className={pc(pHF,20,10)}>{pHF}%</td><td className={pc(pFin,15,8)}>{pFin}%</td>
+          <td><Bar p={p1} col="#f59e0b"/></td><td><Bar p={p2} col="#94a3b8"/></td></tr>)})}
+    </tbody></table></div>
+  </div>);
+}
+
+// ════════════════════════════════════════════
+// O14 SIM TAB (reuse from before)
+// ════════════════════════════════════════════
+function O14SimTab({data,myTeam}){
+  const[N,setN]=useState(20000);const[ha,setHa]=useState(0);const[results,setResults]=useState(null);const[running,setRunning]=useState(false);const[simNote,setSimNote]=useState('');const[subTab,setSubTab]=useState('super');
+  const run=useCallback(()=>{setRunning(true);setTimeout(()=>{const r=runSimO14(data,N,ha);setResults(r);setSimNote(`${N.toLocaleString('nl-NL')} sim · ${ha===0?'geen thuisvoordeel':`thuis ${ha}%`} · ${new Date().toLocaleString('nl-NL')}`);setRunning(false)},20)},[data,N,ha]);
+  useEffect(()=>{run()},[]);
+  return(<div>
+    <div className="sim-controls">
+      <span className="ctrl-label">Simulaties:</span><input type="range" min="2000" max="500000" step="2000" value={N} onChange={e=>setN(parseInt(e.target.value))} style={{width:180}}/><span className="ctrl-val">{N.toLocaleString('nl-NL')}</span>
+      <div className="divider-v"></div>
+      <span className="ctrl-label">Thuisvoordeel:</span><input type="range" min="0" max="40" step="1" value={ha} onChange={e=>setHa(parseInt(e.target.value))} style={{width:140}}/><span className="ctrl-val">{ha}%</span>
+      <button className="run-btn" onClick={run} disabled={running}>{running?'Bezig...':'Herbereken'}</button>
+    </div>
+    <div className="sub-tabs">{['super','nk','finales'].map(t=>(<button key={t} className={`sub-tab ${subTab===t?'active':''}`} onClick={()=>setSubTab(t)}>{t==='super'?'Super-poules':t==='nk'?'NK Poulefase':'Eindkansen'}</button>))}</div>
+    {results&&subTab==='super'&&<O14SuperRes data={data} ss={results.ss} N={N} myTeam={myTeam}/>}
+    {results&&subTab==='nk'&&<O14NKRes data={data} results={results} N={N} myTeam={myTeam}/>}
+    {results&&subTab==='finales'&&<O14FinRes data={data} results={results} N={N} myTeam={myTeam}/>}
+    {simNote&&<div className="sim-note">{simNote}</div>}
+  </div>);
+}
+function O14SuperRes({data,ss,N,myTeam}){
+  const pk=POULE_ORDER_14.filter(k=>data[k]);
+  const Bar=({p,col})=>(<div className="bar-wrap"><div className="bar-track"><div className="bar-fill" style={{width:`${p}%`,background:col}}></div></div><span className="bar-val">{p}%</span></div>);
+  return pk.map(id=>{const poule=data[id],pa=ss[id],sl=NK14_SLOTS[id];
+    const order=poule.teams.map((_,i)=>i).sort((a,b)=>pa[b][0]!==pa[a][0]?pa[b][0]-pa[a][0]:poule.pts[b]-poule.pts[a]);
+    return(<div key={id}><div className="poule-sim-label">Poule {id}<span className={`nk-badge nk-${sl[0].toLowerCase()}`}>#1→NK {sl[0]}</span><span className={`nk-badge nk-${sl[1].toLowerCase()}`}>#2→NK {sl[1]}</span></div>
+      <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>#</th><th>Team</th><th>PT</th><th>DS</th><th>P(1e)</th><th>P(2e)</th><th>P(top2)</th></tr></thead><tbody>
+        {order.map((idx,rank)=>{const p1=pct(pa[idx][0],N),p2=pct(pa[idx][1],N),top2=p1+p2,isMy=poule.teams[idx]===myTeam;
+          return(<tr key={idx} className={isMy?'row-my':p1>50?'row-gold':''}><td style={{color:'#aaa',fontSize:11}}>{rank+1}</td><td className="team" style={isMy?{fontWeight:700}:{}}>{poule.teams[idx]}</td>
+            <td style={{textAlign:'right',color:'#888',fontFamily:"'DM Mono',monospace",fontSize:12}}>{poule.pts[idx]}</td>
+            <td style={{textAlign:'right',fontFamily:"'DM Mono',monospace",fontSize:11,color:poule.ds[idx]>=0?'#16a34a':'#dc2626'}}>{poule.ds[idx]>=0?'+':''}{poule.ds[idx]}</td>
+            <td className={pc(p1,50,20)}>{p1}%</td><td className={pc(p2,40,20)}>{p2}%</td><td className={pc(top2,60,30)}>{top2}%</td></tr>)})}
+      </tbody></table></div></div>)});
+}
+function O14NKRes({data,results,N,myTeam}){
+  const{nkAp,nkBp,nkAa,nkBa}=results;
+  const rp=(w,pm,am)=>{const teams=Object.keys(pm).sort((a,b)=>(am[b]||0)-(am[a]||0)).filter(t=>(am[t]||0)/N>.01);
+    return(<div key={w}><div className="poule-sim-label"><span style={{background:w==='A'?'#dbeafe':'#dcfce7',color:w==='A'?'#1d4ed8':'#15803d',padding:'2px 10px',borderRadius:99,fontSize:11}}>NK Poulefase {w}</span></div>
+      <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(1e)</th><th>P(2e)</th><th>P(top2)</th></tr></thead><tbody>
+        {teams.map(t=>{const app=am[t]||0,pos=pm[t]||Array(5).fill(0),p1=pct(pos[0],N),p2=pct(pos[1],N),top2=p1+p2,isMy=t===myTeam;
+          return(<tr key={t} className={isMy?'row-my':p1>=15?'row-gold':''}><td className="team" style={isMy?{fontWeight:700}:{}}>{t}{pct(app,N)<99&&<span className="origin"> kwal.{pct(app,N)}%</span>}</td>
+            <td className={pc(p1,15,8)}>{p1}%</td><td className={pc(p2,15,8)}>{p2}%</td><td className={pc(top2,30,15)}>{top2}%</td></tr>)})}
+      </tbody></table></div></div>)};
+  return<>{rp('A',nkAp,nkAa)}{rp('B',nkBp,nkBa)}</>;
+}
+function O14FinRes({data,results,N,myTeam}){
+  const{fin}=results;const teams=Object.keys(fin).sort((a,b)=>fin[b].p1-fin[a].p1).filter(t=>fin[t].appear/N>.02);
+  const Bar=({p,col})=>(<div className="bar-wrap"><div className="bar-track"><div className="bar-fill" style={{width:`${p}%`,background:col}}></div></div><span className="bar-val">{p}%</span></div>);
+  return(<div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(HF)</th><th>P(finale)</th><th>P(🥇)</th><th>P(🥈)</th><th>P(🥉)</th><th>P(podium)</th></tr></thead><tbody>
+    {teams.map(t=>{const s=fin[t],pSF=pct(s.sfReach,N),pFin=pct(s.finalist,N),p1=pct(s.p1,N),p2=pct(s.p2,N),p3=pct(s.p3,N),pPod=p1+p2+p3,isMy=t===myTeam;
+      return(<tr key={t} className={isMy?'row-my':p1>=10?'row-gold':''}><td className="team" style={isMy?{fontWeight:700}:{}}>{t}</td>
+        <td className={pc(pSF,20,10)}>{pSF}%</td><td className={pc(pFin,15,8)}>{pFin}%</td>
+        <td><Bar p={p1} col="#f59e0b"/></td><td><Bar p={p2} col="#94a3b8"/></td><td><Bar p={p3} col="#cd7c2f"/></td><td className={pc(pPod,25,12)}>{pPod}%</td></tr>)})}
+  </tbody></table></div>);
+}
+
+// ════════════════════════════════════════════
+// IMPORT + CHANGELOG
+// ════════════════════════════════════════════
+function ImportScreen({onImport}){
+  const[text,setText]=useState('');const[error,setError]=useState('');const[loaded,setLoaded]=useState([]);const fileRef=useRef(null);
+  const mergedRef=useRef({});
+
+  function mergeInto(raw,filename){
+    try{
+      var comps=mergedRef.current;
+      var o14=parseO14(raw);for(var t in o14){if(!comps[t])comps[t]={};Object.assign(comps[t],o14[t])}
+      var o16=parseO16(raw);for(var t in o16){if(!comps[t])comps[t]={};Object.assign(comps[t],o16[t])}
+      mergedRef.current=comps;
+      // Count what we have
+      var summary=[];
+      for(var type in comps){summary.push(type+': '+Object.keys(comps[type]).length+' poules')}
+      setLoaded(function(prev){return prev.concat([{name:filename,status:'✅',detail:summary.join(', ')}])});
+      setError('');
+      return true;
+    }catch(e){
+      setLoaded(function(prev){return prev.concat([{name:filename,status:'❌',detail:e.message}])});
+      return false;
+    }
+  }
+
+  function handleFiles(e){
+    var files=e.target.files;
+    if(!files||!files.length)return;
+    for(var i=0;i<files.length;i++){
+      (function(file){
+        var r=new FileReader();
+        r.onload=function(ev){mergeInto(ev.target.result,file.name)};
+        r.readAsText(file);
+      })(files[i]);
+    }
+  }
+
+  function handleDrop(e){
+    e.preventDefault();
+    var files=e.dataTransfer.files;
+    if(!files||!files.length)return;
+    for(var i=0;i<files.length;i++){
+      (function(file){
+        var r=new FileReader();
+        r.onload=function(ev){mergeInto(ev.target.result,file.name)};
+        r.readAsText(file);
+      })(files[i]);
+    }
+  }
+
+  function handlePaste(e){
+    setTimeout(function(){
+      var v=e.target.value;
+      if(v.trim().startsWith('{')){
+        mergeInto(v,'clipboard');
+        setText(v);
+      }
+    },50);
+  }
+
+  function doStart(){
+    var comps=mergedRef.current;
+    if(Object.keys(comps).length===0){setError('Geen data geladen');return}
+    onImport(comps);
+  }
+
+  function doImportText(){
+    if(!text.trim())return;
+    mergeInto(text,'textarea');
+  }
+
+  var totalComps=Object.keys(mergedRef.current).length;
+  var totalPoules=0;
+  for(var t in mergedRef.current){totalPoules+=Object.keys(mergedRef.current[t]).length}
+
+  return(<div className="import-screen"><h2>🏑 NK Simulatie</h2>
+    <p>Ondersteunt MO14, JO14, MO16, JO16.<br/>Upload meerdere bestanden — ze worden samengevoegd.</p>
+
+    <div style={{border:'2px dashed #ccc',borderRadius:10,padding:20,background:'#fff',marginBottom:12,cursor:'pointer',textAlign:'center'}}
+      onDrop={handleDrop} onDragOver={function(e){e.preventDefault()}}
+      onClick={function(){fileRef.current.click()}}>
+      <div style={{fontSize:24,marginBottom:6}}>📁</div>
+      <div style={{fontSize:13,color:'#888'}}>Sleep bestanden hierheen of klik om te selecteren</div>
+      <div style={{fontSize:11,color:'#bbb',marginTop:4}}>Meerdere bestanden tegelijk mogelijk</div>
+    </div>
+    <input type="file" accept=".json" multiple ref={fileRef} onChange={handleFiles} style={{display:'none'}}/>
+
+    {loaded.length>0&&<div style={{textAlign:'left',marginBottom:12}}>
+      {loaded.map(function(f,i){return(<div key={i} style={{fontSize:11,fontFamily:"'DM Mono',monospace",padding:'3px 0',color:f.status==='✅'?'#16a34a':'#dc2626'}}>
+        {f.status} {f.name} — {f.detail}
+      </div>)})}
+      {totalComps>0&&<div style={{fontSize:12,fontWeight:600,marginTop:6,color:'#1a1a1a'}}>
+        Totaal: {totalComps} competities · {totalPoules} poules
+      </div>}
+    </div>}
+
+    <div style={{borderTop:'1px solid #eee',paddingTop:12,marginTop:8}}>
+      <div style={{fontSize:11,color:'#999',marginBottom:6}}>Of plak JSON:</div>
+      <textarea className="import-area" style={{minHeight:80}} value={text} onChange={function(e){setText(e.target.value)}} onPaste={handlePaste}
+        placeholder="Plak JSON hier..."/>
+      {text&&<button className="demo-btn" style={{marginTop:6}} onClick={doImportText}>+ Toevoegen aan data</button>}
+    </div>
+
+    {error&&<div className="import-error">{error}</div>}
+    <br/>
+    <button className="import-btn" onClick={doStart} disabled={totalComps===0}>
+      {totalComps>0?'Start met '+totalPoules+' poules':'Laad eerst data'}
+    </button>
+  </div>);
+}
+
+const VERSION='4.3';
+const CHANGELOG=[
+  {version:'4.3',date:'19 mei 2026',changes:[
+    'GitHub Pages hosting: data-URLs relatief (werkt op GitHub Pages en lokaal)',
+    'NK schedules volledig embedded in HTML — geen externe bestanden meer',
+    'Extensie v6 pusht data direct naar GitHub repo',
+  ]},
+  {version:'4.2',date:'19 mei 2026',changes:[
+    'NK speelschema (O14) embedded in HTML — geen aparte bestanden meer nodig',
+    'NK Speelschema en Finales werken nu ook bij lokaal testen en handmatige import',
+    'Verwijderd: nk_mo14.json en nk_jo14.json server-bestanden niet meer nodig',
+    'Pre-geparsed: 28KB raw → 2.5KB compact per schedule',
+  ]},
+  {version:'4.1.1',date:'19 mei 2026',changes:[
+    'Fix: NK Speelschema en NK Finales worden nu ook bij handmatige import geladen',
+    'NK schedule bestanden worden altijd van de server opgehaald (onafhankelijk van data-bron)',
+  ]},
+  {version:'4.1',date:'19 mei 2026',changes:[
+    'Import: meerdere bestanden tegelijk uploaden (multi-select of drag & drop)',
+    'Bestanden worden automatisch samengevoegd (MO14 + JO14 + MO16 + JO16 in één keer)',
+    'Import-scherm toont per bestand status (✅/❌) en welke competities erin zitten',
+    'Totaal-overzicht van geladen competities en poules voor je start',
+    'Plak-optie is nu aanvullend — voegt toe aan al geladen data',
+  ]},
+  {version:'4.0',date:'19 mei 2026',changes:[
+    'O16 support: Landelijke competitie met 4 poules + KF/HF/Finale simulatie',
+    'O16 Monte Carlo: Kwartfinales seeding (Beste #1 vs 4e #2, etc.), HF, Finale',
+    'O16 Overzicht: 4 poule-kaarten + NK structuur uitleg',
+    'Competitie-tabs: MO14, JO14, MO16, JO16 — alles in één app',
+    'Parser voor /competitions/national/ format (O16) + /poules/ format (O14)',
+    'Voorkeursclub configureerbaar (MY_TEAMS array)',
+  ]},
+  {version:'3.1',date:'19 mei 2026',changes:['NK speelschema dynamisch uit JSON bestanden']},
+  {version:'3.0',date:'19 mei 2026',changes:['Auto-load data van server','Import fallback']},
+  {version:'2.1',date:'19 mei 2026',changes:['Compacte header']},
+  {version:'2.0',date:'19 mei 2026',changes:['Multi-competitie MO14+JO14','Mijn team sectie']},
+  {version:'1.0',date:'19 mei 2026',changes:['Eerste dynamische versie']},
+];
+function ChangelogTab(){return(<div style={{maxWidth:700}}><div className="section-label" style={{marginTop:0}}>Versiegeschiedenis</div>
+  {CHANGELOG.map(e=>(<div key={e.version} className="card" style={{marginBottom:12}}><div className="card-header" style={{justifyContent:'space-between'}}><span>v{e.version}</span><span style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#888',fontWeight:400}}>{e.date}</span></div>
+    <div style={{padding:'10px 14px'}}>{e.changes.map((c,i)=>(<div key={i} style={{fontSize:12.5,color:'#444',padding:'3px 0',display:'flex',gap:8}}><span style={{color:'#16a34a',flexShrink:0}}>+</span><span>{c}</span></div>))}</div></div>))}</div>)}
+
+// ════════════════════════════════════════════
+// APP
+// ════════════════════════════════════════════
+const MY_TEAMS=['Victoria'];
+const DATA_URLS=['data/mo14.json','data/jo14.json','data/mo16.json','data/jo16.json'];
+const COMP_LABELS={MO14:'Meisjes O14',JO14:'Jongens O14',MO16:'Meisjes O16',JO16:'Jongens O16'};
+const COMP_ORDER=['MO14','JO14','MO16','JO16'];
+const IS_O16=t=>t==='MO16'||t==='JO16';
+
+function App(){
+  const[comps,setComps]=useState(null);
+  const[activeComp,setActiveComp]=useState(null);const[mainTab,setMainTab]=useState('overzicht');
+  const[loading,setLoading]=useState(true);const[dataSource,setDataSource]=useState(null);
+
+  useEffect(()=>{let c=false;(async()=>{
+    const merged={};
+    for(const url of DATA_URLS){try{const r=await fetch(url);if(!r.ok)continue;const raw=await r.text();
+      let parsed=parseO16(raw);if(Object.keys(parsed).length===0)parsed=parseO14(raw);
+      for(const[t,d]of Object.entries(parsed)){if(!merged[t])merged[t]={};Object.assign(merged[t],d)}}catch(e){}}
+    if(c)return;
+    if(Object.keys(merged).length>0){setComps(merged);
+      const first=COMP_ORDER.find(k=>merged[k]);setActiveComp(first||Object.keys(merged)[0]);setDataSource('server')}
+    setLoading(false)})();return()=>{c=true}},[]);
+
+  const handleImport=function(c){
+    setComps(c);
+    var first=COMP_ORDER.find(function(k){return c[k]});
+    setActiveComp(first||Object.keys(c)[0]);
+    setDataSource('manual');
+  };
+  const handleReset=()=>{setComps(null);setMainTab('overzicht');setDataSource(null);setLoading(false)};
+  if(loading)return(<div className="import-screen"><h2>🏑 NK Simulatie</h2><p>Data laden...</p></div>);
+  if(!comps)return<ImportScreen onImport={handleImport}/>;
+
+  const types=COMP_ORDER.filter(k=>comps[k]);
+  const data=comps[activeComp]||{};
+  const label=COMP_LABELS[activeComp]||activeComp;
+  const myTeam=MY_TEAMS.find(t=>findMyTeam(comps,t));
+  const o16=IS_O16(activeComp);
+  const pouleOrder=o16?POULE_ORDER_16:POULE_ORDER_14;
+
+  const myInfo=(()=>{if(!myTeam||!comps[activeComp])return null;const d=comps[activeComp];
+    for(const[pid,p]of Object.entries(d)){const idx=p.teams.indexOf(myTeam);
+      if(idx>=0){const rank=idx+1,mpr=Math.floor(p.teams.length/2),rem=mpr>0?Math.round(p.remaining.length/mpr):0;
+        let nk='';if(!o16){const sl=NK14_SLOTS[pid];if(rank===1&&sl)nk=sl[0]||'';else if(rank===2&&sl)nk=sl[1]||'';}
+        return{pouleId:pid,rank,pts:p.pts[idx],ds:p.ds[idx],nk,rem}}}return null})();
+
+  return(<>
+    <div className="top-bar">
+      <div className="top-title">NK {label}</div>
+      <div className="top-comp-tabs">{types.map(t=>(<button key={t} className={`top-comp-btn ${activeComp===t?'active':''}`}
+        onClick={()=>{setActiveComp(t);setMainTab('overzicht')}}>{COMP_LABELS[t]||t}</button>))}</div>
+      <div className="top-divider"></div>
+      {myTeam&&myInfo&&<div className="top-team"><div className="top-team-icon">🏑</div><div>
+        <div className="top-team-name">{myTeam}</div>
+        <div className="top-team-meta">Poule {myInfo.pouleId} · #{myInfo.rank} · {myInfo.pts}pt · DS {myInfo.ds>=0?'+':''}{myInfo.ds}{myInfo.nk&&` · → NK ${myInfo.nk}`}{myInfo.rem>0?` · nog ${myInfo.rem}r`:' · ✓'}</div>
+      </div></div>}
+      <div className="top-end"><span className="top-version">v{VERSION}{dataSource==='server'?' · auto':''}</span><button className="reload-btn" onClick={handleReset}>↻</button></div>
+    </div>
+    <div className="main-tabs">
+      {[['overzicht','📋 Overzicht'],['schema','📅 Speelschema'],['sim','🎲 Monte Carlo'],['changelog','📝 Changelog']].map(([id,lbl])=>(
+        <button key={id} className={`main-tab ${mainTab===id?'active':''}`} onClick={()=>setMainTab(id)}>{lbl}</button>))}
+    </div>
+    {mainTab==='overzicht'&&(o16?<O16OverzichtTab data={data} myTeam={myTeam}/>:<O14OverzichtTab data={data} myTeam={myTeam} nkSchedule={NK_SCHEDULES[activeComp]}/>)}
+    {mainTab==='schema'&&<SchemaTab data={data} myTeam={myTeam} pouleOrder={pouleOrder}/>}
+    {mainTab==='sim'&&(o16?<O16SimTab data={data} myTeam={myTeam} key={activeComp}/>:<O14SimTab data={data} myTeam={myTeam} key={activeComp}/>)}
+    {mainTab==='changelog'&&<ChangelogTab/>}
+    <footer>NK {label} · v{VERSION} · data {dataSource==='server'?'van server':'handmatig'}</footer>
+  </>);
+}
+
+ReactDOM.render(<App/>,document.getElementById('root'));
+</script>
+</body>
+</html>
