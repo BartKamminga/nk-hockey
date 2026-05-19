@@ -675,8 +675,11 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.9.5';
+const VERSION='4.10';
 const CHANGELOG=[
+  {version:'4.10',date:'19 mei 2026',changes:[
+    '🏑 Victoria vooraan in de header, competitie-knoppen erna',
+  ]},
   {version:'4.9.5',date:'19 mei 2026',changes:[
     'Speelschema: datum achter elke ronde-header (bijv. "Ronde 9 · 30 mei")',
     'Geldt voor zowel gespeelde als resterende wedstrijden',
@@ -872,13 +875,13 @@ function App(){
 
   return(<>
     <div className="top-bar">
-      <div className="top-comp-tabs">{visibleTypes.map(t=>(<button key={t} className={`top-comp-btn ${effectiveComp===t?'active':''}`}
-        onClick={()=>{setActiveComp(t);setMainTab('overzicht')}}>{COMP_LABELS[t]||t}</button>))}</div>
-      <div className="top-divider"></div>
       <div className="top-team">
         <div className="top-team-icon" onClick={function(){if(focusClub)setFocusMode(!focusMode)}} style={{cursor:'pointer',border:focusMode?'2px solid #3b82f6':'2px solid transparent',borderRadius:'50%'}} title={focusMode?'Toon alles':'Toon alleen '+focusClub}>🏑</div>
         <div className="top-team-name" onClick={function(){setShowClubPicker(true);setClubSearch('')}} style={{cursor:'pointer'}} title="Kies focus club">{focusClub||'Kies club'}{focusMode&&<span style={{fontSize:10,color:'#3b82f6',marginLeft:4}}>focus</span>}</div>
       </div>
+      <div className="top-divider"></div>
+      <div className="top-comp-tabs">{visibleTypes.map(t=>(<button key={t} className={`top-comp-btn ${effectiveComp===t?'active':''}`}
+        onClick={()=>{setActiveComp(t);setMainTab('overzicht')}}>{COMP_LABELS[t]||t}</button>))}</div>
       <div className="top-end">
         <button className="reload-btn" onClick={handleReload} title="Herlaad data van server">↻</button>
         <button className="reload-btn" onClick={function(){setShowVersion(!showVersion)} } title="Versiegeschiedenis">v{VERSION}</button>
