@@ -105,6 +105,12 @@
   .demo-btn{background:none;border:1px solid #ccc;padding:6px 14px;border-radius:6px;font-size:12px;color:#888;cursor:pointer;margin-top:8px}
   .demo-btn:hover{border-color:#999;color:#555}
   footer{margin-top:28px;font-size:11px;color:#aaa;text-align:right;font-family:'DM Mono',monospace;border-top:1px solid #ddd;padding-top:10px}
+  .version-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid #e0ddd8;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.15);z-index:100;width:90%;max-width:600px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column}
+  .version-popup-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #e0ddd8;font-size:14px;font-weight:600}
+  .version-close{background:none;border:none;font-size:18px;color:#888;cursor:pointer;padding:4px 8px}
+  .version-close:hover{color:#333}
+  .version-popup-body{overflow-y:auto;padding:16px}
+  .version-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3);z-index:99}
   @media(max-width:1100px){.grid-5{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:768px){body{padding:16px}.grid-5,.grid-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.main-tab{padding:8px 16px;font-size:13px}.sim-controls{flex-direction:column;align-items:flex-start;gap:8px}.sim-controls .divider-v{display:none}.run-btn{margin-left:0;width:100%}.import-screen{margin:40px auto}}
   @media(max-width:500px){body{padding:10px}.grid-5,.grid-4{grid-template-columns:1fr}.main-tab{padding:8px 12px;font-size:12px}.card td{padding:4px 8px;font-size:11.5px}}
@@ -633,8 +639,14 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.5';
+const VERSION='4.6';
 const CHANGELOG=[
+  {version:'4.6',date:'19 mei 2026',changes:[
+    'Header vereenvoudigd: alleen competitie-knoppen + 🏑 Victoria',
+    'Competitie-titels en team-meta verwijderd uit header',
+    'Versiegeschiedenis als popup (klik op versienummer) i.p.v. aparte tab',
+    'Popup sluit bij klik buiten het venster',
+  ]},
   {version:'4.5',date:'19 mei 2026',changes:[
     'Competitie-knoppen korter: MO14, JO14, MO16, JO16',
     'Tab "Monte Carlo" hernoemd naar "Simulaties"',
@@ -746,26 +758,30 @@ function App(){
         let nk='';if(!o16){const sl=NK14_SLOTS[pid];if(rank===1&&sl)nk=sl[0]||'';else if(rank===2&&sl)nk=sl[1]||'';}
         return{pouleId:pid,rank,pts:p.pts[idx],ds:p.ds[idx],nk,rem}}}return null})();
 
+  const[showVersion,setShowVersion]=useState(false);
+
   return(<>
     <div className="top-bar">
-      <div className="top-title">NK {label}</div>
       <div className="top-comp-tabs">{types.map(t=>(<button key={t} className={`top-comp-btn ${activeComp===t?'active':''}`}
         onClick={()=>{setActiveComp(t);setMainTab('overzicht')}}>{COMP_LABELS[t]||t}</button>))}</div>
       <div className="top-divider"></div>
-      {myTeam&&myInfo&&<div className="top-team"><div className="top-team-icon">🏑</div><div>
-        <div className="top-team-name">{myTeam}</div>
-        <div className="top-team-meta">Poule {myInfo.pouleId} · #{myInfo.rank} · {myInfo.pts}pt · DS {myInfo.ds>=0?'+':''}{myInfo.ds}{myInfo.nk&&` · → NK ${myInfo.nk}`}{myInfo.rem>0?` · nog ${myInfo.rem}r`:' · ✓'}</div>
-      </div></div>}
-      <div className="top-end"><span className="top-version">v{VERSION}{dataSource==='server'?' · auto':''}</span><button className="reload-btn" onClick={handleReload} title="Herlaad data van server">↻</button></div>
+      {myTeam&&<div className="top-team"><div className="top-team-icon">🏑</div><div className="top-team-name">{myTeam}</div></div>}
+      <div className="top-end">
+        <button className="reload-btn" onClick={handleReload} title="Herlaad data van server">↻</button>
+        <button className="reload-btn" onClick={function(){setShowVersion(!showVersion)} } title="Versiegeschiedenis">v{VERSION}</button>
+      </div>
     </div>
+    {showVersion&&<><div className="version-overlay" onClick={function(){setShowVersion(false)}}></div><div className="version-popup">
+      <div className="version-popup-header"><span>Versiegeschiedenis</span><button className="version-close" onClick={function(){setShowVersion(false)}}>✕</button></div>
+      <div className="version-popup-body"><ChangelogTab/></div>
+    </div></>}
     <div className="main-tabs">
-      {[['overzicht','📋 Overzicht'],['schema','📅 Speelschema'],['sim','🎲 Simulaties'],['changelog','📝 Versiegeschiedenis']].map(([id,lbl])=>(
+      {[['overzicht','📋 Overzicht'],['schema','📅 Speelschema'],['sim','🎲 Simulaties']].map(([id,lbl])=>(
         <button key={id} className={`main-tab ${mainTab===id?'active':''}`} onClick={()=>setMainTab(id)}>{lbl}</button>))}
     </div>
     {mainTab==='overzicht'&&(o16?<O16OverzichtTab data={data} myTeam={myTeam}/>:<O14OverzichtTab data={data} myTeam={myTeam} nkSchedule={NK_SCHEDULES[activeComp]}/>)}
     {mainTab==='schema'&&<SchemaTab data={data} myTeam={myTeam} pouleOrder={pouleOrder}/>}
     {mainTab==='sim'&&(o16?<O16SimTab data={data} myTeam={myTeam} key={activeComp}/>:<O14SimTab data={data} myTeam={myTeam} key={activeComp}/>)}
-    {mainTab==='changelog'&&<ChangelogTab/>}
     <footer>NK {label} · v{VERSION} · data {dataSource==='server'?'van server':'handmatig'}</footer>
   </>);
 }
