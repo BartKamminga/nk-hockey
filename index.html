@@ -711,6 +711,7 @@ function App(){
   const[comps,setComps]=useState(null);
   const[activeComp,setActiveComp]=useState(null);const[mainTab,setMainTab]=useState('overzicht');
   const[loading,setLoading]=useState(true);const[dataSource,setDataSource]=useState(null);
+  const[showVersion,setShowVersion]=useState(false);
 
   function fetchFromServer(){
     setLoading(true);
@@ -757,8 +758,6 @@ function App(){
       if(idx>=0){const rank=idx+1,mpr=Math.floor(p.teams.length/2),rem=mpr>0?Math.round(p.remaining.length/mpr):0;
         let nk='';if(!o16){const sl=NK14_SLOTS[pid];if(rank===1&&sl)nk=sl[0]||'';else if(rank===2&&sl)nk=sl[1]||'';}
         return{pouleId:pid,rank,pts:p.pts[idx],ds:p.ds[idx],nk,rem}}}return null})();
-
-  const[showVersion,setShowVersion]=useState(false);
 
   return(<>
     <div className="top-bar">
