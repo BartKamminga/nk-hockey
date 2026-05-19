@@ -13,18 +13,21 @@
   body{font-family:'DM Sans',sans-serif;background:#f0ede8;padding:32px;color:#1a1a1a}
   #root{max-width:1400px;margin:0 auto}
 
-  .top-bar{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #e0ddd8;border-radius:10px;padding:10px 16px;margin-bottom:20px;flex-wrap:wrap}
+  .top-bar{display:flex;align-items:center;gap:0;background:#fff;border:1px solid #e0ddd8;border-radius:10px;padding:8px 12px;margin-bottom:20px;min-height:48px}
   .top-title{font-size:18px;font-weight:600;letter-spacing:-.3px;white-space:nowrap}
-  .top-comp-tabs{display:flex;gap:4px;flex-wrap:wrap}
-  .top-comp-btn{padding:4px 12px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid #e0ddd8;background:#fff;border-radius:99px;font-family:'DM Sans',sans-serif;color:#888;transition:all .12s}
+  .top-section-left{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .top-section-mid{display:flex;align-items:center;gap:4px;flex:1;justify-content:center}
+  .top-section-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+  .top-comp-tabs{display:flex;gap:4px}
+  .top-comp-btn{padding:4px 12px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid #e0ddd8;background:#fff;border-radius:99px;font-family:'DM Sans',sans-serif;color:#888;transition:all .12s;white-space:nowrap}
   .top-comp-btn.active{border-color:#333;color:#1a1a1a;background:#f7f5f2}
   .top-comp-btn:hover{border-color:#888}
-  .top-divider{width:1px;height:24px;background:#e0ddd8}
-  .top-team{display:flex;align-items:center;gap:8px}
+  .top-divider{width:1px;height:24px;background:#e0ddd8;margin:0 8px;flex-shrink:0}
+  .top-team{display:flex;align-items:center;gap:8px;flex-shrink:0}
   .top-team-icon{width:28px;height:28px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-  .top-team-name{font-size:13px;font-weight:600}
+  .top-team-name{font-size:13px;font-weight:600;white-space:nowrap}
   .top-team-meta{font-size:11px;color:#888;font-family:'DM Mono',monospace}
-  .top-end{margin-left:auto;display:flex;gap:6px;align-items:center;flex-shrink:0}
+  .top-end{display:flex;gap:6px;align-items:center;flex-shrink:0}
   .top-version{font-size:10px;color:#bbb;font-family:'DM Mono',monospace}
   .reload-btn{background:none;border:1px solid #ddd;padding:4px 10px;border-radius:5px;font-size:11px;color:#888;cursor:pointer;font-family:'DM Mono',monospace}
   .reload-btn:hover{border-color:#999;color:#555}
@@ -675,8 +678,13 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.10';
+const VERSION='4.11';
 const CHANGELOG=[
+  {version:'4.11',date:'19 mei 2026',changes:[
+    'Header layout stabiel: 3 vaste secties (links: club, midden: comp-tabs, rechts: knoppen)',
+    'Competitie-knoppen gecentreerd, verspringen niet meer bij focus mode toggle',
+    'Geen flex-wrap meer — alles blijft op 1 regel',
+  ]},
   {version:'4.10',date:'19 mei 2026',changes:[
     '🏑 Victoria vooraan in de header, competitie-knoppen erna',
   ]},
@@ -875,14 +883,18 @@ function App(){
 
   return(<>
     <div className="top-bar">
-      <div className="top-team">
-        <div className="top-team-icon" onClick={function(){if(focusClub)setFocusMode(!focusMode)}} style={{cursor:'pointer',border:focusMode?'2px solid #3b82f6':'2px solid transparent',borderRadius:'50%'}} title={focusMode?'Toon alles':'Toon alleen '+focusClub}>🏑</div>
-        <div className="top-team-name" onClick={function(){setShowClubPicker(true);setClubSearch('')}} style={{cursor:'pointer'}} title="Kies focus club">{focusClub||'Kies club'}{focusMode&&<span style={{fontSize:10,color:'#3b82f6',marginLeft:4}}>focus</span>}</div>
+      <div className="top-section-left">
+        <div className="top-team">
+          <div className="top-team-icon" onClick={function(){if(focusClub)setFocusMode(!focusMode)}} style={{cursor:'pointer',border:focusMode?'2px solid #3b82f6':'2px solid transparent',borderRadius:'50%'}} title={focusMode?'Toon alles':'Toon alleen '+focusClub}>🏑</div>
+          <div className="top-team-name" onClick={function(){setShowClubPicker(true);setClubSearch('')}} style={{cursor:'pointer'}} title="Kies focus club">{focusClub||'Kies club'}{focusMode&&<span style={{fontSize:10,color:'#3b82f6',marginLeft:4}}>focus</span>}</div>
+        </div>
+        <div className="top-divider"></div>
       </div>
-      <div className="top-divider"></div>
-      <div className="top-comp-tabs">{visibleTypes.map(t=>(<button key={t} className={`top-comp-btn ${effectiveComp===t?'active':''}`}
-        onClick={()=>{setActiveComp(t);setMainTab('overzicht')}}>{COMP_LABELS[t]||t}</button>))}</div>
-      <div className="top-end">
+      <div className="top-section-mid">
+        <div className="top-comp-tabs">{visibleTypes.map(t=>(<button key={t} className={`top-comp-btn ${effectiveComp===t?'active':''}`}
+          onClick={()=>{setActiveComp(t);setMainTab('overzicht')}}>{COMP_LABELS[t]||t}</button>))}</div>
+      </div>
+      <div className="top-section-right">
         <button className="reload-btn" onClick={handleReload} title="Herlaad data van server">↻</button>
         <button className="reload-btn" onClick={function(){setShowVersion(!showVersion)} } title="Versiegeschiedenis">v{VERSION}</button>
       </div>
