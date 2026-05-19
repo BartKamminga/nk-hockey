@@ -409,41 +409,32 @@ function O16OverzichtTab({data,filteredData,myTeam}){
     ];
   }
 
-  // In focus mode: determine which ranking table and KF match the club is in
-  var myIsNr1=false,myIsNr2=false;
-  if(filteredData&&myTeam){
-    for(var ni=0;ni<nr1s.length;ni++){if(nr1s[ni].team===myTeam)myIsNr1=true}
-    for(var ni=0;ni<nr2s.length;ni++){if(nr2s[ni].team===myTeam)myIsNr2=true}
-  }
-  var showNr1=!filteredData||myIsNr1;
-  var showNr2=!filteredData||myIsNr2;
-  var filteredKF=filteredData&&myTeam?kfMatches.filter(function(kf){return kf.home.team===myTeam||kf.away.team===myTeam}):kfMatches;
-
+  // O16: always show full NK KF indeling (no filtering)
   return(<div>
     <div className="section-label" style={{marginTop:0}}>Landelijk — huidige stand</div>
     <div className={displayPk.length<=2?'grid-2':'grid-4'}>{displayPk.map(id=><PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam}/>)}</div>
 
     {nr1s.length>=4&&<>
     <div className="section-label">NK Kwartfinales — verwachte indeling</div>
-    <div className={showNr1&&showNr2?'grid-2':''}>
-      {showNr1&&<div className="card">
+    <div className="grid-2">
+      <div className="card">
         <div className="card-header">Ranking #1 per poule</div>
         <table><tbody>{nr1s.map(function(e,i){var label=i===0?'Beste':i===1?'2e':i===2?'3e':'4e';
           return(<tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{label}</td>
             <td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> Poule {e.poule} · {e.pts}pt · DS {e.ds>=0?'+':''}{e.ds}</span></td></tr>)})}</tbody></table>
-      </div>}
-      {showNr2&&<div className="card">
+      </div>
+      <div className="card">
         <div className="card-header">Ranking #2 per poule</div>
         <table><tbody>{nr2s.map(function(e,i){var label=i===0?'Beste':i===1?'2e':i===2?'3e':'4e';
           return(<tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{label}</td>
             <td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> Poule {e.poule} · {e.pts}pt · DS {e.ds>=0?'+':''}{e.ds}</span></td></tr>)})}</tbody></table>
-      </div>}
+      </div>
     </div>
 
     <div className="section-label">NK Kwartfinales — verwachte wedstrijden</div>
     <div className="card" style={{maxWidth:600}}>
       <div className="card-header">Kwartfinales</div>
-      {filteredKF.map(function(kf,i){var hMy=kf.home.team===myTeam,aMy=kf.away.team===myTeam,isMy=hMy||aMy;
+      {kfMatches.map(function(kf,i){var hMy=kf.home.team===myTeam,aMy=kf.away.team===myTeam,isMy=hMy||aMy;
         return(<div key={i} className="match-row" style={isMy?{background:'#eff6ff'}:{}}>
           <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#888',minWidth:36}}>{kf.label}</div>
           <div className="match-teams">
@@ -670,8 +661,11 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.9.1';
+const VERSION='4.9.2';
 const CHANGELOG=[
+  {version:'4.9.2',date:'19 mei 2026',changes:[
+    'O16: NK Kwartfinales indeling en wedstrijden altijd volledig zichtbaar (ook in focus mode)',
+  ]},
   {version:'4.9.1',date:'19 mei 2026',changes:[
     'Focus mode: NK Poulefase toont alleen de poule waar focus club in zit (A of B)',
     'Focus mode: NK Speelschema toont alleen de relevante poule',
