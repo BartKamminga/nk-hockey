@@ -111,6 +111,13 @@
   .version-close:hover{color:#333}
   .version-popup-body{overflow-y:auto;padding:16px}
   .version-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3);z-index:99}
+  .club-search{width:100%;padding:8px 12px;border:1px solid #e0ddd8;border-radius:6px;font-size:13px;margin-bottom:8px;font-family:'DM Sans',sans-serif}
+  .club-search:focus{border-color:#3b82f6;outline:none}
+  .club-list{max-height:300px;overflow-y:auto}
+  .club-item{padding:8px 12px;cursor:pointer;font-size:13px;border-radius:6px;display:flex;align-items:center}
+  .club-item:hover{background:#f0ede8}
+  .club-active{background:#eff6ff;font-weight:600}
+  .club-active:hover{background:#dbeafe}
   @media(max-width:1100px){.grid-5{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:768px){body{padding:16px}.grid-5,.grid-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.main-tab{padding:8px 16px;font-size:13px}.sim-controls{flex-direction:column;align-items:flex-start;gap:8px}.sim-controls .divider-v{display:none}.run-btn{margin-left:0;width:100%}.import-screen{margin:40px auto}}
   @media(max-width:500px){body{padding:10px}.grid-5,.grid-4{grid-template-columns:1fr}.main-tab{padding:8px 12px;font-size:12px}.card td{padding:4px 8px;font-size:11.5px}}
@@ -639,8 +646,14 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.6';
+const VERSION='4.7';
 const CHANGELOG=[
+  {version:'4.7',date:'19 mei 2026',changes:[
+    'Focus club kiesbaar: klik op 🏑 → popup met alle clubs uit geladen data',
+    'Zoekbalk in club picker voor snel filteren',
+    'Keuze wordt onthouden via localStorage (persistent over sessies)',
+    'Default: Victoria',
+  ]},
   {version:'4.6',date:'19 mei 2026',changes:[
     'Header vereenvoudigd: alleen competitie-knoppen + 🏑 Victoria',
     'Competitie-titels en team-meta verwijderd uit header',
@@ -700,7 +713,21 @@ function ChangelogTab(){return(<div style={{maxWidth:700}}><div className="secti
 // ════════════════════════════════════════════
 // APP
 // ════════════════════════════════════════════
-const MY_TEAMS=['Victoria'];
+const DEFAULT_CLUB='Victoria';
+const STORAGE_KEY_CLUB='nk_focus_club';
+function getSavedClub(){try{return localStorage.getItem(STORAGE_KEY_CLUB)||DEFAULT_CLUB}catch(e){return DEFAULT_CLUB}}
+function saveClub(name){try{localStorage.setItem(STORAGE_KEY_CLUB,name)}catch(e){}}
+
+function getAllClubs(comps){
+  var clubs={};
+  for(var t in comps){
+    for(var p in comps[t]){
+      var teams=comps[t][p].teams||[];
+      for(var i=0;i<teams.length;i++){clubs[teams[i]]=true}
+    }
+  }
+  return Object.keys(clubs).sort();
+}
 const DATA_URLS=['data/mo14.json','data/jo14.json','data/mo16.json','data/jo16.json'];
 const COMP_LABELS={MO14:'MO14',JO14:'JO14',MO16:'MO16',JO16:'JO16'};
 const COMP_LABELS_LONG={MO14:'Meisjes O14',JO14:'Jongens O14',MO16:'Meisjes O16',JO16:'Jongens O16'};
@@ -712,6 +739,9 @@ function App(){
   const[activeComp,setActiveComp]=useState(null);const[mainTab,setMainTab]=useState('overzicht');
   const[loading,setLoading]=useState(true);const[dataSource,setDataSource]=useState(null);
   const[showVersion,setShowVersion]=useState(false);
+  const[focusClub,setFocusClub]=useState(getSavedClub);
+  const[showClubPicker,setShowClubPicker]=useState(false);
+  const[clubSearch,setClubSearch]=useState('');
 
   function fetchFromServer(){
     setLoading(true);
@@ -749,7 +779,7 @@ function App(){
   const types=COMP_ORDER.filter(k=>comps[k]);
   const data=comps[activeComp]||{};
   const label=COMP_LABELS_LONG[activeComp]||activeComp;
-  const myTeam=MY_TEAMS.find(t=>findMyTeam(comps,t));
+  const myTeam=focusClub&&findMyTeam(comps,focusClub)?focusClub:null;
   const o16=IS_O16(activeComp);
   const pouleOrder=o16?POULE_ORDER_16:POULE_ORDER_14;
 
@@ -764,7 +794,10 @@ function App(){
       <div className="top-comp-tabs">{types.map(t=>(<button key={t} className={`top-comp-btn ${activeComp===t?'active':''}`}
         onClick={()=>{setActiveComp(t);setMainTab('overzicht')}}>{COMP_LABELS[t]||t}</button>))}</div>
       <div className="top-divider"></div>
-      {myTeam&&<div className="top-team"><div className="top-team-icon">🏑</div><div className="top-team-name">{myTeam}</div></div>}
+      <div className="top-team" onClick={function(){setShowClubPicker(true);setClubSearch('')}} style={{cursor:'pointer'}} title="Kies focus club">
+        <div className="top-team-icon">🏑</div>
+        <div className="top-team-name">{focusClub||'Kies club'}</div>
+      </div>
       <div className="top-end">
         <button className="reload-btn" onClick={handleReload} title="Herlaad data van server">↻</button>
         <button className="reload-btn" onClick={function(){setShowVersion(!showVersion)} } title="Versiegeschiedenis">v{VERSION}</button>
@@ -773,6 +806,20 @@ function App(){
     {showVersion&&<><div className="version-overlay" onClick={function(){setShowVersion(false)}}></div><div className="version-popup">
       <div className="version-popup-header"><span>Versiegeschiedenis</span><button className="version-close" onClick={function(){setShowVersion(false)}}>✕</button></div>
       <div className="version-popup-body"><ChangelogTab/></div>
+    </div></>}
+    {showClubPicker&&<><div className="version-overlay" onClick={function(){setShowClubPicker(false)}}></div><div className="version-popup" style={{maxWidth:400}}>
+      <div className="version-popup-header"><span>🏑 Kies focus club</span><button className="version-close" onClick={function(){setShowClubPicker(false)}}>✕</button></div>
+      <div className="version-popup-body">
+        <input className="club-search" placeholder="Zoek club..." value={clubSearch} onChange={function(e){setClubSearch(e.target.value)}} autoFocus/>
+        <div className="club-list">
+          {comps&&getAllClubs(comps).filter(function(c){return!clubSearch||c.toLowerCase().indexOf(clubSearch.toLowerCase())>=0}).map(function(club){
+            var active=club===focusClub;
+            return(<div key={club} className={'club-item'+(active?' club-active':'')} onClick={function(){setFocusClub(club);saveClub(club);setShowClubPicker(false);toast('🏑 '+club)}}>
+              {active&&<span style={{color:'#3b82f6',marginRight:6}}>✓</span>}{club}
+            </div>)
+          })}
+        </div>
+      </div>
     </div></>}
     <div className="main-tabs">
       {[['overzicht','📋 Overzicht'],['schema','📅 Speelschema'],['sim','🎲 Simulaties']].map(([id,lbl])=>(
