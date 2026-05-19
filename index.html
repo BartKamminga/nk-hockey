@@ -646,8 +646,16 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.7';
+const VERSION='4.8';
 const CHANGELOG=[
+  {version:'4.8',date:'19 mei 2026',changes:[
+    'Focus mode: klik op 🏑 → toont alleen de poule en competities van je focus club',
+    'Klik nogmaals op 🏑 → terug naar volledig overzicht',
+    'Blauwe rand om 🏑 icoon en "focus" label wanneer actief',
+    'Klik op clubnaam om een andere club te kiezen',
+    'Simulaties draaien altijd op alle data (niet gefilterd)',
+    'Competitie-tabs worden gefilterd in focus mode',
+  ]},
   {version:'4.7',date:'19 mei 2026',changes:[
     'Focus club kiesbaar: klik op 🏑 → popup met alle clubs uit geladen data',
     'Zoekbalk in club picker voor snel filteren',
@@ -742,6 +750,7 @@ function App(){
   const[focusClub,setFocusClub]=useState(getSavedClub);
   const[showClubPicker,setShowClubPicker]=useState(false);
   const[clubSearch,setClubSearch]=useState('');
+  const[focusMode,setFocusMode]=useState(false);
 
   function fetchFromServer(){
     setLoading(true);
@@ -777,13 +786,28 @@ function App(){
   if(!comps)return<ImportScreen onImport={handleImport}/>;
 
   const types=COMP_ORDER.filter(k=>comps[k]);
-  const data=comps[activeComp]||{};
-  const label=COMP_LABELS_LONG[activeComp]||activeComp;
+  // In focus mode: only show competitions where focusClub plays
+  const visibleTypes=focusMode&&focusClub?types.filter(function(t){
+    var d=comps[t];for(var p in d){if(d[p].teams&&d[p].teams.indexOf(focusClub)>=0)return true}return false;
+  }):types;
+  // Auto-switch to visible comp if current is filtered out
+  if(focusMode&&visibleTypes.length>0&&visibleTypes.indexOf(activeComp)<0){
+    // Can't call setActiveComp during render, use effect
+  }
+  var effectiveComp=focusMode&&visibleTypes.indexOf(activeComp)<0&&visibleTypes.length>0?visibleTypes[0]:activeComp;
+  const data=comps[effectiveComp]||{};
+  // In focus mode: filter data to only the poule with focusClub
+  var filteredData=data;
+  if(focusMode&&focusClub){
+    filteredData={};
+    for(var pk in data){if(data[pk].teams&&data[pk].teams.indexOf(focusClub)>=0)filteredData[pk]=data[pk]}
+  }
+  const label=COMP_LABELS_LONG[effectiveComp]||effectiveComp;
   const myTeam=focusClub&&findMyTeam(comps,focusClub)?focusClub:null;
-  const o16=IS_O16(activeComp);
+  const o16=IS_O16(effectiveComp);
   const pouleOrder=o16?POULE_ORDER_16:POULE_ORDER_14;
 
-  const myInfo=(()=>{if(!myTeam||!comps[activeComp])return null;const d=comps[activeComp];
+  const myInfo=(()=>{if(!myTeam||!comps[effectiveComp])return null;const d=comps[effectiveComp];
     for(const[pid,p]of Object.entries(d)){const idx=p.teams.indexOf(myTeam);
       if(idx>=0){const rank=idx+1,mpr=Math.floor(p.teams.length/2),rem=mpr>0?Math.round(p.remaining.length/mpr):0;
         let nk='';if(!o16){const sl=NK14_SLOTS[pid];if(rank===1&&sl)nk=sl[0]||'';else if(rank===2&&sl)nk=sl[1]||'';}
@@ -791,12 +815,12 @@ function App(){
 
   return(<>
     <div className="top-bar">
-      <div className="top-comp-tabs">{types.map(t=>(<button key={t} className={`top-comp-btn ${activeComp===t?'active':''}`}
+      <div className="top-comp-tabs">{visibleTypes.map(t=>(<button key={t} className={`top-comp-btn ${effectiveComp===t?'active':''}`}
         onClick={()=>{setActiveComp(t);setMainTab('overzicht')}}>{COMP_LABELS[t]||t}</button>))}</div>
       <div className="top-divider"></div>
-      <div className="top-team" onClick={function(){setShowClubPicker(true);setClubSearch('')}} style={{cursor:'pointer'}} title="Kies focus club">
-        <div className="top-team-icon">🏑</div>
-        <div className="top-team-name">{focusClub||'Kies club'}</div>
+      <div className="top-team">
+        <div className="top-team-icon" onClick={function(){if(focusClub)setFocusMode(!focusMode)}} style={{cursor:'pointer',border:focusMode?'2px solid #3b82f6':'2px solid transparent',borderRadius:'50%'}} title={focusMode?'Toon alles':'Toon alleen '+focusClub}>🏑</div>
+        <div className="top-team-name" onClick={function(){setShowClubPicker(true);setClubSearch('')}} style={{cursor:'pointer'}} title="Kies focus club">{focusClub||'Kies club'}{focusMode&&<span style={{fontSize:10,color:'#3b82f6',marginLeft:4}}>focus</span>}</div>
       </div>
       <div className="top-end">
         <button className="reload-btn" onClick={handleReload} title="Herlaad data van server">↻</button>
@@ -825,9 +849,9 @@ function App(){
       {[['overzicht','📋 Overzicht'],['schema','📅 Speelschema'],['sim','🎲 Simulaties']].map(([id,lbl])=>(
         <button key={id} className={`main-tab ${mainTab===id?'active':''}`} onClick={()=>setMainTab(id)}>{lbl}</button>))}
     </div>
-    {mainTab==='overzicht'&&(o16?<O16OverzichtTab data={data} myTeam={myTeam}/>:<O14OverzichtTab data={data} myTeam={myTeam} nkSchedule={NK_SCHEDULES[activeComp]}/>)}
-    {mainTab==='schema'&&<SchemaTab data={data} myTeam={myTeam} pouleOrder={pouleOrder}/>}
-    {mainTab==='sim'&&(o16?<O16SimTab data={data} myTeam={myTeam} key={activeComp}/>:<O14SimTab data={data} myTeam={myTeam} key={activeComp}/>)}
+    {mainTab==='overzicht'&&(o16?<O16OverzichtTab data={focusMode?filteredData:data} myTeam={myTeam}/>:<O14OverzichtTab data={focusMode?filteredData:data} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]}/>)}
+    {mainTab==='schema'&&<SchemaTab data={focusMode?filteredData:data} myTeam={myTeam} pouleOrder={pouleOrder}/>}
+    {mainTab==='sim'&&(o16?<O16SimTab data={data} myTeam={myTeam} key={effectiveComp}/>:<O14SimTab data={data} myTeam={myTeam} key={effectiveComp}/>)}
     <footer>NK {label} · v{VERSION} · data {dataSource==='server'?'van server':'handmatig'}</footer>
   </>);
 }
