@@ -356,16 +356,28 @@ function O14OverzichtTab({data,filteredData,myTeam,nkSchedule}){
     {times.map((time,ri)=>{const ms=schedule.filter(m=>m.time===time);if(!ms.length)return null;
       return(<div key={ri}><div style={{padding:'5px 12px',fontSize:11,fontWeight:600,fontFamily:"'DM Mono',monospace",color:'#555',background:'#f0ede8',borderBottom:'1px solid #e0ddd8',borderTop:ri>0?'1px solid #e0ddd8':'none',letterSpacing:'.5px',display:'flex',justifyContent:'space-between'}}><span>Ronde {ri+1}</span><span style={{fontWeight:400,color:'#999'}}>{time}</span></div>
         {ms.map((m,i)=><MR key={i} m={m}/>)}</div>)})}</div>);
+  // Determine which NK poule the focus club is in (if filtering)
+  var myNKPoule=null;
+  if(filteredData&&myTeam){
+    for(var ai=0;ai<nkA.length;ai++){if(nkA[ai].team===myTeam)myNKPoule='A'}
+    for(var bi=0;bi<nkB.length;bi++){if(nkB[bi].team===myTeam)myNKPoule='B'}
+  }
+  var showA=!filteredData||myNKPoule==='A';
+  var showB=!filteredData||myNKPoule==='B';
+
   return(<div>
     <div className="legend"><span><span className="dot dot-a"></span> → NK Poulefase A</span><span><span className="dot dot-b"></span> → NK Poulefase B</span></div>
     <div className="section-label" style={{marginTop:0}}>Super — huidige stand</div>
     <div className={displayPk.length<=2?'grid-2':displayPk.length<=4?'grid-4':'grid-5'}>{displayPk.map(id=><PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam} slots={NK14_SLOTS[id]}/>)}</div>
     <div className="section-label">NK Poulefase — verwachte indeling</div>
-    <div className="grid-2">
-      <div className="card"><div className="card-header card-header-a">Poulefase A{pD&&` · ${pD}`}</div><table><tbody>{nkA.map((e,i)=><tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{i+1}</td><td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> {e.origin}</span></td></tr>)}</tbody></table></div>
-      <div className="card"><div className="card-header card-header-b">Poulefase B{pD&&` · ${pD}`}</div><table><tbody>{nkB.map((e,i)=><tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{i+1}</td><td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> {e.origin}</span></td></tr>)}</tbody></table></div>
+    <div className={showA&&showB?'grid-2':''}>
+      {showA&&<div className="card"><div className="card-header card-header-a">Poulefase A{pD&&` · ${pD}`}</div><table><tbody>{nkA.map((e,i)=><tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{i+1}</td><td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> {e.origin}</span></td></tr>)}</tbody></table></div>}
+      {showB&&<div className="card"><div className="card-header card-header-b">Poulefase B{pD&&` · ${pD}`}</div><table><tbody>{nkB.map((e,i)=><tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{i+1}</td><td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> {e.origin}</span></td></tr>)}</tbody></table></div>}
     </div>
-    {sA.length>0&&<><div className="section-label">NK Speelschema{pD&&` · ${pD}`}</div><div className="grid-2"><SC schedule={sA} times={tA} hc="card-header-a" lbl="Poule A"/><SC schedule={sB} times={tB} hc="card-header-b" lbl="Poule B"/></div></>}
+    {sA.length>0&&<><div className="section-label">NK Speelschema{pD&&` · ${pD}`}</div><div className={showA&&showB?'grid-2':''}>
+      {showA&&<SC schedule={sA} times={tA} hc="card-header-a" lbl="Poule A"/>}
+      {showB&&<SC schedule={sB} times={tB} hc="card-header-b" lbl="Poule B"/>}
+    </div></>}
     {fins.length>0&&<><div className="section-label">NK Finales{fD&&` · ${fD}`}</div><div className="card" style={{maxWidth:500}}><div className="card-header">Halve finales & Finale</div>
       {fins.map((f,i)=>(<div key={i} className="match-row" style={f.type==='Finale'?{borderTop:'1px solid #e0ddd8'}:{}}><div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#888',minWidth:38}}>{f.time}</div>
         <div className="match-teams"><div className="match-team right"><strong>{f.home}</strong></div><div className="match-vs">vs</div><div className="match-team"><strong>{f.away}</strong></div></div>
@@ -397,31 +409,41 @@ function O16OverzichtTab({data,filteredData,myTeam}){
     ];
   }
 
+  // In focus mode: determine which ranking table and KF match the club is in
+  var myIsNr1=false,myIsNr2=false;
+  if(filteredData&&myTeam){
+    for(var ni=0;ni<nr1s.length;ni++){if(nr1s[ni].team===myTeam)myIsNr1=true}
+    for(var ni=0;ni<nr2s.length;ni++){if(nr2s[ni].team===myTeam)myIsNr2=true}
+  }
+  var showNr1=!filteredData||myIsNr1;
+  var showNr2=!filteredData||myIsNr2;
+  var filteredKF=filteredData&&myTeam?kfMatches.filter(function(kf){return kf.home.team===myTeam||kf.away.team===myTeam}):kfMatches;
+
   return(<div>
     <div className="section-label" style={{marginTop:0}}>Landelijk — huidige stand</div>
     <div className={displayPk.length<=2?'grid-2':'grid-4'}>{displayPk.map(id=><PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam}/>)}</div>
 
     {nr1s.length>=4&&<>
     <div className="section-label">NK Kwartfinales — verwachte indeling</div>
-    <div className="grid-2">
-      <div className="card">
+    <div className={showNr1&&showNr2?'grid-2':''}>
+      {showNr1&&<div className="card">
         <div className="card-header">Ranking #1 per poule</div>
         <table><tbody>{nr1s.map(function(e,i){var label=i===0?'Beste':i===1?'2e':i===2?'3e':'4e';
           return(<tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{label}</td>
             <td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> Poule {e.poule} · {e.pts}pt · DS {e.ds>=0?'+':''}{e.ds}</span></td></tr>)})}</tbody></table>
-      </div>
-      <div className="card">
+      </div>}
+      {showNr2&&<div className="card">
         <div className="card-header">Ranking #2 per poule</div>
         <table><tbody>{nr2s.map(function(e,i){var label=i===0?'Beste':i===1?'2e':i===2?'3e':'4e';
           return(<tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{label}</td>
             <td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> Poule {e.poule} · {e.pts}pt · DS {e.ds>=0?'+':''}{e.ds}</span></td></tr>)})}</tbody></table>
-      </div>
+      </div>}
     </div>
 
     <div className="section-label">NK Kwartfinales — verwachte wedstrijden</div>
     <div className="card" style={{maxWidth:600}}>
       <div className="card-header">Kwartfinales</div>
-      {kfMatches.map(function(kf,i){var hMy=kf.home.team===myTeam,aMy=kf.away.team===myTeam,isMy=hMy||aMy;
+      {filteredKF.map(function(kf,i){var hMy=kf.home.team===myTeam,aMy=kf.away.team===myTeam,isMy=hMy||aMy;
         return(<div key={i} className="match-row" style={isMy?{background:'#eff6ff'}:{}}>
           <div style={{fontFamily:"'DM Mono',monospace",fontSize:11,color:'#888',minWidth:36}}>{kf.label}</div>
           <div className="match-teams">
@@ -648,8 +670,15 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.9';
+const VERSION='4.9.1';
 const CHANGELOG=[
+  {version:'4.9.1',date:'19 mei 2026',changes:[
+    'Focus mode: NK Poulefase toont alleen de poule waar focus club in zit (A of B)',
+    'Focus mode: NK Speelschema toont alleen de relevante poule',
+    'Focus mode O16: Ranking toont alleen #1 of #2 tabel (waar club in zit)',
+    'Focus mode O16: KF-wedstrijden gefilterd op alleen de match van focus club',
+    'NK Finales altijd zichtbaar (focus club kan daar terechtkomen)',
+  ]},
   {version:'4.9',date:'19 mei 2026',changes:[
     'Focus mode toont NK Poulefase indeling en NK Speelschema met alle data',
     'Alleen poule-kaarten (stand) worden gefilterd op focus club',
