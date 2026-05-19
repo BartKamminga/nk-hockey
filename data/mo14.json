@@ -7,7 +7,7 @@
     "competition": "Meisjes O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179035/teams/6679",
-    "timestamp": 1779182519006,
+    "timestamp": 1779198764734,
     "data": {
       "data": {
         "team": {
@@ -1990,7 +1990,7 @@
     "competition": "Meisjes O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179036/teams/6",
-    "timestamp": 1779182708931,
+    "timestamp": 1779198784842,
     "data": {
       "data": {
         "team": {
@@ -3973,7 +3973,7 @@
     "competition": "Meisjes O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179037/teams/5",
-    "timestamp": 1779182692468,
+    "timestamp": 1779198771369,
     "data": {
       "data": {
         "team": {
@@ -5971,7 +5971,7 @@
     "competition": "Meisjes O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179038/teams/159",
-    "timestamp": 1779182694843,
+    "timestamp": 1779198766940,
     "data": {
       "data": {
         "team": {
@@ -7939,7 +7939,7 @@
     "competition": "Meisjes O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179039/teams/7464",
-    "timestamp": 1779182516417,
+    "timestamp": 1779210769387,
     "data": {
       "data": {
         "team": {
@@ -8016,7 +8016,7 @@
               "goals_for": 33,
               "goals_against": 9,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule E",
               "poule_id": 179039,
               "team": {
                 "id": 7464,
@@ -8041,7 +8041,7 @@
               "goals_for": 19,
               "goals_against": 11,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule E",
               "poule_id": 179039,
               "team": {
                 "id": 1103,
@@ -8066,7 +8066,7 @@
               "goals_for": 21,
               "goals_against": 18,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule E",
               "poule_id": 179039,
               "team": {
                 "id": 8790,
@@ -8091,7 +8091,7 @@
               "goals_for": 12,
               "goals_against": 12,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule E",
               "poule_id": 179039,
               "team": {
                 "id": 5010,
@@ -8116,7 +8116,7 @@
               "goals_for": 12,
               "goals_against": 24,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule E",
               "poule_id": 179039,
               "team": {
                 "id": 8352,
@@ -8141,7 +8141,7 @@
               "goals_for": 8,
               "goals_against": 31,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule E",
               "poule_id": 179039,
               "team": {
                 "id": 145,
