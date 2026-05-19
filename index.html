@@ -338,8 +338,10 @@ function RemainingCard({id,poule,myTeam}){
 // ════════════════════════════════════════════
 // O14 TABS
 // ════════════════════════════════════════════
-function O14OverzichtTab({data,myTeam,nkSchedule}){
+function O14OverzichtTab({data,filteredData,myTeam,nkSchedule}){
+  // Use full data for NK calculations, filteredData (if set) for poule cards display
   const pk=POULE_ORDER_14.filter(k=>data[k]);
+  const displayPk=filteredData?POULE_ORDER_14.filter(k=>filteredData[k]):pk;
   const nkA=[],nkB=[];
   for(const id of pk){const sl=NK14_SLOTS[id],t1=data[id].teams[0],t2=data[id].teams[1];
     (sl[0]==='A'?nkA:nkB).push({team:t1,origin:`${id} nr 1`});(sl[1]==='A'?nkA:nkB).push({team:t2,origin:`${id} nr 2`});
@@ -357,7 +359,7 @@ function O14OverzichtTab({data,myTeam,nkSchedule}){
   return(<div>
     <div className="legend"><span><span className="dot dot-a"></span> → NK Poulefase A</span><span><span className="dot dot-b"></span> → NK Poulefase B</span></div>
     <div className="section-label" style={{marginTop:0}}>Super — huidige stand</div>
-    <div className="grid-5">{pk.map(id=><PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam} slots={NK14_SLOTS[id]}/>)}</div>
+    <div className={displayPk.length<=2?'grid-2':displayPk.length<=4?'grid-4':'grid-5'}>{displayPk.map(id=><PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam} slots={NK14_SLOTS[id]}/>)}</div>
     <div className="section-label">NK Poulefase — verwachte indeling</div>
     <div className="grid-2">
       <div className="card"><div className="card-header card-header-a">Poulefase A{pD&&` · ${pD}`}</div><table><tbody>{nkA.map((e,i)=><tr key={i} style={e.team===myTeam?{background:'#eff6ff'}:{}}><td className="td-rank">{i+1}</td><td style={e.team===myTeam?{fontWeight:600}:{}}>{e.team}<span className="origin"> {e.origin}</span></td></tr>)}</tbody></table></div>
@@ -375,16 +377,16 @@ function O14OverzichtTab({data,myTeam,nkSchedule}){
 // ════════════════════════════════════════════
 // O16 TABS
 // ════════════════════════════════════════════
-function O16OverzichtTab({data,myTeam}){
+function O16OverzichtTab({data,filteredData,myTeam}){
   const pk=POULE_ORDER_16.filter(k=>data[k]);
+  const displayPk=filteredData?POULE_ORDER_16.filter(k=>filteredData[k]):pk;
 
-  // Rank #1s and #2s across poules by points then DS
+  // Rank #1s and #2s across ALL poules (full data)
   const nr1s=pk.map(k=>({team:data[k].teams[0],poule:k,pts:data[k].pts[0],ds:data[k].ds[0]}))
     .sort((a,b)=>b.pts!==a.pts?b.pts-a.pts:b.ds-a.ds);
   const nr2s=pk.map(k=>({team:data[k].teams[1],poule:k,pts:data[k].pts[1],ds:data[k].ds[1]}))
     .sort((a,b)=>b.pts!==a.pts?b.pts-a.pts:b.ds-a.ds);
 
-  // KF matchups: Beste#1 vs 4e#2, 2e#1 vs 3e#2, 3e#1 vs 2e#2, 4e#1 vs Beste#2
   var kfMatches = [];
   if(nr1s.length>=4 && nr2s.length>=4){
     kfMatches = [
@@ -397,7 +399,7 @@ function O16OverzichtTab({data,myTeam}){
 
   return(<div>
     <div className="section-label" style={{marginTop:0}}>Landelijk — huidige stand</div>
-    <div className="grid-4">{pk.map(id=><PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam}/>)}</div>
+    <div className={displayPk.length<=2?'grid-2':'grid-4'}>{displayPk.map(id=><PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam}/>)}</div>
 
     {nr1s.length>=4&&<>
     <div className="section-label">NK Kwartfinales — verwachte indeling</div>
@@ -646,8 +648,14 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.8';
+const VERSION='4.9';
 const CHANGELOG=[
+  {version:'4.9',date:'19 mei 2026',changes:[
+    'Focus mode toont NK Poulefase indeling en NK Speelschema met alle data',
+    'Alleen poule-kaarten (stand) worden gefilterd op focus club',
+    'NK indeling, KF-matchups, speelschema en finales altijd volledig zichtbaar',
+    'Grid past zich aan: 1 poule in focus → smalere layout',
+  ]},
   {version:'4.8',date:'19 mei 2026',changes:[
     'Focus mode: klik op 🏑 → toont alleen de poule en competities van je focus club',
     'Klik nogmaals op 🏑 → terug naar volledig overzicht',
@@ -849,7 +857,7 @@ function App(){
       {[['overzicht','📋 Overzicht'],['schema','📅 Speelschema'],['sim','🎲 Simulaties']].map(([id,lbl])=>(
         <button key={id} className={`main-tab ${mainTab===id?'active':''}`} onClick={()=>setMainTab(id)}>{lbl}</button>))}
     </div>
-    {mainTab==='overzicht'&&(o16?<O16OverzichtTab data={focusMode?filteredData:data} myTeam={myTeam}/>:<O14OverzichtTab data={focusMode?filteredData:data} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]}/>)}
+    {mainTab==='overzicht'&&(o16?<O16OverzichtTab data={data} filteredData={focusMode?filteredData:null} myTeam={myTeam}/>:<O14OverzichtTab data={data} filteredData={focusMode?filteredData:null} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]}/>)}
     {mainTab==='schema'&&<SchemaTab data={focusMode?filteredData:data} myTeam={myTeam} pouleOrder={pouleOrder}/>}
     {mainTab==='sim'&&(o16?<O16SimTab data={data} myTeam={myTeam} key={effectiveComp}/>:<O14SimTab data={data} myTeam={myTeam} key={effectiveComp}/>)}
     <footer>NK {label} · v{VERSION} · data {dataSource==='server'?'van server':'handmatig'}</footer>
