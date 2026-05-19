@@ -241,7 +241,7 @@ function parseO14(raw){
       const comp=val.competition||(d.poule.competition&&d.poule.competition.name)||'',cls=val.class_name||(d.poule.competition&&d.poule.competition.class_name)||'';
       if(!comp.includes('O14')||cls!=='Super')continue;
       const type=comp.includes('Jongens')?'JO14':'MO14';
-      const st=d.poule.standings||[],ma=d.poule.matches||[],pl=ma.filter(m=>m.status==='final'),re=ma.filter(m=>m.status!=='final');
+      const st=d.poule.standings||[],ma=d.poule.matches||[],pl=ma.filter(m=>m.status==='final'),re=ma.filter(m=>m.status==='scheduled');
       if(!comps[type])comps[type]={};
       comps[type][pn]={teams:st.map(s=>clean14(s.team.name)),pts:st.map(s=>s.points),ds:st.map(s=>s.goals_for-s.goals_against),
         remaining:re.map(m=>[clean14(m.home.name),clean14(m.away.name),m.date||'']),played_count:pl.length,
@@ -271,7 +271,7 @@ function parseO16(raw){
     const letter=(p.name||'').replace('Poule ','');
     if(!POULE_ORDER_16.includes(letter))continue;
     const st=p.standings||[],ma=p.matches||[];
-    const pl=ma.filter(m=>m.status==='final'),re=ma.filter(m=>m.status!=='final');
+    const pl=ma.filter(m=>m.status==='final'),re=ma.filter(m=>m.status==='scheduled');
     result[letter]={teams:st.map(s=>clean16(s.team.name)),pts:st.map(s=>s.points),ds:st.map(s=>s.goals_for-s.goals_against),
       remaining:re.map(m=>[clean16(m.home.name),clean16(m.away.name),m.date||'']),played_count:pl.length,
       standings:st.map(s=>({rank:s.rank,team:clean16(s.team.name),team_id:s.team.id,points:s.points,wins:s.wins,draws:s.draws,losses:s.losses,gf:s.goals_for,ga:s.goals_against,gd:s.goals_for-s.goals_against})),
@@ -673,8 +673,12 @@ function ImportScreen({onImport}){
   </div>);
 }
 
-const VERSION='4.12.1';
+const VERSION='4.12.2';
 const CHANGELOG=[
+  {version:'4.12.2',date:'19 mei 2026',changes:[
+    'Fix: afgelaste/discontinued wedstrijden worden niet meer getoond bij resterende wedstrijden',
+    'Alleen wedstrijden met status "scheduled" tellen als resterend',
+  ]},
   {version:'4.12.1',date:'19 mei 2026',changes:[
     'Zoekbalk verwijderd uit club picker popup',
   ]},
