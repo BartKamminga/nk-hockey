@@ -122,7 +122,7 @@ export default function App() {
         </div>
         <div className="top-comp-row">
           {visibleTypes.map(t => <button key={t} className={`top-comp-btn ${effectiveComp === t ? 'active' : ''}`}
-            onClick={() => { setActiveComp(t); saveComp(t); setMainTab('overzicht') }}>{COMP_LABELS[t] || t}</button>)}
+            onClick={() => { setActiveComp(t); saveComp(t) }}>{COMP_LABELS[t] || t}</button>)}
         </div>
       </div>
 
