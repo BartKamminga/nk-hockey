@@ -3,8 +3,10 @@ import { VERSION, CHANGELOG, COMP_ORDER, COMP_LABELS, COMP_LABELS_LONG, IS_O16, 
 import { NK_SCHEDULES } from './data/nk-schedules'
 import { parseO14, parseO16, findMyTeam, getAllClubs } from './parsers'
 import { SchemaTab } from './components/Shared'
-import { O14OverzichtTab, O14SimTab } from './components/O14'
-import { O16OverzichtTab, O16SimTab } from './components/O16'
+import { O14OverzichtTab } from './components/O14'
+import { O16OverzichtTab } from './components/O16'
+import { O14SimTab } from './components/O14SimTab'
+import { O16SimTab } from './components/O16SimTab'
 
 function ChangelogContent() {
   return (
