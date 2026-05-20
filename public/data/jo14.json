@@ -7,7 +7,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179024/teams/2068",
-    "timestamp": 1779212738525,
+    "timestamp": 1779182715166,
     "data": {
       "data": {
         "team": {
@@ -2005,7 +2005,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179025/teams/6678",
-    "timestamp": 1779213044368,
+    "timestamp": 1779182740494,
     "data": {
       "data": {
         "team": {
@@ -2082,7 +2082,7 @@
               "goals_for": 37,
               "goals_against": 12,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 6678,
@@ -2107,7 +2107,7 @@
               "goals_for": 38,
               "goals_against": 22,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 2554,
@@ -2132,7 +2132,7 @@
               "goals_for": 32,
               "goals_against": 23,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 6031,
@@ -2157,7 +2157,7 @@
               "goals_for": 28,
               "goals_against": 29,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 2744,
@@ -2182,7 +2182,7 @@
               "goals_for": 11,
               "goals_against": 33,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 6518,
@@ -2207,7 +2207,7 @@
               "goals_for": 14,
               "goals_against": 41,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 3364,
@@ -4003,7 +4003,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179026/teams/4805",
-    "timestamp": 1779213037143,
+    "timestamp": 1779182735246,
     "data": {
       "data": {
         "team": {
@@ -5986,7 +5986,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179027/teams/8299",
-    "timestamp": 1779213034486,
+    "timestamp": 1779182720811,
     "data": {
       "data": {
         "team": {
@@ -7969,7 +7969,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179028/teams/7463",
-    "timestamp": 1779213375316,
+    "timestamp": 1779182757724,
     "data": {
       "data": {
         "team": {
@@ -8046,7 +8046,7 @@
               "goals_for": 53,
               "goals_against": 15,
               "penalties": 0,
-              "poule_name": "Poule Poule E",
+              "poule_name": null,
               "poule_id": 179028,
               "team": {
                 "id": 6572,
@@ -8071,7 +8071,7 @@
               "goals_for": 31,
               "goals_against": 10,
               "penalties": 0,
-              "poule_name": "Poule Poule E",
+              "poule_name": null,
               "poule_id": 179028,
               "team": {
                 "id": 7463,
@@ -8096,7 +8096,7 @@
               "goals_for": 22,
               "goals_against": 32,
               "penalties": 0,
-              "poule_name": "Poule Poule E",
+              "poule_name": null,
               "poule_id": 179028,
               "team": {
                 "id": 6195,
@@ -8121,7 +8121,7 @@
               "goals_for": 38,
               "goals_against": 18,
               "penalties": 0,
-              "poule_name": "Poule Poule E",
+              "poule_name": null,
               "poule_id": 179028,
               "team": {
                 "id": 8770,
@@ -8146,7 +8146,7 @@
               "goals_for": 14,
               "goals_against": 34,
               "penalties": 0,
-              "poule_name": "Poule Poule E",
+              "poule_name": null,
               "poule_id": 179028,
               "team": {
                 "id": 9335,
@@ -8171,7 +8171,7 @@
               "goals_for": 8,
               "goals_against": 57,
               "penalties": 0,
-              "poule_name": "Poule Poule E",
+              "poule_name": null,
               "poule_id": 179028,
               "team": {
                 "id": 2645,
