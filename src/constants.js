@@ -18,8 +18,16 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.2.1'
+export const VERSION = '5.3'
 export const CHANGELOG = [
+  { version: '5.3', date: '20 mei 2026', changes: [
+    'Zonder focus club: alle resterende wedstrijden invulbaar per ronde',
+    'Klik op thuisteam = thuis wint (groen), midden = gelijk (geel), uitteam = uit wint (groen)',
+    'Per ronde snelkeuze: T (thuis wint) / G (gelijk) / U (uit wint) / ? (reset)',
+    'Met focus club: compacte W/G/V knoppen (zoals voorheen)',
+    'Poule-stand na scenario toont nu alle gewijzigde poules (niet alleen focus-poule)',
+    'Adjusted standings werken correct in beide modes',
+  ]},
   { version: '5.2.1', date: '20 mei 2026', changes: [
     'Poule-stand na scenario: toont punten met what-if resultaten verwerkt',
     'Per team: huidige punten + delta + nieuw totaal (bijv. "21 +3 = 24")',

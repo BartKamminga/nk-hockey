@@ -4,15 +4,8 @@ import { runSimO14, runSimO16 } from '../simulation'
 import { pct, pc, Bar, fmtMatchDate } from './Shared'
 
 // ══════════════════════════════════════
-// WHAT-IF: match outcome picker
+// MATCH DATA HELPERS
 // ══════════════════════════════════════
-const OUTCOMES = [
-  { key: null, label: '?', color: '#888', bg: '#f0ede8', title: 'Random' },
-  { key: 'W', label: 'W', color: '#16a34a', bg: '#dcfce7', title: 'Winst' },
-  { key: 'D', label: 'G', color: '#b45309', bg: '#fef3c7', title: 'Gelijk' },
-  { key: 'L', label: 'V', color: '#dc2626', bg: '#fee2e2', title: 'Verlies' },
-]
-
 function findMyMatches(data, myTeam, pouleOrder) {
   const matches = []
   for (const pouleId of pouleOrder) {
@@ -20,14 +13,38 @@ function findMyMatches(data, myTeam, pouleOrder) {
     if (!poule) continue
     for (const [h, a, date] of poule.remaining) {
       if (h === myTeam || a === myTeam) {
-        matches.push({ h, a, date, opponent: h === myTeam ? a : h, isHome: h === myTeam, lockKey: `${h}_${a}` })
+        matches.push({ pouleId, h, a, date, opponent: h === myTeam ? a : h, isHome: h === myTeam, lockKey: `${h}_${a}` })
       }
     }
   }
   return matches
 }
 
-function buildSimLocks(myMatches, uiLocks) {
+function findAllMatchesByRound(data, pouleOrder) {
+  const rounds = {}
+  for (const pouleId of pouleOrder) {
+    const poule = data[pouleId]
+    if (!poule) continue
+    const mpr = Math.floor(poule.teams.length / 2)
+    const lr = poule.matches_played && poule.matches_played.length > 0
+      ? Math.max(...poule.matches_played.map(m => parseInt(m.round) || 0)) : 0
+    for (let i = 0; i < poule.remaining.length; i++) {
+      const [h, a, date] = poule.remaining[i]
+      const roundNum = lr + Math.floor(i / mpr) + 1
+      const roundKey = `${pouleId}_R${roundNum}`
+      if (!rounds[roundKey]) rounds[roundKey] = { pouleId, roundNum, date, matches: [] }
+      rounds[roundKey].matches.push({ h, a, date, lockKey: `${h}_${a}` })
+      if (!rounds[roundKey].date && date) rounds[roundKey].date = date
+    }
+  }
+  return Object.values(rounds).sort((a, b) => {
+    if (a.pouleId !== b.pouleId) return a.pouleId.localeCompare(b.pouleId)
+    return a.roundNum - b.roundNum
+  })
+}
+
+// For focus-club mode: locks are from focus perspective, need flip for away
+function buildFocusSimLocks(myMatches, uiLocks) {
   const simLocks = {}
   for (const m of myMatches) {
     const ui = uiLocks[m.lockKey]
@@ -37,7 +54,26 @@ function buildSimLocks(myMatches, uiLocks) {
   return simLocks
 }
 
-function WhatIfPanel({ myTeam, myMatches, locks, onToggle, onSetAll }) {
+// For all-matches mode: locks are from HOME team perspective, no flip needed
+function buildAllSimLocks(uiLocks) {
+  const simLocks = {}
+  for (const [key, val] of Object.entries(uiLocks)) {
+    if (val) simLocks[key] = val
+  }
+  return simLocks
+}
+
+// ══════════════════════════════════════
+// FOCUS MODE: WhatIfPanel (compact, for focus club matches only)
+// ══════════════════════════════════════
+const OUTCOMES = [
+  { key: null, label: '?', color: '#888', bg: '#f0ede8', title: 'Random' },
+  { key: 'W', label: 'W', color: '#16a34a', bg: '#dcfce7', title: 'Winst' },
+  { key: 'D', label: 'G', color: '#b45309', bg: '#fef3c7', title: 'Gelijk' },
+  { key: 'L', label: 'V', color: '#dc2626', bg: '#fee2e2', title: 'Verlies' },
+]
+
+function FocusWhatIfPanel({ myTeam, myMatches, locks, onToggle, onSetAll }) {
   if (!myTeam || myMatches.length === 0) return null
   const lockedCount = Object.keys(locks).length
   return (
@@ -85,92 +121,146 @@ function WhatIfPanel({ myTeam, myMatches, locks, onToggle, onSetAll }) {
 }
 
 // ══════════════════════════════════════
-// ADJUSTED STANDINGS: show poule with what-if points applied
+// ALL MATCHES MODE: per round, per poule
 // ══════════════════════════════════════
-function calcAdjustedStandings(data, myTeam, locks, myMatches, pouleOrder) {
-  if (!myTeam || Object.keys(locks).length === 0) return null
-  // Find which poule the focus club is in
-  let myPouleId = null
-  for (const id of pouleOrder) {
-    if (data[id] && data[id].teams.indexOf(myTeam) >= 0) { myPouleId = id; break }
-  }
-  if (!myPouleId) return null
-  const poule = data[myPouleId]
-
-  // Calculate point deltas from locked matches
-  const deltas = {}
-  for (const m of myMatches) {
-    const ui = locks[m.lockKey]
-    if (!ui) continue
-    // Points from focus club perspective
-    const myPts = ui === 'W' ? 3 : ui === 'D' ? 1 : 0
-    const oppPts = ui === 'W' ? 0 : ui === 'D' ? 1 : 3
-    deltas[myTeam] = (deltas[myTeam] || 0) + myPts
-    deltas[m.opponent] = (deltas[m.opponent] || 0) + oppPts
-  }
-
-  // Build adjusted standings
-  const adjusted = poule.teams.map((team, i) => ({
-    team,
-    pts: poule.pts[i],
-    ds: poule.ds[i],
-    delta: deltas[team] || 0,
-    newPts: poule.pts[i] + (deltas[team] || 0),
-  }))
-  // Sort by new points then DS
-  adjusted.sort((a, b) => b.newPts !== a.newPts ? b.newPts - a.newPts : b.ds - a.ds)
-
-  return { pouleId: myPouleId, standings: adjusted }
-}
-
-function AdjustedStandingsCard({ data, myTeam, locks, myMatches, pouleOrder }) {
-  const result = useMemo(
-    () => calcAdjustedStandings(data, myTeam, locks, myMatches, pouleOrder),
-    [data, myTeam, locks, myMatches, pouleOrder]
-  )
-  if (!result) return null
-
+function AllMatchesPanel({ data, rounds, locks, onToggle, onSetRound, onResetAll, myTeam }) {
+  const lockedCount = Object.keys(locks).filter(k => locks[k]).length
   return (
     <div className="card" style={{ marginBottom: 16 }}>
       <div className="card-header" style={{ justifyContent: 'space-between' }}>
-        <span>Poule {result.pouleId} — stand na scenario</span>
-        <span style={{ fontSize: 10, color: '#888', fontWeight: 400 }}>punten uit vastgezette wedstrijden</span>
+        <span>Alle resterende wedstrijden</span>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          {lockedCount > 0 && <span style={{ fontSize: 10, color: '#3b82f6' }}>{lockedCount} vastgezet</span>}
+          {lockedCount > 0 && <button className="whatif-preset" onClick={onResetAll} style={{ background: '#f0ede8', color: '#888' }}>Reset alles</button>}
+        </div>
       </div>
-      <table><tbody>
-        {result.standings.map((s, i) => {
-          const isMy = s.team === myTeam
-          const hasDelta = s.delta !== 0
-          return (
-            <tr key={s.team} style={isMy ? { background: '#eff6ff' } : {}}>
-              <td className="td-rank">{i + 1}</td>
-              <td style={{ padding: '6px 12px', fontSize: 12.5, fontWeight: isMy ? 600 : 400 }}>{s.team}</td>
-              <td style={{ textAlign: 'right', padding: '6px 12px', fontFamily: "'DM Mono',monospace", fontSize: 12 }}>
-                {s.pts}
-                {hasDelta && (
-                  <span style={{
-                    color: s.delta > 0 ? '#16a34a' : '#dc2626',
-                    fontSize: 11,
-                    fontWeight: 600,
-                    marginLeft: 2,
-                  }}>+{s.delta}</span>
-                )}
-                {hasDelta && (
-                  <span style={{ color: '#555', marginLeft: 4 }}>= {s.newPts}</span>
-                )}
-              </td>
-              <td className="td-ds" style={{ color: s.ds >= 0 ? '#16a34a' : '#dc2626' }}>
-                {s.ds >= 0 ? '+' : ''}{s.ds}
-              </td>
-            </tr>
-          )
-        })}
-      </tbody></table>
+      {rounds.map(round => (
+        <div key={`${round.pouleId}_${round.roundNum}`}>
+          <div style={{
+            padding: '5px 12px', fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono',monospace",
+            color: '#854d0e', background: '#fef9c3', borderBottom: '1px solid #fde68a', borderTop: '1px solid #fde68a',
+            letterSpacing: '.5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+          }}>
+            <span>Poule {round.pouleId} · Ronde {round.roundNum}{round.date ? ` · ${fmtMatchDate(round.date)}` : ''}</span>
+            <div style={{ display: 'flex', gap: 3 }}>
+              <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'W')} title="Hele ronde: thuis wint" style={{ background: '#dcfce7', color: '#16a34a' }}>T</div>
+              <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'D')} title="Hele ronde: gelijk" style={{ background: '#fef3c7', color: '#b45309' }}>G</div>
+              <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'L')} title="Hele ronde: uit wint" style={{ background: '#fee2e2', color: '#dc2626' }}>U</div>
+              <div className="whatif-preset-sm" onClick={() => onSetRound(round, null)} title="Reset ronde" style={{ background: '#f0ede8', color: '#888' }}>?</div>
+            </div>
+          </div>
+          {round.matches.map(m => {
+            const locked = locks[m.lockKey] || null
+            const isMy = m.h === myTeam || m.a === myTeam
+            // Colors: home-win = green on home side, draw = yellow center, away-win = green on away side
+            const bgH = locked === 'W' ? '#dcfce7' : locked === 'L' ? '#fee2e2' : locked === 'D' ? '#fef3c7' : 'transparent'
+            return (
+              <div key={m.lockKey} className="match-row" style={{ background: isMy && !locked ? '#eff6ff' : 'transparent' }}>
+                <div style={{ display: 'flex', alignItems: 'center', flex: 1, gap: 0 }}>
+                  {/* Home team + home-win button */}
+                  <div style={{
+                    flex: 1, textAlign: 'right', padding: '4px 8px', fontSize: 12,
+                    fontWeight: m.h === myTeam ? 600 : 400,
+                    background: locked === 'W' ? '#dcfce7' : 'transparent',
+                    borderRadius: '4px 0 0 4px', cursor: 'pointer',
+                  }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'W' ? null : 'W')} title={`${m.h} wint`}>
+                    {m.h}
+                  </div>
+                  {/* Draw button */}
+                  <div style={{
+                    padding: '4px 10px', fontSize: 10, color: locked === 'D' ? '#b45309' : '#ccc',
+                    background: locked === 'D' ? '#fef3c7' : 'transparent',
+                    cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
+                  }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'D' ? null : 'D')} title="Gelijk">
+                    {locked === 'D' ? 'G' : 'vs'}
+                  </div>
+                  {/* Away team + away-win button */}
+                  <div style={{
+                    flex: 1, textAlign: 'left', padding: '4px 8px', fontSize: 12,
+                    fontWeight: m.a === myTeam ? 600 : 400,
+                    background: locked === 'L' ? '#dcfce7' : 'transparent',
+                    borderRadius: '0 4px 4px 0', cursor: 'pointer',
+                  }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'L' ? null : 'L')} title={`${m.a} wint`}>
+                    {m.a}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      ))}
     </div>
   )
 }
 
 // ══════════════════════════════════════
-// NK CHANCES: focus club summary
+// ADJUSTED STANDINGS
+// ══════════════════════════════════════
+function calcAdjustedStandings(data, locks, pouleOrder) {
+  if (Object.keys(locks).length === 0) return null
+  const results = []
+  for (const pouleId of pouleOrder) {
+    const poule = data[pouleId]
+    if (!poule) continue
+    // Check if any lock applies to this poule
+    let hasLock = false
+    for (const [h, a] of poule.remaining) {
+      if (locks[`${h}_${a}`]) { hasLock = true; break }
+    }
+    if (!hasLock) continue
+
+    const adjusted = poule.teams.map((team, i) => ({ team, pts: poule.pts[i], ds: poule.ds[i], delta: 0 }))
+    for (const [h, a] of poule.remaining) {
+      const lock = locks[`${h}_${a}`]
+      if (!lock) continue
+      const hi = poule.teams.indexOf(h), ai = poule.teams.indexOf(a)
+      if (hi < 0 || ai < 0) continue
+      if (lock === 'W') { adjusted[hi].delta += 3 }
+      else if (lock === 'D') { adjusted[hi].delta += 1; adjusted[ai].delta += 1 }
+      else if (lock === 'L') { adjusted[ai].delta += 3 }
+    }
+    adjusted.forEach(s => { s.newPts = s.pts + s.delta })
+    adjusted.sort((a, b) => b.newPts !== a.newPts ? b.newPts - a.newPts : b.ds - a.ds)
+    results.push({ pouleId, standings: adjusted })
+  }
+  return results.length > 0 ? results : null
+}
+
+function AdjustedStandingsCards({ data, locks, pouleOrder, myTeam }) {
+  const results = useMemo(() => calcAdjustedStandings(data, locks, pouleOrder), [data, locks, pouleOrder])
+  if (!results) return null
+  return (
+    <div className={results.length > 1 ? 'grid-2' : ''} style={{ marginBottom: 16 }}>
+      {results.map(({ pouleId, standings }) => (
+        <div key={pouleId} className="card">
+          <div className="card-header" style={{ justifyContent: 'space-between' }}>
+            <span>Poule {pouleId} — stand na scenario</span>
+          </div>
+          <table><tbody>
+            {standings.map((s, i) => {
+              const isMy = s.team === myTeam
+              return (
+                <tr key={s.team} style={isMy ? { background: '#eff6ff' } : {}}>
+                  <td className="td-rank">{i + 1}</td>
+                  <td style={{ padding: '6px 12px', fontSize: 12.5, fontWeight: isMy ? 600 : 400 }}>{s.team}</td>
+                  <td style={{ textAlign: 'right', padding: '6px 12px', fontFamily: "'DM Mono',monospace", fontSize: 12 }}>
+                    {s.pts}
+                    {s.delta > 0 && <span style={{ color: '#16a34a', fontSize: 11, fontWeight: 600, marginLeft: 2 }}>+{s.delta}</span>}
+                    {s.delta > 0 && <span style={{ color: '#555', marginLeft: 4 }}>= {s.newPts}</span>}
+                  </td>
+                  <td className="td-ds" style={{ color: s.ds >= 0 ? '#16a34a' : '#dc2626' }}>{s.ds >= 0 ? '+' : ''}{s.ds}</td>
+                </tr>
+              )
+            })}
+          </tbody></table>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ══════════════════════════════════════
+// NK CHANCES (focus club summary)
 // ══════════════════════════════════════
 function NKChances({ myTeam, results, baseResults, N, o16, hasLocks }) {
   if (!myTeam || !results) return null
@@ -186,14 +276,12 @@ function NKChances({ myTeam, results, baseResults, N, o16, hasLocks }) {
   }
   const current = getChances(results), baseline = getChances(baseResults)
   if (!current) return null
-
   const diff = (cur, base) => {
     if (!hasLocks || base == null || cur == null) return null
     const d = cur - base
     if (d === 0) return <span style={{ color: '#888', fontSize: 10 }}> (=)</span>
     return <span style={{ color: d > 0 ? '#16a34a' : '#dc2626', fontSize: 10, fontWeight: 600 }}> ({d > 0 ? '+' : ''}{d}%)</span>
   }
-
   const Row = ({ label, val, baseVal, bold, gold }) => (
     <tr style={gold ? { background: '#fffbeb' } : {}}>
       <td style={{ padding: '8px 12px', fontSize: 13, fontWeight: bold ? 600 : 400 }}>{label}</td>
@@ -202,7 +290,6 @@ function NKChances({ myTeam, results, baseResults, N, o16, hasLocks }) {
       </td>
     </tr>
   )
-
   return (
     <div className="card" style={{ marginBottom: 16 }}>
       <div className="card-header">NK kansen {myTeam}</div>
@@ -224,7 +311,7 @@ function NKChances({ myTeam, results, baseResults, N, o16, hasLocks }) {
 }
 
 // ══════════════════════════════════════
-// O14 DETAIL TABLES
+// DETAIL TABLES (O14)
 // ══════════════════════════════════════
 function O14SuperRes({ data, ss, N, myTeam }) {
   const pk = POULE_ORDER_14.filter(id => data[id])
@@ -244,61 +331,50 @@ function O14SuperRes({ data, ss, N, myTeam }) {
     )
   })
 }
-
 function O14NKRes({ results, N, myTeam }) {
   const { nkAp, nkBp, nkAa, nkBa } = results
   const renderGroup = (label, pm, am, badgeBg, badgeColor) => {
     const teams = Object.keys(pm).sort((a, b) => (am[b] || 0) - (am[a] || 0)).filter(t => (am[t] || 0) / N > 0.01)
-    return (
-      <div key={label}><div className="poule-sim-label"><span style={{ background: badgeBg, color: badgeColor, padding: '2px 10px', borderRadius: 99, fontSize: 11 }}>NK Poulefase {label}</span></div>
-        <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(1e)</th><th>P(2e)</th><th>P(top2)</th></tr></thead><tbody>
-          {teams.map(t => { const app = am[t] || 0, pos = pm[t] || Array(5).fill(0), p1 = pct(pos[0], N), p2 = pct(pos[1], N), top2 = p1 + p2, isMy = t === myTeam; return <tr key={t} className={isMy ? 'row-my' : p1 >= 15 ? 'row-gold' : ''}><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{t}{pct(app, N) < 99 && <span className="origin"> kwal.{pct(app, N)}%</span>}</td><td className={pc(p1, 15, 8)}>{p1}%</td><td className={pc(p2, 15, 8)}>{p2}%</td><td className={pc(top2, 30, 15)}>{top2}%</td></tr> })}
-        </tbody></table></div></div>
-    )
+    return (<div key={label}><div className="poule-sim-label"><span style={{ background: badgeBg, color: badgeColor, padding: '2px 10px', borderRadius: 99, fontSize: 11 }}>NK Poulefase {label}</span></div>
+      <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(1e)</th><th>P(2e)</th><th>P(top2)</th></tr></thead><tbody>
+        {teams.map(t => { const app = am[t] || 0, pos = pm[t] || Array(5).fill(0), p1 = pct(pos[0], N), p2 = pct(pos[1], N), top2 = p1 + p2, isMy = t === myTeam; return <tr key={t} className={isMy ? 'row-my' : p1 >= 15 ? 'row-gold' : ''}><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{t}{pct(app, N) < 99 && <span className="origin"> kwal.{pct(app, N)}%</span>}</td><td className={pc(p1, 15, 8)}>{p1}%</td><td className={pc(p2, 15, 8)}>{p2}%</td><td className={pc(top2, 30, 15)}>{top2}%</td></tr> })}
+      </tbody></table></div></div>)
   }
   return <>{renderGroup('A', nkAp, nkAa, '#dbeafe', '#1d4ed8')}{renderGroup('B', nkBp, nkBa, '#dcfce7', '#15803d')}</>
 }
-
 function O14FinRes({ results, N, myTeam }) {
   const teams = Object.keys(results.fin).sort((a, b) => results.fin[b].p1 - results.fin[a].p1).filter(t => results.fin[t].appear / N > 0.02)
-  return (
-    <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(HF)</th><th>P(finale)</th><th>P(🥇)</th><th>P(🥈)</th><th>P(🥉)</th><th>P(podium)</th></tr></thead><tbody>
-      {teams.map(t => { const s = results.fin[t], pSF = pct(s.sfReach, N), pFin = pct(s.finalist, N), p1 = pct(s.p1, N), p2 = pct(s.p2, N), p3 = pct(s.p3, N), pPod = p1 + p2 + p3, isMy = t === myTeam; return <tr key={t} className={isMy ? 'row-my' : p1 >= 10 ? 'row-gold' : ''}><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{t}</td><td className={pc(pSF, 20, 10)}>{pSF}%</td><td className={pc(pFin, 15, 8)}>{pFin}%</td><td><Bar p={p1} col="#f59e0b" /></td><td><Bar p={p2} col="#94a3b8" /></td><td><Bar p={p3} col="#cd7c2f" /></td><td className={pc(pPod, 25, 12)}>{pPod}%</td></tr> })}
-    </tbody></table></div>
-  )
+  return (<div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(HF)</th><th>P(finale)</th><th>P(🥇)</th><th>P(🥈)</th><th>P(🥉)</th><th>P(podium)</th></tr></thead><tbody>
+    {teams.map(t => { const s = results.fin[t], pSF = pct(s.sfReach, N), pFin = pct(s.finalist, N), p1 = pct(s.p1, N), p2 = pct(s.p2, N), p3 = pct(s.p3, N), pPod = p1 + p2 + p3, isMy = t === myTeam; return <tr key={t} className={isMy ? 'row-my' : p1 >= 10 ? 'row-gold' : ''}><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{t}</td><td className={pc(pSF, 20, 10)}>{pSF}%</td><td className={pc(pFin, 15, 8)}>{pFin}%</td><td><Bar p={p1} col="#f59e0b" /></td><td><Bar p={p2} col="#94a3b8" /></td><td><Bar p={p3} col="#cd7c2f" /></td><td className={pc(pPod, 25, 12)}>{pPod}%</td></tr> })}
+  </tbody></table></div>)
 }
 
 // ══════════════════════════════════════
-// O16 DETAIL TABLES
+// DETAIL TABLES (O16)
 // ══════════════════════════════════════
 function O16PouleRes({ data, ss, N, myTeam }) {
   const pk = POULE_ORDER_16.filter(id => data[id])
   return pk.map(id => {
     const poule = data[id], pa = ss[id]
     const order = poule.teams.map((_, i) => i).sort((a, b) => pa[b][0] !== pa[a][0] ? pa[b][0] - pa[a][0] : poule.pts[b] - poule.pts[a])
-    return (
-      <div key={id}>
-        <div className="poule-sim-label">Poule {id}<span style={{ fontSize: 10, color: '#aaa', fontWeight: 400 }}>{poule.remaining.length} wedstr. rest</span></div>
-        <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>#</th><th>Team</th><th>PT</th><th>DS</th><th>P(1e)</th><th>P(2e)</th><th>P(top2)</th></tr></thead><tbody>
-          {order.map((idx, rank) => {
-            const p1 = pct(pa[idx][0], N), p2 = pct(pa[idx][1], N), top2 = p1 + p2, isMy = poule.teams[idx] === myTeam
-            return <tr key={idx} className={isMy ? 'row-my' : p1 > 50 ? 'row-gold' : ''}><td style={{ color: '#aaa', fontSize: 11 }}>{rank + 1}</td><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{poule.teams[idx]}</td><td style={{ textAlign: 'right', color: '#888', fontFamily: "'DM Mono',monospace", fontSize: 12 }}>{poule.pts[idx]}</td><td style={{ textAlign: 'right', fontFamily: "'DM Mono',monospace", fontSize: 11, color: poule.ds[idx] >= 0 ? '#16a34a' : '#dc2626' }}>{poule.ds[idx] >= 0 ? '+' : ''}{poule.ds[idx]}</td><td className={pc(p1, 50, 20)}>{p1}%</td><td className={pc(p2, 40, 20)}>{p2}%</td><td className={pc(top2, 60, 30)}>{top2}%</td></tr>
-          })}
-        </tbody></table></div>
-      </div>
-    )
+    return (<div key={id}>
+      <div className="poule-sim-label">Poule {id}<span style={{ fontSize: 10, color: '#aaa', fontWeight: 400 }}>{poule.remaining.length} wedstr. rest</span></div>
+      <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>#</th><th>Team</th><th>PT</th><th>DS</th><th>P(1e)</th><th>P(2e)</th><th>P(top2)</th></tr></thead><tbody>
+        {order.map((idx, rank) => {
+          const p1 = pct(pa[idx][0], N), p2 = pct(pa[idx][1], N), top2 = p1 + p2, isMy = poule.teams[idx] === myTeam
+          return <tr key={idx} className={isMy ? 'row-my' : p1 > 50 ? 'row-gold' : ''}><td style={{ color: '#aaa', fontSize: 11 }}>{rank + 1}</td><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{poule.teams[idx]}</td><td style={{ textAlign: 'right', color: '#888', fontFamily: "'DM Mono',monospace", fontSize: 12 }}>{poule.pts[idx]}</td><td style={{ textAlign: 'right', fontFamily: "'DM Mono',monospace", fontSize: 11, color: poule.ds[idx] >= 0 ? '#16a34a' : '#dc2626' }}>{poule.ds[idx] >= 0 ? '+' : ''}{poule.ds[idx]}</td><td className={pc(p1, 50, 20)}>{p1}%</td><td className={pc(p2, 40, 20)}>{p2}%</td><td className={pc(top2, 60, 30)}>{top2}%</td></tr>
+        })}
+      </tbody></table></div>
+    </div>)
   })
 }
-
 function O16FinRes({ results, N, myTeam }) {
-  return (
-    <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(KF)</th><th>P(HF)</th><th>P(finale)</th><th>P(1e 🥇)</th><th>P(2e 🥈)</th></tr></thead><tbody>
-      {Object.keys(results.fin).sort((a, b) => results.fin[b].p1 - results.fin[a].p1).filter(t => results.fin[t].kf / N > 0.02).map(t => {
-        const s = results.fin[t], pKF = pct(s.kf, N), pHF = pct(s.hf, N), pFin = pct(s.finalist, N), p1 = pct(s.p1, N), p2 = pct(s.p2, N), isMy = t === myTeam
-        return <tr key={t} className={isMy ? 'row-my' : p1 >= 10 ? 'row-gold' : ''}><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{t}</td><td className={pc(pKF, 30, 15)}>{pKF}%</td><td className={pc(pHF, 20, 10)}>{pHF}%</td><td className={pc(pFin, 15, 8)}>{pFin}%</td><td><Bar p={p1} col="#f59e0b" /></td><td><Bar p={p2} col="#94a3b8" /></td></tr>
-      })}
-    </tbody></table></div>
-  )
+  return (<div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(KF)</th><th>P(HF)</th><th>P(finale)</th><th>P(1e 🥇)</th><th>P(2e 🥈)</th></tr></thead><tbody>
+    {Object.keys(results.fin).sort((a, b) => results.fin[b].p1 - results.fin[a].p1).filter(t => results.fin[t].kf / N > 0.02).map(t => {
+      const s = results.fin[t], pKF = pct(s.kf, N), pHF = pct(s.hf, N), pFin = pct(s.finalist, N), p1 = pct(s.p1, N), p2 = pct(s.p2, N), isMy = t === myTeam
+      return <tr key={t} className={isMy ? 'row-my' : p1 >= 10 ? 'row-gold' : ''}><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{t}</td><td className={pc(pKF, 30, 15)}>{pKF}%</td><td className={pc(pHF, 20, 10)}>{pHF}%</td><td className={pc(pFin, 15, 8)}>{pFin}%</td><td><Bar p={p1} col="#f59e0b" /></td><td><Bar p={p2} col="#94a3b8" /></td></tr>
+    })}
+  </tbody></table></div>)
 }
 
 // ══════════════════════════════════════
@@ -307,7 +383,9 @@ function O16FinRes({ results, N, myTeam }) {
 export default function SimTab({ data, myTeam, effectiveComp }) {
   const o16 = IS_O16(effectiveComp)
   const pouleOrder = o16 ? POULE_ORDER_16 : POULE_ORDER_14
+  const isFocusMode = !!myTeam
   const myMatches = useMemo(() => myTeam ? findMyMatches(data, myTeam, pouleOrder) : [], [data, myTeam, pouleOrder])
+  const allRounds = useMemo(() => findAllMatchesByRound(data, pouleOrder), [data, pouleOrder])
 
   const [N, setN] = useState(20000)
   const [locks, setLocks] = useState({})
@@ -317,10 +395,12 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
   const [simNote, setSimNote] = useState('')
   const [subTab, setSubTab] = useState(o16 ? 'poules' : 'super')
 
-  const hasLocks = Object.keys(locks).length > 0
+  const hasLocks = Object.keys(locks).filter(k => locks[k]).length > 0
 
-  function run(currentLocks) {
-    const simLocks = currentLocks !== undefined ? currentLocks : buildSimLocks(myMatches, locks)
+  function doSim(currentLocks) {
+    const simLocks = isFocusMode
+      ? buildFocusSimLocks(myMatches, currentLocks || locks)
+      : buildAllSimLocks(currentLocks || locks)
     setRunning(true)
     setTimeout(() => {
       const r = o16 ? runSimO16(data, N, 0, simLocks) : runSimO14(data, N, 0, simLocks)
@@ -330,7 +410,6 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
     }, 20)
   }
 
-  // Run baseline + initial on mount
   useEffect(() => {
     const base = o16 ? runSimO16(data, N, 0) : runSimO14(data, N, 0)
     setBaseResults(base)
@@ -343,30 +422,32 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
     if (outcome === null || locks[lockKey] === outcome) delete newLocks[lockKey]
     else newLocks[lockKey] = outcome
     setLocks(newLocks)
-    // Auto-run with new locks
-    const simLocks = buildSimLocks(myMatches, newLocks)
-    setRunning(true)
-    setTimeout(() => {
-      const r = o16 ? runSimO16(data, N, 0, simLocks) : runSimO14(data, N, 0, simLocks)
-      setResults(r)
-      setSimNote(`${N.toLocaleString('nl-NL')} sim · ${new Date().toLocaleString('nl-NL')}`)
-      setRunning(false)
-    }, 20)
+    doSim(newLocks)
   }
 
   function onSetAll(outcome) {
     const newLocks = {}
-    if (outcome !== null) { for (const m of myMatches) newLocks[m.lockKey] = outcome }
+    const matches = isFocusMode ? myMatches : allRounds.flatMap(r => r.matches)
+    if (outcome !== null) { for (const m of matches) newLocks[m.lockKey] = outcome }
     setLocks(newLocks)
-    const simLocks = buildSimLocks(myMatches, newLocks)
-    setRunning(true)
-    setTimeout(() => {
-      const r = o16 ? runSimO16(data, N, 0, simLocks) : runSimO14(data, N, 0, simLocks)
-      setResults(r)
-      setSimNote(`${N.toLocaleString('nl-NL')} sim · ${new Date().toLocaleString('nl-NL')}`)
-      setRunning(false)
-    }, 20)
+    doSim(newLocks)
   }
+
+  function onSetRound(round, outcome) {
+    const newLocks = { ...locks }
+    for (const m of round.matches) {
+      if (outcome === null) delete newLocks[m.lockKey]
+      else newLocks[m.lockKey] = outcome
+    }
+    setLocks(newLocks)
+    doSim(newLocks)
+  }
+
+  // For adjusted standings in all-matches mode, locks are already from home perspective
+  const standingsLocks = useMemo(() => {
+    if (isFocusMode) return buildFocusSimLocks(myMatches, locks)
+    return buildAllSimLocks(locks)
+  }, [isFocusMode, myMatches, locks])
 
   const subTabs = o16
     ? [['poules', 'Poules'], ['eindkansen', 'Eindkansen']]
@@ -374,11 +455,14 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
 
   return (
     <div>
-      {/* What-if panel */}
-      <WhatIfPanel myTeam={myTeam} myMatches={myMatches} locks={locks} onToggle={onToggle} onSetAll={onSetAll} />
+      {/* What-if: focus mode or all-matches mode */}
+      {isFocusMode
+        ? <FocusWhatIfPanel myTeam={myTeam} myMatches={myMatches} locks={locks} onToggle={onToggle} onSetAll={onSetAll} />
+        : <AllMatchesPanel data={data} rounds={allRounds} locks={locks} onToggle={onToggle} onSetRound={onSetRound} onResetAll={() => onSetAll(null)} myTeam={myTeam} />
+      }
 
-      {/* Adjusted standings after what-if */}
-      {hasLocks && <AdjustedStandingsCard data={data} myTeam={myTeam} locks={locks} myMatches={myMatches} pouleOrder={pouleOrder} />}
+      {/* Adjusted standings */}
+      {hasLocks && <AdjustedStandingsCards data={data} locks={standingsLocks} pouleOrder={pouleOrder} myTeam={myTeam} />}
 
       {/* NK chances for focus club */}
       <NKChances myTeam={myTeam} results={results} baseResults={baseResults} N={N} o16={o16} hasLocks={hasLocks} />
@@ -388,14 +472,12 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
         <span className="ctrl-label">Simulaties:</span>
         <input type="range" min="2000" max="500000" step="2000" value={N} onChange={e => setN(parseInt(e.target.value, 10))} style={{ width: 180 }} />
         <span className="ctrl-val">{N.toLocaleString('nl-NL')}</span>
-        <button className="run-btn" onClick={() => run()} disabled={running}>{running ? 'Bezig...' : 'Herbereken'}</button>
+        <button className="run-btn" onClick={() => doSim()} disabled={running}>{running ? 'Bezig...' : 'Herbereken'}</button>
       </div>
 
       {/* Detail sub-tabs */}
       <div className="sub-tabs">
-        {subTabs.map(([id, lbl]) => (
-          <button key={id} className={`sub-tab ${subTab === id ? 'active' : ''}`} onClick={() => setSubTab(id)}>{lbl}</button>
-        ))}
+        {subTabs.map(([id, lbl]) => <button key={id} className={`sub-tab ${subTab === id ? 'active' : ''}`} onClick={() => setSubTab(id)}>{lbl}</button>)}
       </div>
 
       {results && <>
