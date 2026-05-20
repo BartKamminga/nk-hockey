@@ -1,86 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useMemo, useCallback } from 'react'
 import { VERSION, CHANGELOG, COMP_ORDER, COMP_LABELS, COMP_LABELS_LONG, IS_O16, POULE_ORDER_14, POULE_ORDER_16, NK14_SLOTS, DATA_URLS, getSavedClub, saveClub, getSavedComp, saveComp } from './constants'
 import { NK_SCHEDULES } from './data/nk-schedules'
 import { parseO14, parseO16, findMyTeam, getAllClubs } from './parsers'
 import { SchemaTab } from './components/Shared'
 import { O14OverzichtTab, O14SimTab } from './components/O14'
 import { O16OverzichtTab, O16SimTab } from './components/O16'
-
-function ImportScreen({ onImport }) {
-  const [text, setText] = useState('')
-  const [error, setError] = useState('')
-  const [loaded, setLoaded] = useState([])
-  const fileRef = useRef(null)
-  const mergedRef = useRef({})
-
-  function mergeInto(raw, filename) {
-    try {
-      const comps = mergedRef.current
-      const o14 = parseO14(raw); for (const t in o14) { if (!comps[t]) comps[t] = {}; Object.assign(comps[t], o14[t]) }
-      const o16 = parseO16(raw); for (const t in o16) { if (!comps[t]) comps[t] = {}; Object.assign(comps[t], o16[t]) }
-      mergedRef.current = comps
-      const summary = Object.entries(comps).map(([type, d]) => `${type}: ${Object.keys(d).length} poules`)
-      setLoaded(prev => [...prev, { name: filename, status: '✅', detail: summary.join(', ') }])
-      setError('')
-      return true
-    } catch (e) {
-      setLoaded(prev => [...prev, { name: filename, status: '❌', detail: e.message }])
-      return false
-    }
-  }
-
-  function handleFiles(e) {
-    for (const file of e.target.files) {
-      const reader = new FileReader()
-      reader.onload = ev => mergeInto(ev.target.result, file.name)
-      reader.readAsText(file)
-    }
-  }
-
-  function handleDrop(e) {
-    e.preventDefault()
-    for (const file of e.dataTransfer.files) {
-      const reader = new FileReader()
-      reader.onload = ev => mergeInto(ev.target.result, file.name)
-      reader.readAsText(file)
-    }
-  }
-
-  const totalComps = Object.keys(mergedRef.current).length
-  const totalPoules = Object.values(mergedRef.current).reduce((s, d) => s + Object.keys(d).length, 0)
-
-  return (
-    <div className="import-screen">
-      <h2>🏑 NK Simulatie</h2>
-      <p>Ondersteunt MO14, JO14, MO16, JO16. Upload meerdere bestanden — ze worden samengevoegd.</p>
-      <div style={{ border: '2px dashed #ccc', borderRadius: 10, padding: 20, background: '#fff', marginBottom: 12, cursor: 'pointer', textAlign: 'center' }}
-        onDrop={handleDrop} onDragOver={e => e.preventDefault()} onClick={() => fileRef.current.click()}>
-        <div style={{ fontSize: 24, marginBottom: 6 }}>📁</div>
-        <div style={{ fontSize: 13, color: '#888' }}>Sleep bestanden hierheen of klik om te selecteren</div>
-        <div style={{ fontSize: 11, color: '#bbb', marginTop: 4 }}>Meerdere bestanden tegelijk mogelijk</div>
-      </div>
-      <input type="file" accept=".json" multiple ref={fileRef} onChange={handleFiles} style={{ display: 'none' }} />
-      {loaded.length > 0 && (
-        <div style={{ textAlign: 'left', marginBottom: 12 }}>
-          {loaded.map((f, i) => <div key={i} style={{ fontSize: 11, fontFamily: "'DM Mono',monospace", padding: '3px 0', color: f.status === '✅' ? '#16a34a' : '#dc2626' }}>{f.status} {f.name} — {f.detail}</div>)}
-          {totalComps > 0 && <div style={{ fontSize: 12, fontWeight: 600, marginTop: 6, color: '#1a1a1a' }}>Totaal: {totalComps} competities · {totalPoules} poules</div>}
-        </div>
-      )}
-      <div style={{ borderTop: '1px solid #eee', paddingTop: 12, marginTop: 8 }}>
-        <div style={{ fontSize: 11, color: '#999', marginBottom: 6 }}>Of plak JSON:</div>
-        <textarea className="import-area" style={{ minHeight: 80 }} value={text} onChange={e => setText(e.target.value)}
-          onPaste={e => { setTimeout(() => { const v = e.target.value; if (v.trim().startsWith('{')) { mergeInto(v, 'clipboard'); setText(v) } }, 50) }}
-          placeholder="Plak JSON hier..." />
-        {text && <button className="demo-btn" style={{ marginTop: 6 }} onClick={() => mergeInto(text, 'textarea')}>+ Toevoegen</button>}
-      </div>
-      {error && <div className="import-error">{error}</div>}
-      <br />
-      <button className="import-btn" onClick={() => { const c = mergedRef.current; if (Object.keys(c).length === 0) { setError('Geen data'); return }; onImport(c) }} disabled={totalComps === 0}>
-        {totalComps > 0 ? `Start met ${totalPoules} poules` : 'Laad eerst data'}
-      </button>
-    </div>
-  )
-}
 
 function ChangelogContent() {
   return (
@@ -106,7 +30,7 @@ export default function App() {
   const [showClubPicker, setShowClubPicker] = useState(false)
   const [focusMode, setFocusMode] = useState(false)
 
-  function fetchFromServer() {
+  const fetchFromServer = useCallback(() => {
     setLoading(true)
     const merged = {}
     const promises = DATA_URLS.map(url =>
@@ -127,37 +51,56 @@ export default function App() {
       }
       setLoading(false)
     })
-  }
+  }, [])
 
-  useEffect(() => { fetchFromServer() }, [])
+  useEffect(() => { fetchFromServer() }, [fetchFromServer])
 
-  const handleImport = c => {
-    setComps(c)
-    const saved = getSavedComp()
-    const first = saved && c[saved] ? saved : COMP_ORDER.find(k => c[k])
-    setActiveComp(first || Object.keys(c)[0])
-    saveComp(first || Object.keys(c)[0])
-    setDataSource('manual')
-  }
+  const types = useMemo(() => comps ? COMP_ORDER.filter(k => comps[k]) : [], [comps])
+
+  const visibleTypes = useMemo(() => {
+    if (!comps || !focusMode || !focusClub) return types
+    return types.filter(t => {
+      const d = comps[t]
+      for (const p in d) {
+        if (d[p].teams && d[p].teams.indexOf(focusClub) >= 0) return true
+      }
+      return false
+    })
+  }, [focusMode, focusClub, types, comps])
+
+  const effectiveComp = useMemo(() => {
+    if (!comps) return null
+    if (focusMode && visibleTypes.indexOf(activeComp) < 0 && visibleTypes.length > 0) return visibleTypes[0]
+    return activeComp
+  }, [focusMode, visibleTypes, activeComp, comps])
+
+  const data = useMemo(() => (effectiveComp ? comps[effectiveComp] || {} : {}), [comps, effectiveComp])
+
+  const filteredData = useMemo(() => {
+    if (!focusMode || !focusClub) return data
+    const filtered = {}
+    for (const pk in data) {
+      if (data[pk].teams && data[pk].teams.indexOf(focusClub) >= 0) filtered[pk] = data[pk]
+    }
+    return filtered
+  }, [focusMode, focusClub, data])
+
+  const label = useMemo(() => effectiveComp ? COMP_LABELS_LONG[effectiveComp] || effectiveComp : '', [effectiveComp])
+
+  const myTeam = useMemo(() => (focusClub && comps && findMyTeam(comps, focusClub)) ? focusClub : null, [comps, focusClub])
+
+  const o16 = useMemo(() => IS_O16(effectiveComp), [effectiveComp])
+
+  const pouleOrder = useMemo(() => (o16 ? POULE_ORDER_16 : POULE_ORDER_14), [o16])
 
   if (loading) return <div className="import-screen"><h2>🏑 NK Simulatie</h2><p>Data laden...</p></div>
-  if (!comps) return <ImportScreen onImport={handleImport} />
-
-  const types = COMP_ORDER.filter(k => comps[k])
-  const visibleTypes = focusMode && focusClub
-    ? types.filter(t => { const d = comps[t]; for (const p in d) { if (d[p].teams && d[p].teams.indexOf(focusClub) >= 0) return true } return false })
-    : types
-  const effectiveComp = focusMode && visibleTypes.indexOf(activeComp) < 0 && visibleTypes.length > 0 ? visibleTypes[0] : activeComp
-  const data = comps[effectiveComp] || {}
-  let filteredData = data
-  if (focusMode && focusClub) {
-    filteredData = {}
-    for (const pk in data) { if (data[pk].teams && data[pk].teams.indexOf(focusClub) >= 0) filteredData[pk] = data[pk] }
-  }
-  const label = COMP_LABELS_LONG[effectiveComp] || effectiveComp
-  const myTeam = focusClub && findMyTeam(comps, focusClub) ? focusClub : null
-  const o16 = IS_O16(effectiveComp)
-  const pouleOrder = o16 ? POULE_ORDER_16 : POULE_ORDER_14
+  if (!comps) return (
+    <div className="import-screen">
+      <h2>🏑 NK Simulatie</h2>
+      <p>Kon de data niet laden vanaf de server.</p>
+      <button className="reload-btn" onClick={fetchFromServer}>Opnieuw proberen</button>
+    </div>
+  )
 
   return (
     <>
