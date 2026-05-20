@@ -11,7 +11,7 @@ export function O14SimTab({ data, myTeam }) {
   const [simNote, setSimNote] = useState('')
   const [subTab, setSubTab] = useState('super')
 
-  const run = useCallback(() => {
+  function run() {
     setRunning(true)
     setTimeout(() => {
       const r = runSimO14(data, N, ha)
@@ -19,9 +19,9 @@ export function O14SimTab({ data, myTeam }) {
       setSimNote(`${N.toLocaleString('nl-NL')} sim · ${ha === 0 ? 'geen thuisvoordeel' : `thuis ${ha}%`} · ${new Date().toLocaleString('nl-NL')}`)
       setRunning(false)
     }, 20)
-  }, [data, N, ha])
+  }
 
-  useEffect(() => { run() }, [run])
+  useEffect(() => { run() }, [])
 
   return (
     <div>

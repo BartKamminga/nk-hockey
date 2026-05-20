@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { POULE_ORDER_16 } from '../../constants'
 import { runSimO16 } from '../../simulation'
 import { pct, pc, Bar } from '../Shared'
@@ -10,7 +10,7 @@ export function O16SimTab({ data, myTeam }) {
   const [running, setRunning] = useState(false)
   const [simNote, setSimNote] = useState('')
 
-  const run = useCallback(() => {
+  function run() {
     setRunning(true)
     setTimeout(() => {
       const r = runSimO16(data, N, ha)
@@ -18,9 +18,9 @@ export function O16SimTab({ data, myTeam }) {
       setSimNote(`${N.toLocaleString('nl-NL')} sim · ${new Date().toLocaleString('nl-NL')}`)
       setRunning(false)
     }, 20)
-  }, [data, N, ha])
+  }
 
-  useEffect(() => { run() }, [run])
+  useEffect(() => { run() }, [])
 
   const pk = useMemo(() => POULE_ORDER_16.filter(id => data[id]), [data])
 
