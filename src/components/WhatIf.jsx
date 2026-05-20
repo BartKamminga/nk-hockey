@@ -54,6 +54,23 @@ export default function WhatIfTab({ data, myTeam, effectiveComp }) {
     setResults(base)
   }, [data, N, o16])
 
+  // Locks stored from FOCUS CLUB perspective, but simPoule needs HOME perspective
+  // So we translate: if focus club is away, W→L and L→W
+  function buildSimLocks(uiLocks) {
+    const simLocks = {}
+    for (const m of myMatches) {
+      const ui = uiLocks[m.lockKey]
+      if (!ui) continue
+      if (m.isHome) {
+        simLocks[m.lockKey] = ui // focus = home, no flip needed
+      } else {
+        // focus = away, flip W↔L
+        simLocks[m.lockKey] = ui === 'W' ? 'L' : ui === 'L' ? 'W' : 'D'
+      }
+    }
+    return simLocks
+  }
+
   function toggleOutcome(lockKey, current) {
     const order = [null, 'W', 'D', 'L']
     const idx = order.indexOf(current)
@@ -62,7 +79,7 @@ export default function WhatIfTab({ data, myTeam, effectiveComp }) {
     if (next === null) delete newLocks[lockKey]
     else newLocks[lockKey] = next
     setLocks(newLocks)
-    runSim(newLocks)
+    runSim(buildSimLocks(newLocks))
   }
 
   function setAll(outcome) {
@@ -71,7 +88,7 @@ export default function WhatIfTab({ data, myTeam, effectiveComp }) {
       for (const m of myMatches) newLocks[m.lockKey] = outcome
     }
     setLocks(newLocks)
-    runSim(newLocks)
+    runSim(buildSimLocks(newLocks))
   }
 
   const lockedCount = Object.keys(locks).length
