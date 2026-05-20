@@ -384,8 +384,23 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
   const o16 = IS_O16(effectiveComp)
   const pouleOrder = o16 ? POULE_ORDER_16 : POULE_ORDER_14
   const isFocusMode = focusMode && !!myTeam
+
+  // Find which poule the team is in
+  const myPouleId = useMemo(() => {
+    if (!myTeam) return null
+    for (const id of pouleOrder) {
+      if (data[id] && data[id].teams.indexOf(myTeam) >= 0) return id
+    }
+    return null
+  }, [data, myTeam, pouleOrder])
+
   const myMatches = useMemo(() => myTeam ? findMyMatches(data, myTeam, pouleOrder) : [], [data, myTeam, pouleOrder])
-  const allRounds = useMemo(() => findAllMatchesByRound(data, pouleOrder), [data, pouleOrder])
+
+  // All matches from my poule only (not all poules)
+  const myPouleRounds = useMemo(() => {
+    if (!myPouleId) return findAllMatchesByRound(data, pouleOrder)
+    return findAllMatchesByRound(data, [myPouleId])
+  }, [data, myPouleId, pouleOrder])
 
   const [N, setN] = useState(20000)
   const [locks, setLocks] = useState({})
@@ -427,7 +442,7 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
 
   function onSetAll(outcome) {
     const newLocks = {}
-    const matches = isFocusMode ? myMatches : allRounds.flatMap(r => r.matches)
+    const matches = isFocusMode ? myMatches : myPouleRounds.flatMap(r => r.matches)
     if (outcome !== null) { for (const m of matches) newLocks[m.lockKey] = outcome }
     setLocks(newLocks)
     doSim(newLocks)
@@ -458,7 +473,7 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
       {/* What-if: focus mode or all-matches mode */}
       {isFocusMode
         ? <FocusWhatIfPanel myTeam={myTeam} myMatches={myMatches} locks={locks} onToggle={onToggle} onSetAll={onSetAll} />
-        : <AllMatchesPanel data={data} rounds={allRounds} locks={locks} onToggle={onToggle} onSetRound={onSetRound} onResetAll={() => onSetAll(null)} myTeam={myTeam} />
+        : <AllMatchesPanel data={data} rounds={myPouleRounds} locks={locks} onToggle={onToggle} onSetRound={onSetRound} onResetAll={() => onSetAll(null)} myTeam={myTeam} />
       }
 
       {/* Adjusted standings */}
