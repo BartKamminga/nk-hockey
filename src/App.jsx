@@ -5,6 +5,7 @@ import { parseO14, parseO16, findMyTeam, getAllClubs } from './parsers'
 import { SchemaTab } from './components/Shared'
 import { O14OverzichtTab, O14SimTab } from './components/O14'
 import { O16OverzichtTab, O16SimTab } from './components/O16'
+import WhatIfTab from './components/WhatIf'
 
 function ChangelogContent() {
   return (
@@ -152,7 +153,7 @@ export default function App() {
       </>}
 
       <div className="main-tabs">
-        {[['overzicht', '📋 Overzicht'], ['schema', '📅 Speelschema'], ['sim', '🎲 Simulaties']].map(([id, lbl]) =>
+        {[['overzicht', '📋 Overzicht'], ['schema', '📅 Speelschema'], ['sim', '🎲 Simulaties'], ['whatif', '🔮 What-if']].map(([id, lbl]) =>
           <button key={id} className={`main-tab ${mainTab === id ? 'active' : ''}`} onClick={() => setMainTab(id)}>{lbl}</button>
         )}
       </div>
@@ -166,6 +167,7 @@ export default function App() {
         ? <O16SimTab data={data} myTeam={myTeam} key={effectiveComp} />
         : <O14SimTab data={data} myTeam={myTeam} key={effectiveComp} />
       )}
+      {mainTab === 'whatif' && <WhatIfTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} key={effectiveComp + '_whatif'} />}
 
       <footer>NK {label} · v{VERSION} · data {dataSource === 'server' ? 'van server' : 'handmatig'}</footer>
     </>

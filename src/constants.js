@@ -18,8 +18,16 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.0'
+export const VERSION = '5.1'
 export const CHANGELOG = [
+  { version: '5.1', date: '20 mei 2026', changes: [
+    'What-if tab: stel resultaten in voor resterende wedstrijden van je club',
+    'Klik op een wedstrijd om te wisselen: ? → W → G → V → ?',
+    'NK-kansen herberekenen live met vastgezette resultaten',
+    'Verschil met baseline getoond (+5%, -3%) per NK-fase',
+    'Preset knoppen: Alles winst / Alles gelijk / Alles verlies / Reset',
+    'Werkt voor zowel O14 als O16 competities',
+  ]},
   { version: '5.0', date: '20 mei 2026', changes: [
     'Migratie naar Vite + React — snellere builds, betere code-structuur',
     'Componenten opgesplitst in aparte bestanden',

@@ -10,14 +10,25 @@ export const simMatch = (ha) => {
 export const simGD = () => 1 + Math.floor(Math.random() * 4)
 export const simKO = () => Math.random() < 0.5 ? 'home' : 'away'
 
-export function simPoule(poule, ha) {
+export function simPoule(poule, ha, locks) {
   const pts = [...poule.pts], ds = [...poule.ds]
-  for (const [h, a] of poule.remaining) {
+  for (let mi = 0; mi < poule.remaining.length; mi++) {
+    const [h, a] = poule.remaining[mi]
     const hi = poule.teams.indexOf(h), ai = poule.teams.indexOf(a)
     if (hi < 0 || ai < 0) continue
-    const [hp, ap] = simMatch(ha)
+    const lockKey = `${h}_${a}`
+    const locked = locks && locks[lockKey]
+    let hp, ap, gd
+    if (locked) {
+      // locked: 'W' (home wins), 'D' (draw), 'L' (home loses)
+      hp = locked === 'W' ? 3 : locked === 'D' ? 1 : 0
+      ap = locked === 'W' ? 0 : locked === 'D' ? 1 : 3
+      gd = locked === 'D' ? 0 : simGD()
+    } else {
+      ;[hp, ap] = simMatch(ha)
+      gd = simGD()
+    }
     pts[hi] += hp; pts[ai] += ap
-    const gd = simGD()
     if (hp > ap) { ds[hi] += gd; ds[ai] -= gd }
     else if (ap > hp) { ds[ai] += gd; ds[hi] -= gd }
   }
@@ -36,7 +47,7 @@ export function simNKPoule(names) {
   return pts.map((_, i) => i).sort((a, b) => pts[b] !== pts[a] ? pts[b] - pts[a] : ds[b] - ds[a])
 }
 
-export function runSimO14(data, N, ha) {
+export function runSimO14(data, N, ha, locks) {
   const NK14_SLOTS = { A: ['A', 'B'], B: ['B', 'A'], C: ['A', 'B'], D: ['B', 'A'], E: ['A', 'B'] }
   const POULE_ORDER = ['A', 'B', 'C', 'D', 'E']
   const ss = {}
@@ -46,7 +57,7 @@ export function runSimO14(data, N, ha) {
   const pk = POULE_ORDER.filter(k => data[k])
   for (let s = 0; s < N; s++) {
     const st = {}
-    for (const id of pk) { const o = simPoule(data[id], ha); st[id] = o.map(i => data[id].teams[i]); for (let r = 0; r < data[id].teams.length; r++) ss[id][o[r]][r]++ }
+    for (const id of pk) { const o = simPoule(data[id], ha, locks); st[id] = o.map(i => data[id].teams[i]); for (let r = 0; r < data[id].teams.length; r++) ss[id][o[r]][r]++ }
     const nkA = pk.filter(k => NK14_SLOTS[k][0] === 'A').map(k => st[k][0]).concat(pk.filter(k => NK14_SLOTS[k][1] === 'A').map(k => st[k][1]))
     const nkB = pk.filter(k => NK14_SLOTS[k][0] === 'B').map(k => st[k][0]).concat(pk.filter(k => NK14_SLOTS[k][1] === 'B').map(k => st[k][1]))
     for (const t of nkA) { nkAa[t] = (nkAa[t] || 0) + 1; if (!nkAp[t]) nkAp[t] = Array(5).fill(0); ensF(t); fin[t].appear++ }
@@ -66,7 +77,7 @@ export function runSimO14(data, N, ha) {
   return { ss, nkAp, nkBp, nkAa, nkBa, fin }
 }
 
-export function runSimO16(data, N, ha) {
+export function runSimO16(data, N, ha, locks) {
   const POULE_ORDER = ['A', 'B', 'C', 'D']
   const ss = {}
   for (const id of Object.keys(data)) ss[id] = data[id].teams.map(() => Array(6).fill(0))
@@ -75,7 +86,7 @@ export function runSimO16(data, N, ha) {
   const pk = POULE_ORDER.filter(k => data[k])
   for (let s = 0; s < N; s++) {
     const st = {}
-    for (const id of pk) { const o = simPoule(data[id], ha); st[id] = o.map(i => data[id].teams[i]); for (let r = 0; r < data[id].teams.length; r++) ss[id][o[r]][r]++ }
+    for (const id of pk) { const o = simPoule(data[id], ha, locks); st[id] = o.map(i => data[id].teams[i]); for (let r = 0; r < data[id].teams.length; r++) ss[id][o[r]][r]++ }
     const nr1s = pk.map(k => ({ team: st[k][0], pts: data[k].pts[data[k].teams.indexOf(st[k][0])] || 0 }))
     const nr2s = pk.map(k => ({ team: st[k][1], pts: data[k].pts[data[k].teams.indexOf(st[k][1])] || 0 }))
     nr1s.sort((a, b) => b.pts !== a.pts ? b.pts - a.pts : Math.random() - 0.5)
