@@ -380,10 +380,10 @@ function O16FinRes({ results, N, myTeam }) {
 // ══════════════════════════════════════
 // MAIN: unified SimTab
 // ══════════════════════════════════════
-export default function SimTab({ data, myTeam, effectiveComp }) {
+export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
   const o16 = IS_O16(effectiveComp)
   const pouleOrder = o16 ? POULE_ORDER_16 : POULE_ORDER_14
-  const isFocusMode = !!myTeam
+  const isFocusMode = focusMode && !!myTeam
   const myMatches = useMemo(() => myTeam ? findMyMatches(data, myTeam, pouleOrder) : [], [data, myTeam, pouleOrder])
   const allRounds = useMemo(() => findAllMatchesByRound(data, pouleOrder), [data, pouleOrder])
 
