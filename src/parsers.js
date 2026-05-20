@@ -29,7 +29,7 @@ export function parseO14(raw) {
       if (!comp.includes('O14') || cls !== 'Super') continue
       const type = comp.includes('Jongens') ? 'JO14' : 'MO14'
       const st = d.poule.standings || [], ma = d.poule.matches || []
-      const pl = ma.filter(m => m.status === 'final'), re = ma.filter(m => m.status === 'scheduled')
+      const pl = ma.filter(m => m.status === 'final'), re = ma.filter(m => m.status === 'scheduled' || m.status === 'announced')
       if (!comps[type]) comps[type] = {}
       comps[type][pn] = {
         teams: st.map(s => clean14(s.team.name)),
@@ -69,7 +69,7 @@ export function parseO16(raw) {
     const letter = (p.name || '').replace('Poule ', '')
     if (!POULE_ORDER_16.includes(letter)) continue
     const st = p.standings || [], ma = p.matches || []
-    const pl = ma.filter(m => m.status === 'final'), re = ma.filter(m => m.status === 'scheduled')
+    const pl = ma.filter(m => m.status === 'final'), re = ma.filter(m => m.status === 'scheduled' || m.status === 'announced')
     result[letter] = {
       teams: st.map(s => clean16(s.team.name)),
       pts: st.map(s => s.points),
