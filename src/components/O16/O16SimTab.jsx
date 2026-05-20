@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react'
-import { POULE_ORDER_16 } from '../constants'
-import { runSimO16 } from '../simulation'
-import { pct, pc, Bar } from './Shared'
+import { POULE_ORDER_16 } from '../../constants'
+import { runSimO16 } from '../../simulation'
+import { pct, pc, Bar } from '../Shared'
 
 export function O16SimTab({ data, myTeam }) {
   const [N, setN] = useState(20000)
