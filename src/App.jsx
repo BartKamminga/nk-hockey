@@ -3,9 +3,9 @@ import { VERSION, CHANGELOG, COMP_ORDER, COMP_LABELS, COMP_LABELS_LONG, IS_O16, 
 import { NK_SCHEDULES } from './data/nk-schedules'
 import { parseO14, parseO16, findMyTeam, getAllClubs } from './parsers'
 import { SchemaTab } from './components/Shared'
-import { O14OverzichtTab, O14SimTab } from './components/O14'
-import { O16OverzichtTab, O16SimTab } from './components/O16'
-import WhatIfTab from './components/WhatIf'
+import { O14OverzichtTab } from './components/O14'
+import { O16OverzichtTab } from './components/O16'
+import SimTab from './components/SimTab'
 
 function ChangelogContent() {
   return (
@@ -153,7 +153,7 @@ export default function App() {
       </>}
 
       <div className="main-tabs">
-        {[['overzicht', '📋 Overzicht'], ['schema', '📅 Speelschema'], ['sim', '🎲 Simulaties'], ['whatif', '🔮 What-if']].map(([id, lbl]) =>
+        {[['overzicht', '📋 Overzicht'], ['schema', '📅 Speelschema'], ['sim', '🎲 Simulaties']].map(([id, lbl]) =>
           <button key={id} className={`main-tab ${mainTab === id ? 'active' : ''}`} onClick={() => setMainTab(id)}>{lbl}</button>
         )}
       </div>
@@ -163,11 +163,7 @@ export default function App() {
         : <O14OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]} />
       )}
       {mainTab === 'schema' && <SchemaTab data={focusMode ? filteredData : data} myTeam={myTeam} pouleOrder={pouleOrder} />}
-      {mainTab === 'sim' && (o16
-        ? <O16SimTab data={data} myTeam={myTeam} key={effectiveComp} />
-        : <O14SimTab data={data} myTeam={myTeam} key={effectiveComp} />
-      )}
-      {mainTab === 'whatif' && <WhatIfTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} key={effectiveComp + '_whatif'} />}
+      {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} key={effectiveComp + '_sim'} />}
 
       <footer>NK {label} · v{VERSION} · data {dataSource === 'server' ? 'van server' : 'handmatig'}</footer>
     </>

@@ -18,8 +18,18 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.1.1'
+export const VERSION = '5.2'
 export const CHANGELOG = [
+  { version: '5.2', date: '20 mei 2026', changes: [
+    'Simulaties en What-if samengevoegd in één tab',
+    'What-if scenario-panel bovenaan met W/G/V knoppen per wedstrijd',
+    'NK kansen focus club direct onder de scenario\'s met verschil t.o.v. baseline',
+    'Sim-slider en detail-tabellen (Super-poules / NK Poulefase / Eindkansen) daaronder',
+    'What-if tab verwijderd — alles zit nu in Simulaties',
+    'What-if herberekent automatisch bij wijzigen scenario; slider alleen via knop',
+    'Fix: sliders triggeren niet meer automatisch herberekening',
+    'Fix: actieve tab behouden bij wisselen van competitie',
+  ]},
   { version: '5.1.1', date: '20 mei 2026', changes: [
     'Fix: announced wedstrijden nu ook meegenomen als resterend (naast scheduled)',
     'Fix: What-if W/G/V nu vanuit perspectief focus club, niet thuisclub',
