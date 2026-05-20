@@ -85,6 +85,91 @@ function WhatIfPanel({ myTeam, myMatches, locks, onToggle, onSetAll }) {
 }
 
 // ══════════════════════════════════════
+// ADJUSTED STANDINGS: show poule with what-if points applied
+// ══════════════════════════════════════
+function calcAdjustedStandings(data, myTeam, locks, myMatches, pouleOrder) {
+  if (!myTeam || Object.keys(locks).length === 0) return null
+  // Find which poule the focus club is in
+  let myPouleId = null
+  for (const id of pouleOrder) {
+    if (data[id] && data[id].teams.indexOf(myTeam) >= 0) { myPouleId = id; break }
+  }
+  if (!myPouleId) return null
+  const poule = data[myPouleId]
+
+  // Calculate point deltas from locked matches
+  const deltas = {}
+  for (const m of myMatches) {
+    const ui = locks[m.lockKey]
+    if (!ui) continue
+    // Points from focus club perspective
+    const myPts = ui === 'W' ? 3 : ui === 'D' ? 1 : 0
+    const oppPts = ui === 'W' ? 0 : ui === 'D' ? 1 : 3
+    deltas[myTeam] = (deltas[myTeam] || 0) + myPts
+    deltas[m.opponent] = (deltas[m.opponent] || 0) + oppPts
+  }
+
+  // Build adjusted standings
+  const adjusted = poule.teams.map((team, i) => ({
+    team,
+    pts: poule.pts[i],
+    ds: poule.ds[i],
+    delta: deltas[team] || 0,
+    newPts: poule.pts[i] + (deltas[team] || 0),
+  }))
+  // Sort by new points then DS
+  adjusted.sort((a, b) => b.newPts !== a.newPts ? b.newPts - a.newPts : b.ds - a.ds)
+
+  return { pouleId: myPouleId, standings: adjusted }
+}
+
+function AdjustedStandingsCard({ data, myTeam, locks, myMatches, pouleOrder }) {
+  const result = useMemo(
+    () => calcAdjustedStandings(data, myTeam, locks, myMatches, pouleOrder),
+    [data, myTeam, locks, myMatches, pouleOrder]
+  )
+  if (!result) return null
+
+  return (
+    <div className="card" style={{ marginBottom: 16 }}>
+      <div className="card-header" style={{ justifyContent: 'space-between' }}>
+        <span>Poule {result.pouleId} — stand na scenario</span>
+        <span style={{ fontSize: 10, color: '#888', fontWeight: 400 }}>punten uit vastgezette wedstrijden</span>
+      </div>
+      <table><tbody>
+        {result.standings.map((s, i) => {
+          const isMy = s.team === myTeam
+          const hasDelta = s.delta !== 0
+          return (
+            <tr key={s.team} style={isMy ? { background: '#eff6ff' } : {}}>
+              <td className="td-rank">{i + 1}</td>
+              <td style={{ padding: '6px 12px', fontSize: 12.5, fontWeight: isMy ? 600 : 400 }}>{s.team}</td>
+              <td style={{ textAlign: 'right', padding: '6px 12px', fontFamily: "'DM Mono',monospace", fontSize: 12 }}>
+                {s.pts}
+                {hasDelta && (
+                  <span style={{
+                    color: s.delta > 0 ? '#16a34a' : '#dc2626',
+                    fontSize: 11,
+                    fontWeight: 600,
+                    marginLeft: 2,
+                  }}>+{s.delta}</span>
+                )}
+                {hasDelta && (
+                  <span style={{ color: '#555', marginLeft: 4 }}>= {s.newPts}</span>
+                )}
+              </td>
+              <td className="td-ds" style={{ color: s.ds >= 0 ? '#16a34a' : '#dc2626' }}>
+                {s.ds >= 0 ? '+' : ''}{s.ds}
+              </td>
+            </tr>
+          )
+        })}
+      </tbody></table>
+    </div>
+  )
+}
+
+// ══════════════════════════════════════
 // NK CHANCES: focus club summary
 // ══════════════════════════════════════
 function NKChances({ myTeam, results, baseResults, N, o16, hasLocks }) {
@@ -291,6 +376,9 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
     <div>
       {/* What-if panel */}
       <WhatIfPanel myTeam={myTeam} myMatches={myMatches} locks={locks} onToggle={onToggle} onSetAll={onSetAll} />
+
+      {/* Adjusted standings after what-if */}
+      {hasLocks && <AdjustedStandingsCard data={data} myTeam={myTeam} locks={locks} myMatches={myMatches} pouleOrder={pouleOrder} />}
 
       {/* NK chances for focus club */}
       <NKChances myTeam={myTeam} results={results} baseResults={baseResults} N={N} o16={o16} hasLocks={hasLocks} />

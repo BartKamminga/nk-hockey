@@ -18,8 +18,15 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.2'
+export const VERSION = '5.2.1'
 export const CHANGELOG = [
+  { version: '5.2.1', date: '20 mei 2026', changes: [
+    'Poule-stand na scenario: toont punten met what-if resultaten verwerkt',
+    'Per team: huidige punten + delta + nieuw totaal (bijv. "21 +3 = 24")',
+    'Stand wordt automatisch opnieuw gesorteerd op nieuwe punten',
+    'Alleen zichtbaar als er scenario\'s zijn ingesteld',
+    'Opgeruimd: oude O14SimTab, O16SimTab en WhatIf bestanden verwijderd',
+  ]},
   { version: '5.2', date: '20 mei 2026', changes: [
     'Simulaties en What-if samengevoegd in één tab',
     'What-if scenario-panel bovenaan met W/G/V knoppen per wedstrijd',
