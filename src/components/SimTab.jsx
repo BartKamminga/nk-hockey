@@ -727,7 +727,6 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
 
       {/* Eindkansen */}
       {results && <>
-        <div className="section-label">Eindkansen alle teams</div>
         {!o16 && <O14FinRes results={results} N={N} myTeam={myTeam} />}
         {o16 && <O16FinRes results={results} N={N} myTeam={myTeam} />}
       </>}
