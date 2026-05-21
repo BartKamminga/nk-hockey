@@ -228,19 +228,27 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
   const expected = useMemo(() => getExpectedStandings(data, locks, POULE_ORDER_14), [data, locks])
   if (!nkSchedule) return null
 
-  // Build slot→team mapping from expected standings
+  // Build slot→team mapping from expected standings using NK14_SLOTS
   const slot2t = {}
   for (const id of POULE_ORDER_14) {
     if (!expected[id]) continue
+    // expected[id] is sorted by points, [0] = nr 1, [1] = nr 2
     slot2t[`${id} nr 1`] = expected[id][0]?.team || `${id} nr 1`
     slot2t[`${id} nr 2`] = expected[id][1]?.team || `${id} nr 2`
   }
 
   const { schedA, schedB, timesA, timesB, poulefaseDate } = nkSchedule
 
-  // Collect teams per NK poule
-  const nkTeamsA = [...new Set(schedA.flatMap(m => [slot2t[m.home] || m.home, slot2t[m.away] || m.away]))]
-  const nkTeamsB = [...new Set(schedB.flatMap(m => [slot2t[m.home] || m.home, slot2t[m.away] || m.away]))]
+  // Collect teams per NK poule using NK14_SLOTS mapping
+  // NK14_SLOTS[A] = ['A','B'] means: A nr 1 → NK Poule A, A nr 2 → NK Poule B
+  const nkTeamsA = [], nkTeamsB = []
+  for (const id of POULE_ORDER_14) {
+    if (!expected[id]) continue
+    const [slot1, slot2] = NK14_SLOTS[id]
+    const t1 = expected[id][0]?.team, t2 = expected[id][1]?.team
+    if (t1) (slot1 === 'A' ? nkTeamsA : nkTeamsB).push(t1)
+    if (t2) (slot2 === 'A' ? nkTeamsA : nkTeamsB).push(t2)
+  }
 
   // Convert NK schedule to rounds with lockKeys
   const buildNKRounds = (schedule, times, pouleLabel) => {
