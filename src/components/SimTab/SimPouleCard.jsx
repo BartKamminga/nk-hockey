@@ -47,6 +47,19 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
   const completedRounds = rounds.filter(r => r.matches.every(m => locks[m.lockKey])).length
   const openRounds = totalRounds - completedRounds
 
+  // Build combined matches: played + locked predictions (for form calculation)
+  const allMatches = matchesPlayed ? [...matchesPlayed] : []
+  for (const round of rounds) {
+    for (const m of round.matches) {
+      const raw = locks[m.lockKey]
+      if (!raw) continue
+      const lock = typeof raw === 'string' ? { result: raw } : raw
+      const scoreH = lock.scoreH != null ? lock.scoreH : (lock.result === 'W' ? 1 : lock.result === 'D' ? 0 : 0)
+      const scoreA = lock.scoreA != null ? lock.scoreA : (lock.result === 'L' ? 1 : lock.result === 'D' ? 0 : 0)
+      allMatches.push({ home: m.h, away: m.a, score: `${scoreH}-${scoreA}`, round: round.roundNum + 100 })
+    }
+  }
+
   return (
     <div className="card">
       <div className={`card-header ${headerClass || ''}`} style={{ justifyContent: 'space-between' }}>
@@ -57,7 +70,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
       {!hideStandings && <table><tbody>
         {standings.map((s, i) => {
           const isMy = s.team === myTeam
-          const form = matchesPlayed ? getTeamForm(s.team, matchesPlayed) : []
+          const form = getTeamForm(s.team, allMatches)
           return (
             <tr key={s.team} style={isMy ? { background: '#eff6ff' } : {}}>
               <td className="td-rank">{i + 1}</td>
