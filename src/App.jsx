@@ -70,8 +70,7 @@ export default function App() {
           </div>
           <div className="top-end">
             <button className="reload-btn" onClick={() => setShowSettings(!showSettings)} title="Instellingen">⚙️</button>
-            <button className="reload-btn" onClick={() => fetchFromServer()} title="Herlaad data">↻</button>
-            <button className="reload-btn" onClick={() => setShowVersion(!showVersion)} title="Versiegeschiedenis">v{VERSION}</button>
+            <button className="reload-btn" onClick={() => setShowVersion(!showVersion)} title="Menu">v{VERSION}</button>
           </div>
         </div>
         <div className="top-comp-row">
@@ -83,9 +82,10 @@ export default function App() {
       {showVersion && <>
         <div className="version-overlay" onClick={() => setShowVersion(false)}></div>
         <div className="version-popup">
-          <div className="version-popup-header"><span>Versiegeschiedenis</span><button className="version-close" onClick={() => setShowVersion(false)}>✕</button></div>
+          <div className="version-popup-header"><span>🏑 NK Hockey v{VERSION}</span><button className="version-close" onClick={() => setShowVersion(false)}>✕</button></div>
           <div className="version-popup-body">
             <div style={{ marginBottom: 12, display: 'flex', gap: 6 }}>
+              <button className="reload-btn" onClick={() => { fetchFromServer(); setShowVersion(false) }} style={{ fontSize: 12, padding: '6px 12px' }}>↻ Herlaad data</button>
               <button className="reload-btn" onClick={() => { setShowVersion(false); setShowDisclaimer(true) }} style={{ fontSize: 12, padding: '6px 12px' }}>ℹ️ Over</button>
               <button className="reload-btn" onClick={() => { setShowVersion(false); setShowFeedback(true); setFeedbackEmoji(null); setFeedbackText('') }} style={{ fontSize: 12, padding: '6px 12px' }}>💬 Feedback</button>
             </div>
