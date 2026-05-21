@@ -18,8 +18,16 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.6'
+export const VERSION = '5.7'
 export const CHANGELOG = [
+  { version: '5.7', date: '21 mei 2026', changes: [
+    'Sub-tabs Super-poules/NK Poulefase/Poules verwijderd — alleen Eindkansen blijft',
+    'O16 Kwartfinales gebruikt nu SimPouleCard (zelfde interface als poule-cards)',
+    '✦ bovenaan elke SimPouleCard voorspelt alle onvoorspelde wedstrijden',
+    'T/G/U ronde-knoppen verwijderd — alleen ✦ en ? per ronde',
+    '"nog X rondes" telt alleen onvoorspelde rondes',
+    'Herbruikbaar SimPouleCard component voor Super, NK Poulefase én Kwartfinales',
+  ]},
   { version: '5.6', date: '20 mei 2026', changes: [
     'NK fase in Simulatie tab: O14 NK Poulefase en O16 Kwartfinales met klikbare wedstrijden',
     'Teams worden ingevuld op basis van huidige stand + vastgezette what-if uitslagen',

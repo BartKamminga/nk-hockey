@@ -284,7 +284,7 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
 // ══════════════════════════════════════
 // O16 NK PHASE: KF matches with real team names
 // ══════════════════════════════════════
-function O16KFPhaseCard({ data, locks, myTeam, onToggle }) {
+function O16KFPhaseCard({ data, locks, myTeam, onToggle, onSetRound, onPredictAll }) {
   const expected = useMemo(() => getExpectedStandings(data, locks, POULE_ORDER_16), [data, locks])
   const pk = POULE_ORDER_16.filter(id => expected[id])
   if (pk.length < 4) return null
@@ -294,54 +294,24 @@ function O16KFPhaseCard({ data, locks, myTeam, onToggle }) {
   const nr2s = pk.map(k => ({ team: expected[k][1]?.team, poule: k, pts: (expected[k][1]?.newPts || expected[k][1]?.pts || 0) }))
     .sort((a, b) => b.pts - a.pts)
 
-  const kfMatches = [
-    { label: 'KF 1', h: nr1s[0].team, a: nr2s[3].team, desc: 'Beste #1 vs 4e #2', lockKey: 'nk_kf1' },
-    { label: 'KF 2', h: nr1s[1].team, a: nr2s[2].team, desc: '2e #1 vs 3e #2', lockKey: 'nk_kf2' },
-    { label: 'KF 3', h: nr1s[2].team, a: nr2s[1].team, desc: '3e #1 vs 2e #2', lockKey: 'nk_kf3' },
-    { label: 'KF 4', h: nr1s[3].team, a: nr2s[0].team, desc: '4e #1 vs Beste #2', lockKey: 'nk_kf4' },
-  ]
+  const kfTeams = [nr1s[0].team, nr2s[3].team, nr1s[1].team, nr2s[2].team, nr1s[2].team, nr2s[1].team, nr1s[3].team, nr2s[0].team]
+  const kfRounds = [{
+    roundNum: 1, date: '', time: '',
+    matches: [
+      { h: nr1s[0].team, a: nr2s[3].team, lockKey: 'nk_kf1' },
+      { h: nr1s[1].team, a: nr2s[2].team, lockKey: 'nk_kf2' },
+      { h: nr1s[2].team, a: nr2s[1].team, lockKey: 'nk_kf3' },
+      { h: nr1s[3].team, a: nr2s[0].team, lockKey: 'nk_kf4' },
+    ]
+  }]
 
   return (
     <div>
       <div className="section-label">NK Kwartfinales — klik om uitslagen in te stellen</div>
-      <div className="card" style={{ maxWidth: 600 }}>
-        <div className="card-header">Kwartfinales (verwachte indeling)</div>
-        {kfMatches.map(m => {
-          const locked = locks[m.lockKey] || null
-          const isMy = m.h === myTeam || m.a === myTeam
-          return (
-            <div key={m.lockKey} className="match-row" style={{ background: isMy && !locked ? '#eff6ff' : 'transparent', padding: '4px 0' }}>
-              <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 36, padding: '5px 8px' }}>{m.label}</div>
-              <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
-                <div style={{
-                  flex: 1, textAlign: 'right', padding: '5px 8px', fontSize: 12,
-                  fontWeight: m.h === myTeam ? 600 : 400,
-                  background: locked === 'W' ? '#dcfce7' : 'transparent',
-                  borderRadius: '4px 0 0 4px', cursor: 'pointer',
-                }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'W' ? null : 'W')}>
-                  {m.h}
-                </div>
-                <div style={{
-                  padding: '5px 10px', fontSize: 10, color: locked === 'D' ? '#b45309' : '#ccc',
-                  background: locked === 'D' ? '#fef3c7' : 'transparent',
-                  cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
-                }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'D' ? null : 'D')}>
-                  {locked === 'D' ? 'G' : 'vs'}
-                </div>
-                <div style={{
-                  flex: 1, textAlign: 'left', padding: '5px 8px', fontSize: 12,
-                  fontWeight: m.a === myTeam ? 600 : 400,
-                  background: locked === 'L' ? '#dcfce7' : 'transparent',
-                  borderRadius: '0 4px 4px 0', cursor: 'pointer',
-                }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'L' ? null : 'L')}>
-                  {m.a}
-                </div>
-              </div>
-              <span className="origin" style={{ padding: '0 8px' }}>{m.desc}</span>
-            </div>
-          )
-        })}
-      </div>
+      <SimPouleCard title="Kwartfinales (verwachte indeling)"
+        teams={[...new Set(kfTeams)]} basePts={kfTeams.map(() => 0)} baseDs={kfTeams.map(() => 0)}
+        rounds={kfRounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
+        onPredict={onSetRound} onPredictAll={() => onPredictAll(kfRounds)} />
     </div>
   )
 }
@@ -460,62 +430,14 @@ function NKChances({ myTeam, results, baseResults, N, o16, hasLocks }) {
 }
 
 // ══════════════════════════════════════
-// DETAIL TABLES (O14)
 // ══════════════════════════════════════
-function O14SuperRes({ data, ss, N, myTeam }) {
-  const pk = POULE_ORDER_14.filter(id => data[id])
-  return pk.map(id => {
-    const poule = data[id], pa = ss[id], sl = NK14_SLOTS[id]
-    const order = poule.teams.map((_, i) => i).sort((a, b) => pa[b][0] !== pa[a][0] ? pa[b][0] - pa[a][0] : poule.pts[b] - poule.pts[a])
-    return (
-      <div key={id}>
-        <div className="poule-sim-label">Poule {id}<span className={`nk-badge nk-${sl[0].toLowerCase()}`}>#1→NK {sl[0]}</span><span className={`nk-badge nk-${sl[1].toLowerCase()}`}>#2→NK {sl[1]}</span></div>
-        <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>#</th><th>Team</th><th>PT</th><th>DS</th><th>P(1e)</th><th>P(2e)</th><th>P(top2)</th></tr></thead><tbody>
-          {order.map((idx, rank) => {
-            const p1 = pct(pa[idx][0], N), p2 = pct(pa[idx][1], N), top2 = p1 + p2, isMy = poule.teams[idx] === myTeam
-            return <tr key={idx} className={isMy ? 'row-my' : p1 > 50 ? 'row-gold' : ''}><td style={{ color: '#aaa', fontSize: 11 }}>{rank + 1}</td><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{poule.teams[idx]}</td><td style={{ textAlign: 'right', color: '#888', fontFamily: "'DM Mono',monospace", fontSize: 12 }}>{poule.pts[idx]}</td><td style={{ textAlign: 'right', fontFamily: "'DM Mono',monospace", fontSize: 11, color: poule.ds[idx] >= 0 ? '#16a34a' : '#dc2626' }}>{poule.ds[idx] >= 0 ? '+' : ''}{poule.ds[idx]}</td><td className={pc(p1, 50, 20)}>{p1}%</td><td className={pc(p2, 40, 20)}>{p2}%</td><td className={pc(top2, 60, 30)}>{top2}%</td></tr>
-          })}
-        </tbody></table></div>
-      </div>
-    )
-  })
-}
-function O14NKRes({ results, N, myTeam }) {
-  const { nkAp, nkBp, nkAa, nkBa } = results
-  const renderGroup = (label, pm, am, badgeBg, badgeColor) => {
-    const teams = Object.keys(pm).sort((a, b) => (am[b] || 0) - (am[a] || 0)).filter(t => (am[t] || 0) / N > 0.01)
-    return (<div key={label}><div className="poule-sim-label"><span style={{ background: badgeBg, color: badgeColor, padding: '2px 10px', borderRadius: 99, fontSize: 11 }}>NK Poulefase {label}</span></div>
-      <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(1e)</th><th>P(2e)</th><th>P(top2)</th></tr></thead><tbody>
-        {teams.map(t => { const app = am[t] || 0, pos = pm[t] || Array(5).fill(0), p1 = pct(pos[0], N), p2 = pct(pos[1], N), top2 = p1 + p2, isMy = t === myTeam; return <tr key={t} className={isMy ? 'row-my' : p1 >= 15 ? 'row-gold' : ''}><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{t}{pct(app, N) < 99 && <span className="origin"> kwal.{pct(app, N)}%</span>}</td><td className={pc(p1, 15, 8)}>{p1}%</td><td className={pc(p2, 15, 8)}>{p2}%</td><td className={pc(top2, 30, 15)}>{top2}%</td></tr> })}
-      </tbody></table></div></div>)
-  }
-  return <>{renderGroup('A', nkAp, nkAa, '#dbeafe', '#1d4ed8')}{renderGroup('B', nkBp, nkBa, '#dcfce7', '#15803d')}</>
-}
+// EINDKANSEN TABLES
+// ══════════════════════════════════════
 function O14FinRes({ results, N, myTeam }) {
   const teams = Object.keys(results.fin).sort((a, b) => results.fin[b].p1 - results.fin[a].p1).filter(t => results.fin[t].appear / N > 0.02)
   return (<div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(HF)</th><th>P(finale)</th><th>P(🥇)</th><th>P(🥈)</th><th>P(🥉)</th><th>P(podium)</th></tr></thead><tbody>
     {teams.map(t => { const s = results.fin[t], pSF = pct(s.sfReach, N), pFin = pct(s.finalist, N), p1 = pct(s.p1, N), p2 = pct(s.p2, N), p3 = pct(s.p3, N), pPod = p1 + p2 + p3, isMy = t === myTeam; return <tr key={t} className={isMy ? 'row-my' : p1 >= 10 ? 'row-gold' : ''}><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{t}</td><td className={pc(pSF, 20, 10)}>{pSF}%</td><td className={pc(pFin, 15, 8)}>{pFin}%</td><td><Bar p={p1} col="#f59e0b" /></td><td><Bar p={p2} col="#94a3b8" /></td><td><Bar p={p3} col="#cd7c2f" /></td><td className={pc(pPod, 25, 12)}>{pPod}%</td></tr> })}
   </tbody></table></div>)
-}
-
-// ══════════════════════════════════════
-// DETAIL TABLES (O16)
-// ══════════════════════════════════════
-function O16PouleRes({ data, ss, N, myTeam }) {
-  const pk = POULE_ORDER_16.filter(id => data[id])
-  return pk.map(id => {
-    const poule = data[id], pa = ss[id]
-    const order = poule.teams.map((_, i) => i).sort((a, b) => pa[b][0] !== pa[a][0] ? pa[b][0] - pa[a][0] : poule.pts[b] - poule.pts[a])
-    return (<div key={id}>
-      <div className="poule-sim-label">Poule {id}<span style={{ fontSize: 10, color: '#aaa', fontWeight: 400 }}>{poule.remaining.length} wedstr. rest</span></div>
-      <div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>#</th><th>Team</th><th>PT</th><th>DS</th><th>P(1e)</th><th>P(2e)</th><th>P(top2)</th></tr></thead><tbody>
-        {order.map((idx, rank) => {
-          const p1 = pct(pa[idx][0], N), p2 = pct(pa[idx][1], N), top2 = p1 + p2, isMy = poule.teams[idx] === myTeam
-          return <tr key={idx} className={isMy ? 'row-my' : p1 > 50 ? 'row-gold' : ''}><td style={{ color: '#aaa', fontSize: 11 }}>{rank + 1}</td><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{poule.teams[idx]}</td><td style={{ textAlign: 'right', color: '#888', fontFamily: "'DM Mono',monospace", fontSize: 12 }}>{poule.pts[idx]}</td><td style={{ textAlign: 'right', fontFamily: "'DM Mono',monospace", fontSize: 11, color: poule.ds[idx] >= 0 ? '#16a34a' : '#dc2626' }}>{poule.ds[idx] >= 0 ? '+' : ''}{poule.ds[idx]}</td><td className={pc(p1, 50, 20)}>{p1}%</td><td className={pc(p2, 40, 20)}>{p2}%</td><td className={pc(top2, 60, 30)}>{top2}%</td></tr>
-        })}
-      </tbody></table></div>
-    </div>)
-  })
 }
 function O16FinRes({ results, N, myTeam }) {
   return (<div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(KF)</th><th>P(HF)</th><th>P(finale)</th><th>P(1e 🥇)</th><th>P(2e 🥈)</th></tr></thead><tbody>
@@ -548,7 +470,6 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
   const [baseResults, setBaseResults] = useState(null)
   const [running, setRunning] = useState(false)
   const [simNote, setSimNote] = useState('')
-  const [subTab, setSubTab] = useState(o16 ? 'poules' : 'super')
 
   const hasLocks = Object.keys(locks).filter(k => locks[k]).length > 0
 
@@ -662,10 +583,6 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
     doSim(newLocks)
   }
 
-  const subTabs = o16
-    ? [['poules', 'Poules'], ['eindkansen', 'Eindkansen']]
-    : [['super', 'Super-poules'], ['nk', 'NK Poulefase'], ['eindkansen', 'Eindkansen']]
-
   return (
     <div>
       {/* Remaining matches with outcome picker — per poule card */}
@@ -676,7 +593,8 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
       {!o16 && <O14NKPhaseCards data={data} locks={locks} myTeam={myTeam}
         nkSchedule={NK_SCHEDULES[effectiveComp]} effectiveComp={effectiveComp}
         onToggle={onToggle} onSetRound={onSetRound} onPredict={onPredictNK} onPredictAll={onPredictAllNK} />}
-      {o16 && <O16KFPhaseCard data={data} locks={locks} myTeam={myTeam} onToggle={onToggle} />}
+      {o16 && <O16KFPhaseCard data={data} locks={locks} myTeam={myTeam}
+        onToggle={onToggle} onSetRound={onSetRound} onPredictAll={onPredictAllNK} />}
 
       {/* NK chances for focus club */}
       <NKChances myTeam={myTeam} results={results} baseResults={baseResults} N={N} o16={o16} hasLocks={hasLocks} />
@@ -689,17 +607,11 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
         <button className="run-btn" onClick={() => doSim()} disabled={running}>{running ? 'Bezig...' : 'Herbereken'}</button>
       </div>
 
-      {/* Detail sub-tabs */}
-      <div className="sub-tabs">
-        {subTabs.map(([id, lbl]) => <button key={id} className={`sub-tab ${subTab === id ? 'active' : ''}`} onClick={() => setSubTab(id)}>{lbl}</button>)}
-      </div>
-
+      {/* Eindkansen */}
       {results && <>
-        {!o16 && subTab === 'super' && <O14SuperRes data={data} ss={results.ss} N={N} myTeam={myTeam} />}
-        {!o16 && subTab === 'nk' && <O14NKRes results={results} N={N} myTeam={myTeam} />}
-        {!o16 && subTab === 'eindkansen' && <O14FinRes results={results} N={N} myTeam={myTeam} />}
-        {o16 && subTab === 'poules' && <O16PouleRes data={data} ss={results.ss} N={N} myTeam={myTeam} />}
-        {o16 && subTab === 'eindkansen' && <O16FinRes results={results} N={N} myTeam={myTeam} />}
+        <div className="section-label">Eindkansen alle teams</div>
+        {!o16 && <O14FinRes results={results} N={N} myTeam={myTeam} />}
+        {o16 && <O16FinRes results={results} N={N} myTeam={myTeam} />}
       </>}
 
       {simNote && <div className="sim-note">{simNote}</div>}
