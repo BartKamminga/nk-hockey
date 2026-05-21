@@ -9,13 +9,13 @@ function PlayedCard({ id, poule, myTeam }) {
   return (
     <div className="card">
       <div className="card-header">Poule {id}<span className="played-count">{ma.length} gespeeld</span></div>
-      {ma.length === 0 && <div style={{ padding: 12, color: '#aaa', fontSize: 12 }}>Geen data</div>}
+      {ma.length === 0 && <div style={{ padding: 12, color: 'var(--text-faint)', fontSize: 12 }}>Geen data</div>}
       {sorted.map(r => {
         const dateStr = fmtMatchDate(rounds[r][0] && rounds[r][0].date)
         return (
           <div key={r}>
             <div className="round-header round-header-played">
-              <span>Ronde {r}</span>{dateStr && <span style={{ fontWeight: 400, color: '#999' }}>{dateStr}</span>}
+              <span>Ronde {r}</span>{dateStr && <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>{dateStr}</span>}
             </div>
             {rounds[r].map((m, i) => {
               const isMy = m.home === myTeam || m.away === myTeam
@@ -44,14 +44,14 @@ function RemainingCard({ id, poule, myTeam }) {
   return (
     <div className="card">
       <div className="card-header">Poule {id}<span className="played-count">{rounds.length > 0 ? `nog ${rounds.length} ronde${rounds.length > 1 ? 's' : ''}` : '✓ klaar'}</span></div>
-      {rounds.length === 0 && <div style={{ padding: 12, color: '#16a34a', fontSize: 12, fontWeight: 600 }}>✓ Afgerond</div>}
+      {rounds.length === 0 && <div style={{ padding: 12, color: 'var(--win)', fontSize: 12, fontWeight: 600 }}>✓ Afgerond</div>}
       {rounds.map((ms, ri) => {
         const rn = lr + ri + 1
         const dateStr = fmtMatchDate(ms[0] && ms[0][2])
         return (
           <div key={ri}>
             <div className="round-header round-header-remaining">
-              <span>Ronde {rn}</span>{dateStr && <span style={{ fontWeight: 400, color: '#766a3a' }}>{dateStr}</span>}
+              <span>Ronde {rn}</span>{dateStr && <span style={{ fontWeight: 400, color: 'var(--text-round-remaining)' }}>{dateStr}</span>}
             </div>
             {ms.map((m, mi) => {
               const h = m[0], a = m[1], isMy = h === myTeam || a === myTeam

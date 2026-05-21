@@ -6,10 +6,10 @@ const HELP = {
     title: '❓ Overzicht',
     content: (
       <div>
-        <p>Hier zie je de <strong>huidige stand</strong> per poule, direct van hockey.nl.</p>
+        <p>Hier zie je de <strong>huidige stand</strong> per poule.</p>
         <ul>
           <li>Stand met punten, doelsaldo en vorm</li>
-          <li><span style={{ color: '#2563eb' }}>●</span> <span style={{ color: '#16a34a' }}>●</span> NK-slot indicators — welk team naar NK Poule A of B gaat (O14)</li>
+          <li><span style={{ color: 'var(--nk-a-text)' }}>●</span> <span style={{ color: 'var(--nk-b-text)' }}>●</span> NK-slot indicators — welk team naar NK Poule A of B gaat (O14)</li>
           <li>Verwachte NK indeling op basis van de huidige stand</li>
           <li>NK Speelschema met tijden en velden</li>
         </ul>
@@ -63,6 +63,20 @@ const HELP = {
 }
 
 export default function HelpPopup({ tab, onClose }) {
+  if (tab === 'all') {
+    return (
+      <Popup title="❓ Uitleg" onClose={onClose} maxWidth={520}>
+        <div className="help-content">
+          {Object.entries(HELP).map(([key, help]) => (
+            <div key={key} style={{ marginBottom: 20 }}>
+              <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 6 }}>{help.title}</div>
+              {help.content}
+            </div>
+          ))}
+        </div>
+      </Popup>
+    )
+  }
   const help = HELP[tab] || HELP.overzicht
   return (
     <Popup title={help.title} onClose={onClose} maxWidth={520}>

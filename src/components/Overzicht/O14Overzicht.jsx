@@ -33,13 +33,13 @@ function MatchRow({ match, slot2t, myTeam }) {
 
   return (
     <div className={`match-row${(isMyHome || isMyAway) ? ' row-my-match' : ''}`}>
-      <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 38 }}>{match.time}</div>
+      <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: 'var(--text-muted)', minWidth: 38 }}>{match.time}</div>
       <div className="match-teams">
-        <div className="match-team right" style={isMyHome ? { fontWeight: 600, color: '#1d4ed8' } : {}}>
+        <div className="match-team right" style={isMyHome ? { fontWeight: 600, color: 'var(--accent)' } : {}}>
           {home}<span className="origin"> {match.home}</span>
         </div>
         <div className="match-vs">vs</div>
-        <div className="match-team" style={isMyAway ? { fontWeight: 600, color: '#1d4ed8' } : {}}>
+        <div className="match-team" style={isMyAway ? { fontWeight: 600, color: 'var(--accent)' } : {}}>
           {away}<span className="origin"> {match.away}</span>
         </div>
       </div>
@@ -160,7 +160,7 @@ export function O14OverzichtTab({ data, filteredData, myTeam, nkSchedule, showFo
             <div className="card-header">Halve finales & Finale</div>
             {finales.map((finale, i) => (
               <div key={i} className="match-row" style={finale.type === 'Finale' ? { borderTop: '1px solid #e0ddd8' } : {}}>
-                <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 38 }}>{finale.time}</div>
+                <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: 'var(--text-muted)', minWidth: 38 }}>{finale.time}</div>
                 <div className="match-teams">
                   <div className="match-team right"><strong>{finale.home}</strong></div>
                   <div className="match-vs">vs</div>

@@ -18,11 +18,11 @@ export default function NKChances({ myTeam, results, baseResults, N, o16, hasLoc
   const diff = (cur, base) => {
     if (!hasLocks || base == null || cur == null) return null
     const d = cur - base
-    if (d === 0) return <span style={{ color: '#888', fontSize: 10 }}> (=)</span>
-    return <span style={{ color: d > 0 ? '#16a34a' : '#dc2626', fontSize: 10, fontWeight: 600 }}> ({d > 0 ? '+' : ''}{d}%)</span>
+    if (d === 0) return <span style={{ color: 'var(--text-muted)', fontSize: 10 }}> (=)</span>
+    return <span style={{ color: d > 0 ? 'var(--win)' : 'var(--lose)', fontSize: 10, fontWeight: 600 }}> ({d > 0 ? '+' : ''}{d}%)</span>
   }
   const Row = ({ label, val, baseVal, bold, gold }) => (
-    <tr style={gold ? { background: '#fffbeb' } : {}}>
+    <tr style={gold ? { background: 'var(--bg-gold)' } : {}}>
       <td style={{ padding: '8px 12px', fontSize: 13, fontWeight: bold ? 600 : 400 }}>{label}</td>
       <td style={{ textAlign: 'right', padding: '8px 12px', fontFamily: "'DM Mono',monospace", fontWeight: bold ? 600 : 400 }} className={pc(val, 30, 15)}>
         {val}%{diff(val, baseVal)}

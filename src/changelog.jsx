@@ -1,7 +1,13 @@
 import React from 'react'
 
-export const VERSION = '5.24'
+export const VERSION = '5.25'
 export const CHANGELOG = [
+  { version: '5.25', date: '21 mei 2026', changes: [
+    'Grote refactor: App.jsx van 206 naar 125 regels',
+    'SettingsPopup, MenuPopup, EasterEgg als eigen componenten',
+    '29 hardcoded kleuren → CSS variables (dark mode proof)',
+    'Toggle, NKChances, SchemaTab, HelpPopup: alle kleuren via thema',
+  ]},
   { version: '5.24', date: '21 mei 2026', changes: [
     '❓ Uitleg popup — tab-aware instructies voor Overzicht, Speelschema en Simulaties',
     'Bereikbaar via menu → ❓ Uitleg knop',

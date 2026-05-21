@@ -51,13 +51,13 @@ function KnockoutPreview({ nr1s, nr2s, myTeam }) {
           const aMy = kf.away.team === myTeam
           return (
             <div key={i} className={`match-row${hMy || aMy ? ' row-my-match' : ''}`}>
-              <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 36 }}>{kf.label}</div>
+              <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: 'var(--text-muted)', minWidth: 36 }}>{kf.label}</div>
               <div className="match-teams">
-                <div className="match-team right" style={hMy ? { fontWeight: 600, color: '#1d4ed8' } : {}}>
+                <div className="match-team right" style={hMy ? { fontWeight: 600, color: 'var(--accent)' } : {}}>
                   {kf.home.team}<span className="origin"> {kf.home.poule}#1</span>
                 </div>
                 <div className="match-vs">vs</div>
-                <div className="match-team" style={aMy ? { fontWeight: 600, color: '#1d4ed8' } : {}}>
+                <div className="match-team" style={aMy ? { fontWeight: 600, color: 'var(--accent)' } : {}}>
                   {kf.away.team}<span className="origin"> {kf.away.poule}#2</span>
                 </div>
               </div>
@@ -66,7 +66,7 @@ function KnockoutPreview({ nr1s, nr2s, myTeam }) {
           )
         })}
         <div className="match-row" style={{ borderTop: '1px solid #e0ddd8' }}>
-          <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 36 }}>HF 1</div>
+          <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: 'var(--text-muted)', minWidth: 36 }}>HF 1</div>
           <div className="match-teams">
             <div className="match-team right"><strong>Winnaar KF 1</strong></div>
             <div className="match-vs">vs</div>
@@ -74,7 +74,7 @@ function KnockoutPreview({ nr1s, nr2s, myTeam }) {
           </div>
         </div>
         <div className="match-row">
-          <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 36 }}>HF 2</div>
+          <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: 'var(--text-muted)', minWidth: 36 }}>HF 2</div>
           <div className="match-teams">
             <div className="match-team right"><strong>Winnaar KF 2</strong></div>
             <div className="match-vs">vs</div>
@@ -82,7 +82,7 @@ function KnockoutPreview({ nr1s, nr2s, myTeam }) {
           </div>
         </div>
         <div className="match-row" style={{ borderTop: '1px solid #e0ddd8' }}>
-          <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 36 }}>🏆</div>
+          <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: 'var(--text-muted)', minWidth: 36 }}>🏆</div>
           <div className="match-teams">
             <div className="match-team right"><strong>Winnaar HF 1</strong></div>
             <div className="match-vs">vs</div>
