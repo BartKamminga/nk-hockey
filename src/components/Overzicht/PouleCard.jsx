@@ -1,13 +1,24 @@
 import React from 'react'
 import { getTeamForm } from '../../lib/utils'
 
-const FORM_COLORS = { W: '#16a34a', D: '#b45309', L: '#dc2626' }
-const FormDots = ({ form }) => {
+function formColor(pts) {
+  if (pts >= 12) return '#16a34a'   // topvorm (12-15)
+  if (pts >= 9) return '#65a30d'    // goed (9-11)
+  if (pts >= 5) return '#d97706'    // matig (5-8)
+  return '#dc2626'                   // slecht (0-4)
+}
+
+const FormBadge = ({ form }) => {
   if (!form || form.length === 0) return null
+  const pts = form.reduce((s, r) => s + (r === 'W' ? 3 : r === 'D' ? 1 : 0), 0)
+  const col = formColor(pts)
+  const title = form.map(r => r === 'W' ? 'W' : r === 'D' ? 'G' : 'V').join('') + ` (${pts}/${form.length * 3})`
   return (
-    <span style={{ display: 'inline-flex', gap: 2, marginLeft: 4 }}>
-      {form.map((r, i) => <span key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: FORM_COLORS[r], display: 'inline-block' }} title={r === 'W' ? 'Winst' : r === 'D' ? 'Gelijk' : 'Verlies'} />)}
-    </span>
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      width: 22, height: 22, borderRadius: '50%', background: col,
+      color: '#fff', fontSize: 10, fontWeight: 700, fontFamily: "'DM Mono',monospace",
+    }} title={title}>{pts}</span>
   )
 }
 
@@ -30,7 +41,7 @@ export function PouleCard({ id, poule, myTeam, slots }) {
             </td>
             <td className="td-pts">{poule.pts[i]}</td>
             <td className="td-ds" style={{ color: poule.ds[i] >= 0 ? '#16a34a' : '#dc2626' }}>{poule.ds[i] >= 0 ? '+' : ''}{poule.ds[i]}</td>
-            <td style={{ padding: '0 8px' }}><FormDots form={form} /></td>
+            <td style={{ padding: '0 8px' }}><FormBadge form={form} /></td>
           </tr>
         )
       })}</tbody></table>

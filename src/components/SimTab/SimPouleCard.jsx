@@ -1,13 +1,24 @@
 import React from 'react'
 import { fmtMatchDate, getTeamForm } from '../../lib/utils'
 
-const FORM_COLORS = { W: '#16a34a', D: '#b45309', L: '#dc2626' }
-const FormDots = ({ form }) => {
+function formColor(pts) {
+  if (pts >= 12) return '#16a34a'
+  if (pts >= 9) return '#65a30d'
+  if (pts >= 5) return '#d97706'
+  return '#dc2626'
+}
+
+const FormBadge = ({ form }) => {
   if (!form || form.length === 0) return null
+  const pts = form.reduce((s, r) => s + (r === 'W' ? 3 : r === 'D' ? 1 : 0), 0)
+  const col = formColor(pts)
+  const title = form.map(r => r === 'W' ? 'W' : r === 'D' ? 'G' : 'V').join('') + ` (${pts}/${form.length * 3})`
   return (
-    <span style={{ display: 'inline-flex', gap: 2, marginLeft: 4 }}>
-      {form.map((r, i) => <span key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: FORM_COLORS[r], display: 'inline-block' }} title={r === 'W' ? 'Winst' : r === 'D' ? 'Gelijk' : 'Verlies'} />)}
-    </span>
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      width: 22, height: 22, borderRadius: '50%', background: col,
+      color: '#fff', fontSize: 10, fontWeight: 700, fontFamily: "'DM Mono',monospace",
+    }} title={title}>{pts}</span>
   )
 }
 
@@ -53,7 +64,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
               <td style={{ padding: '5px 12px', fontSize: 12.5, fontWeight: isMy ? 600 : 400 }}>{s.team}</td>
               <td className="td-pts">{s.pts > 0 ? s.pts : hasAnyBase ? '0' : '-'}</td>
               <td className="td-ds" style={{ color: s.ds >= 0 ? '#16a34a' : '#dc2626' }}>{hasAnyBase ? (s.ds >= 0 ? '+' : '') + s.ds : ''}</td>
-              {form.length > 0 && <td style={{ padding: '0 8px' }}><FormDots form={form} /></td>}
+              {form.length > 0 && <td style={{ padding: '0 8px' }}><FormBadge form={form} /></td>}
             </tr>
           )
         })}
