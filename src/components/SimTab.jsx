@@ -66,8 +66,8 @@ function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, lock
       else if (lock === 'L') pts[m.a] = (pts[m.a] || 0) + 3
     }
   }
-  const standings = teams.map(t => ({ team: t, pts: pts[t] || 0, ds: ds[t] || 0 }))
-    .sort((a, b) => b.pts !== a.pts ? b.pts - a.pts : b.ds - a.ds)
+  const standings = teams.map((t, i) => ({ team: t, pts: pts[t] || 0, ds: ds[t] || 0, origRank: i }))
+    .sort((a, b) => b.pts !== a.pts ? b.pts - a.pts : b.ds !== a.ds ? b.ds - a.ds : a.origRank - b.origRank)
   const hasAnyBase = basePts.some(p => p > 0)
 
   const totalRounds = rounds.length
@@ -203,7 +203,7 @@ function getExpectedStandings(data, locks, pouleOrder) {
     const poule = data[pouleId]
     if (!poule) continue
     const adjusted = poule.teams.map((team, i) => ({
-      team, pts: poule.pts[i], ds: poule.ds[i], delta: 0
+      team, pts: poule.pts[i], ds: poule.ds[i], delta: 0, origRank: i
     }))
     for (const [h, a] of poule.remaining) {
       const lock = locks[`${h}_${a}`]
@@ -215,7 +215,7 @@ function getExpectedStandings(data, locks, pouleOrder) {
       else if (lock === 'L') adjusted[ai].delta += 3
     }
     adjusted.forEach(s => { s.newPts = s.pts + s.delta })
-    adjusted.sort((a, b) => b.newPts !== a.newPts ? b.newPts - a.newPts : b.ds - a.ds)
+    adjusted.sort((a, b) => b.newPts !== a.newPts ? b.newPts - a.newPts : b.ds !== a.ds ? b.ds - a.ds : a.origRank - b.origRank)
     result[pouleId] = adjusted
   }
   return result
