@@ -1,6 +1,5 @@
 import React from 'react'
 import { fmtMatchDate, getTeamForm } from '../../lib/utils'
-import { SHOW_FORM_DOTS } from '../../constants'
 
 function formColor(pts) {
   if (pts >= 12) return '#16a34a'
@@ -65,7 +64,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
               <td style={{ padding: '5px 12px', fontSize: 12.5, fontWeight: isMy ? 600 : 400 }}>{s.team}</td>
               <td className="td-pts">{s.pts > 0 ? s.pts : hasAnyBase ? '0' : '-'}</td>
               <td className="td-ds" style={{ color: s.ds >= 0 ? '#16a34a' : '#dc2626' }}>{hasAnyBase ? (s.ds >= 0 ? '+' : '') + s.ds : ''}</td>
-              {SHOW_FORM_DOTS && form.length > 0 && <td style={{ padding: '0 8px' }}><FormBadge form={form} /></td>}
+              {form.length > 0 && <td style={{ padding: '0 8px' }}><FormBadge form={form} /></td>}
             </tr>
           )
         })}
