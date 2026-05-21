@@ -12,6 +12,7 @@ export const STORAGE_KEY_CLUB = 'nk_focus_club'
 export const STORAGE_KEY_COMP = 'nk_active_comp'
 export const STORAGE_KEY_FORM = 'nk_show_form'
 export const STORAGE_KEY_PLAYED = 'nk_show_played'
+export const STORAGE_KEY_FOCUS = 'nk_focus_mode'
 
 export function getSavedClub() { try { return localStorage.getItem(STORAGE_KEY_CLUB) || DEFAULT_CLUB } catch { return DEFAULT_CLUB } }
 export function saveClub(name) { try { localStorage.setItem(STORAGE_KEY_CLUB, name) } catch {} }
@@ -21,6 +22,8 @@ export function getSavedForm() { try { return localStorage.getItem(STORAGE_KEY_F
 export function saveForm(v) { try { localStorage.setItem(STORAGE_KEY_FORM, v ? 'true' : 'false') } catch {} }
 export function getSavedPlayed() { try { return localStorage.getItem(STORAGE_KEY_PLAYED) !== 'false' } catch { return true } }
 export function savePlayed(v) { try { localStorage.setItem(STORAGE_KEY_PLAYED, v ? 'true' : 'false') } catch {} }
+export function getSavedFocus() { try { return localStorage.getItem(STORAGE_KEY_FOCUS) === 'true' } catch { return false } }
+export function saveFocus(v) { try { localStorage.setItem(STORAGE_KEY_FOCUS, v ? 'true' : 'false') } catch {} }
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 

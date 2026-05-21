@@ -1,7 +1,14 @@
 import React from 'react'
 
-export const VERSION = '5.16'
+export const VERSION = '5.17'
 export const CHANGELOG = [
+  { version: '5.17', date: '21 mei 2026', changes: [
+    'Alle instellingen in één ⚙️ popup: club, focus mode, vorm-badges, gespeeld',
+    'Club picker verplaatst naar settings popup met scrollbare lijst',
+    'Focus mode toggle verplaatst van 🏑 icoon naar settings popup',
+    'Aparte club picker popup verwijderd',
+    'Klik op 🏑 of clubnaam in header opent nu de settings popup',
+  ]},
   { version: '5.16', date: '21 mei 2026', changes: [
     '⚙️ Instellingen popup in header met toggles',
     '🔥 Vorm-badges: toon/verberg gekleurde cirkel met puntentotaal laatste 5',

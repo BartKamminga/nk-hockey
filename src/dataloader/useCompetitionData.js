@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
-import { COMP_ORDER, COMP_LABELS_LONG, IS_O16, POULE_ORDER_14, POULE_ORDER_16, DATA_URLS, getSavedClub, saveClub, getSavedComp, saveComp } from '../constants'
+import { COMP_ORDER, COMP_LABELS_LONG, IS_O16, POULE_ORDER_14, POULE_ORDER_16, DATA_URLS, getSavedClub, saveClub, getSavedComp, saveComp, getSavedFocus, saveFocus } from '../constants'
 import { parseO14, parseO16, findMyTeam, getAllClubs } from './parsers'
 
 export function useCompetitionData() {
@@ -8,7 +8,8 @@ export function useCompetitionData() {
   const [loading, setLoading] = useState(true)
   const [dataSource, setDataSource] = useState(null)
   const [focusClub, setFocusClub] = useState(getSavedClub)
-  const [focusMode, setFocusMode] = useState(false)
+  const [focusMode, _setFocusMode] = useState(getSavedFocus)
+  const setFocusMode = (v) => { _setFocusMode(v); saveFocus(v) }
 
   const fetchFromServer = useCallback(() => {
     setLoading(true)
