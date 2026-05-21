@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { NK14_SLOTS, POULE_ORDER_14, POULE_ORDER_16, IS_O16 } from '../constants'
-import { runSimO14, runSimO16 } from '../simulation'
+import { runSimO14, runSimO16, predictMatches } from '../simulation'
 import { pct, pc, Bar, fmtMatchDate } from './Shared'
 
 // ══════════════════════════════════════
@@ -51,7 +51,7 @@ const OUTCOMES = [
 // ══════════════════════════════════════
 // POULE CARDS: remaining matches with outcome picker, one card per poule
 // ══════════════════════════════════════
-function RemainingPouleCards({ data, pouleIds, myTeam, locks, onToggle, onSetRound, onResetAll }) {
+function RemainingPouleCards({ data, pouleIds, myTeam, locks, onToggle, onSetRound, onPredict, onResetAll }) {
   const lockedCount = Object.keys(locks).filter(k => locks[k]).length
   const gridCls = pouleIds.length <= 2 ? 'grid-2' : pouleIds.length <= 4 ? 'grid-4' : 'grid-5'
 
@@ -102,6 +102,7 @@ function RemainingPouleCards({ data, pouleIds, myTeam, locks, onToggle, onSetRou
                         <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'D')} title="Gelijk" style={{ background: '#fef3c7', color: '#b45309' }}>G</div>
                         <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'L')} title="Uit wint" style={{ background: '#fee2e2', color: '#dc2626' }}>U</div>
                         <div className="whatif-preset-sm" onClick={() => onSetRound(round, null)} title="Reset" style={{ background: '#f0ede8', color: '#888' }}>?</div>
+                        <div className="whatif-preset-sm" onClick={() => onPredict(round)} title="Voorspel meest waarschijnlijke uitslagen" style={{ background: '#dbeafe', color: '#2563eb', fontStyle: 'italic' }}>✦</div>
                       </div>
                     </div>
                     {round.matches.map(m => {
@@ -416,6 +417,18 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
     doSim(newLocks)
   }
 
+  function onPredict(round) {
+    const poule = data[round.pouleId]
+    if (!poule) return
+    const predicted = predictMatches(round.matches, poule)
+    const newLocks = { ...locks }
+    for (const [key, val] of Object.entries(predicted)) {
+      if (val) newLocks[key] = val
+    }
+    setLocks(newLocks)
+    doSim(newLocks)
+  }
+
   const subTabs = o16
     ? [['poules', 'Poules'], ['eindkansen', 'Eindkansen']]
     : [['super', 'Super-poules'], ['nk', 'NK Poulefase'], ['eindkansen', 'Eindkansen']]
@@ -424,7 +437,7 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
     <div>
       {/* Remaining matches with outcome picker — per poule card */}
       <RemainingPouleCards data={data} pouleIds={timelinePouleIds} myTeam={myTeam} locks={locks}
-        onToggle={onToggle} onSetRound={onSetRound} onResetAll={() => onSetAll(null)} />
+        onToggle={onToggle} onSetRound={onSetRound} onPredict={onPredict} onResetAll={() => onSetAll(null)} />
 
       {/* Adjusted standings */}
       {hasLocks && <AdjustedStandingsCards data={data} locks={locks} pouleOrder={pouleOrder} myTeam={myTeam} />}

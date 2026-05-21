@@ -10,6 +10,35 @@ export const simMatch = (ha) => {
 export const simGD = () => 1 + Math.floor(Math.random() * 4)
 export const simKO = () => Math.random() < 0.5 ? 'home' : 'away'
 
+// Predict most likely outcomes for a set of matches based on team strength
+// Uses current standings (points/DS) as strength proxy
+export function predictMatches(matches, poule) {
+  const N = 1000
+  const results = {}
+  for (const m of matches) {
+    const hi = poule.teams.indexOf(m.h)
+    const ai = poule.teams.indexOf(m.a)
+    if (hi < 0 || ai < 0) { results[m.lockKey] = null; continue }
+    // Strength advantage: difference in points normalized
+    const ptsH = poule.pts[hi] || 0, ptsA = poule.pts[ai] || 0
+    const dsH = poule.ds[hi] || 0, dsA = poule.ds[ai] || 0
+    const advantage = ((ptsH - ptsA) * 2 + (dsH - dsA) * 0.5) / 20
+    // Clamp to reasonable range
+    const ha = Math.max(-30, Math.min(30, advantage * 100))
+    let wCount = 0, dCount = 0, lCount = 0
+    for (let i = 0; i < N; i++) {
+      const [hp, ap] = simMatch(ha)
+      if (hp > ap) wCount++
+      else if (hp === ap) dCount++
+      else lCount++
+    }
+    if (wCount >= dCount && wCount >= lCount) results[m.lockKey] = 'W'
+    else if (lCount >= dCount && lCount >= wCount) results[m.lockKey] = 'L'
+    else results[m.lockKey] = 'D'
+  }
+  return results
+}
+
 export function simPoule(poule, ha, locks) {
   const pts = [...poule.pts], ds = [...poule.ds]
   for (let mi = 0; mi < poule.remaining.length; mi++) {

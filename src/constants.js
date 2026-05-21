@@ -18,8 +18,14 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.4'
+export const VERSION = '5.5'
 export const CHANGELOG = [
+  { version: '5.5', date: '20 mei 2026', changes: [
+    '✦ Voorspel-knop per ronde: berekent meest waarschijnlijke uitslagen via Monte Carlo',
+    'Teamsterkte gebaseerd op huidige punten en doelsaldo',
+    '1.000 mini-simulaties per wedstrijd voor de voorspelling',
+    'Klikt automatisch W/G/V in op basis van de meest voorkomende uitslag',
+  ]},
   { version: '5.4', date: '20 mei 2026', changes: [
     'Simulatie tab: chronologische poule-weergave (gespeelde rondes + resterende rondes)',
     'Gespeelde wedstrijden met uitslagen (zoals Speelschema tab)',
