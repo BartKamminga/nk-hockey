@@ -1,7 +1,15 @@
 import React from 'react'
 
-export const VERSION = '5.15'
+export const VERSION = '5.16'
 export const CHANGELOG = [
+  { version: '5.16', date: '21 mei 2026', changes: [
+    '⚙️ Instellingen popup in header met toggles',
+    '🔥 Vorm-badges: toon/verberg gekleurde cirkel met puntentotaal laatste 5',
+    '🎮 Gespeeld aantal: toon/verberg W-G-V record per team',
+    'Beide instellingen opgeslagen via localStorage',
+    'SimTab: W-G-V berekend inclusief voorspelde wedstrijden',
+    'iOS-style toggle switches in de popup',
+  ]},
   { version: '5.15', date: '21 mei 2026', changes: [
     '📊 toggle in header: toon/verberg vorm-badges globaal',
     'Instelling wordt opgeslagen via localStorage (persistent over sessies)',

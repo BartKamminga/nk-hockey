@@ -11,6 +11,7 @@ export const DEFAULT_CLUB = 'Victoria'
 export const STORAGE_KEY_CLUB = 'nk_focus_club'
 export const STORAGE_KEY_COMP = 'nk_active_comp'
 export const STORAGE_KEY_FORM = 'nk_show_form'
+export const STORAGE_KEY_PLAYED = 'nk_show_played'
 
 export function getSavedClub() { try { return localStorage.getItem(STORAGE_KEY_CLUB) || DEFAULT_CLUB } catch { return DEFAULT_CLUB } }
 export function saveClub(name) { try { localStorage.setItem(STORAGE_KEY_CLUB, name) } catch {} }
@@ -18,6 +19,8 @@ export function getSavedComp() { try { return localStorage.getItem(STORAGE_KEY_C
 export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, name) } catch {} }
 export function getSavedForm() { try { return localStorage.getItem(STORAGE_KEY_FORM) !== 'false' } catch { return true } }
 export function saveForm(v) { try { localStorage.setItem(STORAGE_KEY_FORM, v ? 'true' : 'false') } catch {} }
+export function getSavedPlayed() { try { return localStorage.getItem(STORAGE_KEY_PLAYED) !== 'false' } catch { return true } }
+export function savePlayed(v) { try { localStorage.setItem(STORAGE_KEY_PLAYED, v ? 'true' : 'false') } catch {} }
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 

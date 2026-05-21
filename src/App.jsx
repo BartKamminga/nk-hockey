@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { VERSION, COMP_LABELS, getSavedForm, saveForm } from './constants'
+import { VERSION, COMP_LABELS, getSavedForm, saveForm, getSavedPlayed, savePlayed } from './constants'
 import { ChangelogContent } from './changelog'
 import { NK_SCHEDULES } from './lib/nk-schedules'
 import { SchemaTab } from './components/Speelschema'
@@ -12,7 +12,9 @@ export default function App() {
   const [mainTab, setMainTab] = useState('overzicht')
   const [showVersion, setShowVersion] = useState(false)
   const [showClubPicker, setShowClubPicker] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
   const [showForm, setShowForm] = useState(getSavedForm)
+  const [showPlayed, setShowPlayed] = useState(getSavedPlayed)
 
   const {
     comps,
@@ -57,9 +59,7 @@ export default function App() {
             </div>
           </div>
           <div className="top-end">
-            <button className="reload-btn" onClick={() => { const v = !showForm; setShowForm(v); saveForm(v) }}
-              title={showForm ? 'Verberg vorm-badges' : 'Toon vorm-badges'}
-              style={showForm ? { borderColor: '#3b82f6', color: '#3b82f6' } : {}}>📊</button>
+            <button className="reload-btn" onClick={() => setShowSettings(!showSettings)} title="Instellingen">⚙️</button>
             <button className="reload-btn" onClick={() => fetchFromServer()} title="Herlaad data">↻</button>
             <button className="reload-btn" onClick={() => setShowVersion(!showVersion)} title="Versiegeschiedenis">v{VERSION}</button>
           </div>
@@ -96,6 +96,31 @@ export default function App() {
         </div>
       </>}
 
+      {showSettings && <>
+        <div className="version-overlay" onClick={() => setShowSettings(false)}></div>
+        <div className="version-popup" style={{ maxWidth: 360 }}>
+          <div className="version-popup-header"><span>⚙️ Instellingen</span><button className="version-close" onClick={() => setShowSettings(false)}>✕</button></div>
+          <div className="version-popup-body" style={{ padding: '12px 16px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer', fontSize: 13 }}
+              onClick={() => { const v = !showForm; setShowForm(v); saveForm(v) }}>
+              <span style={{ width: 32, height: 18, borderRadius: 9, background: showForm ? '#3b82f6' : '#ccc', position: 'relative', display: 'inline-block', transition: 'background .2s', flexShrink: 0 }}>
+                <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, left: showForm ? 16 : 2, transition: 'left .2s' }} />
+              </span>
+              <span>🔥 Vorm-badges</span>
+              <span style={{ fontSize: 11, color: '#888', marginLeft: 'auto' }}>laatste 5 wedstrijden</span>
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer', fontSize: 13 }}
+              onClick={() => { const v = !showPlayed; setShowPlayed(v); savePlayed(v) }}>
+              <span style={{ width: 32, height: 18, borderRadius: 9, background: showPlayed ? '#3b82f6' : '#ccc', position: 'relative', display: 'inline-block', transition: 'background .2s', flexShrink: 0 }}>
+                <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, left: showPlayed ? 16 : 2, transition: 'left .2s' }} />
+              </span>
+              <span>🎮 Gespeeld aantal</span>
+              <span style={{ fontSize: 11, color: '#888', marginLeft: 'auto' }}>W-G-V per team</span>
+            </label>
+          </div>
+        </div>
+      </>}
+
       <div className="main-tabs">
         {[['overzicht', '📋 Overzicht'], ['schema', '📅 Speelschema'], ['sim', '🎲 Simulaties']].map(([id, lbl]) =>
           <button key={id} className={`main-tab ${mainTab === id ? 'active' : ''}`} onClick={() => setMainTab(id)}>{lbl}</button>
@@ -103,11 +128,11 @@ export default function App() {
       </div>
 
       {mainTab === 'overzicht' && (o16
-        ? <O16OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} showForm={showForm} />
-        : <O14OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]} showForm={showForm} />
+        ? <O16OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} showForm={showForm} showPlayed={showPlayed} />
+        : <O14OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]} showForm={showForm} showPlayed={showPlayed} />
       )}
       {mainTab === 'schema' && <SchemaTab data={focusMode ? filteredData : data} myTeam={myTeam} pouleOrder={pouleOrder} />}
-      {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} showForm={showForm} key={effectiveComp + '_sim'} />}
+      {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} showForm={showForm} showPlayed={showPlayed} key={effectiveComp + '_sim'} />}
 
       <footer>NK {label} · v{VERSION} · data {dataSource === 'server' ? 'van server' : 'handmatig'}</footer>
     </>

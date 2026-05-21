@@ -117,7 +117,7 @@ function finalTypeLabel(type) {
   return '🏆'
 }
 
-export function O14OverzichtTab({ data, filteredData, myTeam, nkSchedule, showForm }) {
+export function O14OverzichtTab({ data, filteredData, myTeam, nkSchedule, showForm, showPlayed }) {
   const pk = useMemo(() => POULE_ORDER_14.filter(id => data[id]), [data])
   const displayPk = useMemo(() => filteredData ? POULE_ORDER_14.filter(id => filteredData[id]) : pk, [filteredData, pk])
   const { nkA, nkB, slot2t } = useMemo(() => buildNkPhase(data, pk), [data, pk])
@@ -145,7 +145,7 @@ export function O14OverzichtTab({ data, filteredData, myTeam, nkSchedule, showFo
     <div>
       <div className="section-label" style={{ marginTop: 0 }}>Super — huidige stand</div>
       <div className={displayPk.length <= 2 ? 'grid-2' : displayPk.length <= 4 ? 'grid-4' : 'grid-5'}>
-        {displayPk.map(id => <PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam} slots={NK14_SLOTS[id]} showForm={showForm} />)}
+        {displayPk.map(id => <PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam} slots={NK14_SLOTS[id]} showForm={showForm} showPlayed={showPlayed} />)}
       </div>
 
       <div className="section-label">NK Poulefase — verwachte indeling</div>

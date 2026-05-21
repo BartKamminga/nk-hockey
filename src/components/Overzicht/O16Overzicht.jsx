@@ -94,7 +94,7 @@ function KnockoutPreview({ nr1s, nr2s, myTeam }) {
   )
 }
 
-export function O16OverzichtTab({ data, filteredData, myTeam, showForm }) {
+export function O16OverzichtTab({ data, filteredData, myTeam, showForm, showPlayed }) {
   const pk = useMemo(() => POULE_ORDER_16.filter(id => data[id]), [data])
   const displayPk = useMemo(() => filteredData ? POULE_ORDER_16.filter(id => filteredData[id]) : pk, [filteredData, pk])
   const nr1s = useMemo(() => sortRanking(pk.map(id => ({ team: data[id].teams[0], poule: id, pts: data[id].pts[0], ds: data[id].ds[0] }))), [pk, data])
@@ -104,7 +104,7 @@ export function O16OverzichtTab({ data, filteredData, myTeam, showForm }) {
     <div>
       <div className="section-label" style={{ marginTop: 0 }}>Landelijk — huidige stand</div>
       <div className={displayPk.length <= 2 ? 'grid-2' : 'grid-4'}>
-        {displayPk.map(id => <PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam} showForm={showForm} />)}
+        {displayPk.map(id => <PouleCard key={id} id={id} poule={data[id]} myTeam={myTeam} showForm={showForm} showPlayed={showPlayed} />)}
       </div>
       {nr1s.length >= 4 && <KnockoutPreview nr1s={nr1s} nr2s={nr2s} myTeam={myTeam} />}
     </div>
