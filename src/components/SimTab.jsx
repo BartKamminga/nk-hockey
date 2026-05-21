@@ -6,20 +6,6 @@ import { pct, pc, Bar, fmtMatchDate } from './Shared'
 // ══════════════════════════════════════
 // MATCH DATA HELPERS
 // ══════════════════════════════════════
-function findMyMatches(data, myTeam, pouleOrder) {
-  const matches = []
-  for (const pouleId of pouleOrder) {
-    const poule = data[pouleId]
-    if (!poule) continue
-    for (const [h, a, date] of poule.remaining) {
-      if (h === myTeam || a === myTeam) {
-        matches.push({ pouleId, h, a, date, opponent: h === myTeam ? a : h, isHome: h === myTeam, lockKey: `${h}_${a}` })
-      }
-    }
-  }
-  return matches
-}
-
 function findAllMatchesByRound(data, pouleOrder) {
   const rounds = {}
   for (const pouleId of pouleOrder) {
@@ -43,18 +29,7 @@ function findAllMatchesByRound(data, pouleOrder) {
   })
 }
 
-// For focus-club mode: locks are from focus perspective, need flip for away
-function buildFocusSimLocks(myMatches, uiLocks) {
-  const simLocks = {}
-  for (const m of myMatches) {
-    const ui = uiLocks[m.lockKey]
-    if (!ui) continue
-    simLocks[m.lockKey] = m.isHome ? ui : (ui === 'W' ? 'L' : ui === 'L' ? 'W' : 'D')
-  }
-  return simLocks
-}
-
-// For all-matches mode: locks are from HOME team perspective, no flip needed
+// Locks are always from HOME team perspective
 function buildAllSimLocks(uiLocks) {
   const simLocks = {}
   for (const [key, val] of Object.entries(uiLocks)) {
@@ -73,122 +48,124 @@ const OUTCOMES = [
   { key: 'L', label: 'V', color: '#dc2626', bg: '#fee2e2', title: 'Verlies' },
 ]
 
-function FocusWhatIfPanel({ myTeam, myMatches, locks, onToggle, onSetAll }) {
-  if (!myTeam || myMatches.length === 0) return null
-  const lockedCount = Object.keys(locks).length
-  return (
-    <div className="card" style={{ marginBottom: 16 }}>
-      <div className="card-header" style={{ justifyContent: 'space-between' }}>
-        <span>Scenario's {myTeam} ({myMatches.length} wedstrijden)</span>
-        {lockedCount > 0 && <span style={{ fontSize: 10, color: '#3b82f6' }}>{lockedCount} vastgezet</span>}
-      </div>
-      <div style={{ padding: '4px 0' }}>
-        {myMatches.map(m => {
-          const locked = locks[m.lockKey] || null
-          const outcome = OUTCOMES.find(o => o.key === locked)
-          return (
-            <div key={m.lockKey} className="match-row" style={{ background: locked ? outcome.bg : 'transparent' }}>
-              <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 55 }}>
-                {fmtMatchDate(m.date) || '?'}
-              </div>
-              <div className="match-teams">
-                <div className="match-team right" style={m.isHome ? { fontWeight: 600 } : {}}>{m.isHome ? myTeam : m.opponent}</div>
-                <div className="match-vs">vs</div>
-                <div className="match-team" style={!m.isHome ? { fontWeight: 600 } : {}}>{m.isHome ? m.opponent : myTeam}</div>
-              </div>
-              <div style={{ display: 'flex', gap: 3 }}>
-                {OUTCOMES.map(o => (
-                  <div key={o.label} onClick={() => onToggle(m.lockKey, o.key)} style={{
-                    width: 26, height: 26, borderRadius: 5, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: locked === o.key ? o.bg : 'transparent', color: locked === o.key ? o.color : '#ccc',
-                    fontWeight: 700, fontSize: 11, cursor: 'pointer',
-                    border: locked === o.key ? `1.5px solid ${o.color}40` : '1.5px solid #e0ddd8',
-                  }} title={o.title}>{o.label}</div>
-                ))}
-              </div>
-            </div>
-          )
-        })}
-      </div>
-      <div style={{ padding: '8px 12px', borderTop: '1px solid #e0ddd8', display: 'flex', gap: 6 }}>
-        <button className="whatif-preset" onClick={() => onSetAll('W')} style={{ background: '#dcfce7', color: '#16a34a' }}>Alles W</button>
-        <button className="whatif-preset" onClick={() => onSetAll('D')} style={{ background: '#fef3c7', color: '#b45309' }}>Alles G</button>
-        <button className="whatif-preset" onClick={() => onSetAll('L')} style={{ background: '#fee2e2', color: '#dc2626' }}>Alles V</button>
-        <button className="whatif-preset" onClick={() => onSetAll(null)} style={{ background: '#f0ede8', color: '#888' }}>Reset</button>
-      </div>
-    </div>
-  )
-}
-
 // ══════════════════════════════════════
-// ALL MATCHES MODE: per round, per poule
+// POULE TIMELINE: played + remaining with outcome picker
 // ══════════════════════════════════════
-function AllMatchesPanel({ data, rounds, locks, onToggle, onSetRound, onResetAll, myTeam }) {
+function PouleTimeline({ data, myPouleId, myTeam, locks, onToggle, onSetRound, onResetAll }) {
+  if (!myPouleId || !data[myPouleId]) return null
+  const poule = data[myPouleId]
   const lockedCount = Object.keys(locks).filter(k => locks[k]).length
+
+  // Played matches grouped by round (ascending)
+  const playedRounds = {}
+  const ma = poule.matches_played || []
+  ma.forEach(m => { const r = m.round || '?'; if (!playedRounds[r]) playedRounds[r] = []; playedRounds[r].push(m) })
+  const playedKeys = Object.keys(playedRounds).sort((a, b) => parseInt(a) - parseInt(b))
+
+  // Remaining matches grouped by round
+  const mpr = Math.floor(poule.teams.length / 2)
+  const lr = ma.length > 0 ? Math.max(...ma.map(m => parseInt(m.round) || 0)) : 0
+  const remainingRounds = []
+  if (mpr > 0) {
+    for (let i = 0; i < poule.remaining.length; i += mpr) {
+      const ms = poule.remaining.slice(i, i + mpr)
+      const roundNum = lr + Math.floor(i / mpr) + 1
+      remainingRounds.push({
+        roundNum,
+        date: ms[0] && ms[0][2],
+        matches: ms.map(([h, a, date]) => ({ h, a, date, lockKey: `${h}_${a}` }))
+      })
+    }
+  }
+
   return (
     <div className="card" style={{ marginBottom: 16 }}>
       <div className="card-header" style={{ justifyContent: 'space-between' }}>
-        <span>Alle resterende wedstrijden</span>
+        <span>Poule {myPouleId} · {ma.length} gespeeld · {poule.remaining.length} resterend</span>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
           {lockedCount > 0 && <span style={{ fontSize: 10, color: '#3b82f6' }}>{lockedCount} vastgezet</span>}
-          {lockedCount > 0 && <button className="whatif-preset" onClick={onResetAll} style={{ background: '#f0ede8', color: '#888' }}>Reset alles</button>}
+          {lockedCount > 0 && <button className="whatif-preset" onClick={onResetAll} style={{ background: '#f0ede8', color: '#888', padding: '3px 8px', fontSize: 10 }}>Reset</button>}
         </div>
       </div>
-      {rounds.map(round => (
-        <div key={`${round.pouleId}_${round.roundNum}`}>
-          <div style={{
-            padding: '5px 12px', fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono',monospace",
-            color: '#854d0e', background: '#fef9c3', borderBottom: '1px solid #fde68a', borderTop: '1px solid #fde68a',
-            letterSpacing: '.5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-          }}>
-            <span>Poule {round.pouleId} · Ronde {round.roundNum}{round.date ? ` · ${fmtMatchDate(round.date)}` : ''}</span>
-            <div style={{ display: 'flex', gap: 3 }}>
-              <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'W')} title="Hele ronde: thuis wint" style={{ background: '#dcfce7', color: '#16a34a' }}>T</div>
-              <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'D')} title="Hele ronde: gelijk" style={{ background: '#fef3c7', color: '#b45309' }}>G</div>
-              <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'L')} title="Hele ronde: uit wint" style={{ background: '#fee2e2', color: '#dc2626' }}>U</div>
-              <div className="whatif-preset-sm" onClick={() => onSetRound(round, null)} title="Reset ronde" style={{ background: '#f0ede8', color: '#888' }}>?</div>
+
+      {/* Played rounds */}
+      {playedKeys.map(r => {
+        const dateStr = fmtMatchDate(playedRounds[r][0] && playedRounds[r][0].date)
+        return (
+          <div key={'p' + r}>
+            <div style={{ padding: '5px 12px', fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono',monospace", color: '#888', background: '#f0ede8', borderBottom: '1px solid #e0ddd8', borderTop: '1px solid #e0ddd8', letterSpacing: '.5px', display: 'flex', justifyContent: 'space-between' }}>
+              <span>Ronde {r}</span>{dateStr && <span style={{ fontWeight: 400, color: '#999' }}>{dateStr}</span>}
             </div>
-          </div>
-          {round.matches.map(m => {
-            const locked = locks[m.lockKey] || null
-            const isMy = m.h === myTeam || m.a === myTeam
-            // Colors: home-win = green on home side, draw = yellow center, away-win = green on away side
-            const bgH = locked === 'W' ? '#dcfce7' : locked === 'L' ? '#fee2e2' : locked === 'D' ? '#fef3c7' : 'transparent'
-            return (
-              <div key={m.lockKey} className="match-row" style={{ background: isMy && !locked ? '#eff6ff' : 'transparent' }}>
-                <div style={{ display: 'flex', alignItems: 'center', flex: 1, gap: 0 }}>
-                  {/* Home team + home-win button */}
-                  <div style={{
-                    flex: 1, textAlign: 'right', padding: '4px 8px', fontSize: 12,
-                    fontWeight: m.h === myTeam ? 600 : 400,
-                    background: locked === 'W' ? '#dcfce7' : 'transparent',
-                    borderRadius: '4px 0 0 4px', cursor: 'pointer',
-                  }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'W' ? null : 'W')} title={`${m.h} wint`}>
-                    {m.h}
-                  </div>
-                  {/* Draw button */}
-                  <div style={{
-                    padding: '4px 10px', fontSize: 10, color: locked === 'D' ? '#b45309' : '#ccc',
-                    background: locked === 'D' ? '#fef3c7' : 'transparent',
-                    cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
-                  }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'D' ? null : 'D')} title="Gelijk">
-                    {locked === 'D' ? 'G' : 'vs'}
-                  </div>
-                  {/* Away team + away-win button */}
-                  <div style={{
-                    flex: 1, textAlign: 'left', padding: '4px 8px', fontSize: 12,
-                    fontWeight: m.a === myTeam ? 600 : 400,
-                    background: locked === 'L' ? '#dcfce7' : 'transparent',
-                    borderRadius: '0 4px 4px 0', cursor: 'pointer',
-                  }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'L' ? null : 'L')} title={`${m.a} wint`}>
-                    {m.a}
+            {playedRounds[r].map((m, i) => {
+              const isMy = m.home === myTeam || m.away === myTeam
+              return (
+                <div className="match-row played" key={i} style={isMy ? { background: '#eff6ff' } : {}}>
+                  <div className="match-teams">
+                    <div className="match-team right" style={m.home === myTeam ? { fontWeight: 600 } : {}}>{m.home}</div>
+                    <div className="match-score">{m.score}</div>
+                    <div className="match-team" style={m.away === myTeam ? { fontWeight: 600 } : {}}>{m.away}</div>
                   </div>
                 </div>
+              )
+            })}
+          </div>
+        )
+      })}
+
+      {/* Remaining rounds with outcome picker */}
+      {remainingRounds.map(round => {
+        const dateStr = fmtMatchDate(round.date)
+        return (
+          <div key={'r' + round.roundNum}>
+            <div style={{
+              padding: '5px 12px', fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono',monospace",
+              color: '#854d0e', background: '#fef9c3', borderBottom: '1px solid #fde68a', borderTop: '1px solid #fde68a',
+              letterSpacing: '.5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+            }}>
+              <span>Ronde {round.roundNum}{dateStr ? ` · ${dateStr}` : ''}</span>
+              <div style={{ display: 'flex', gap: 3 }}>
+                <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'W')} title="Thuis wint" style={{ background: '#dcfce7', color: '#16a34a' }}>T</div>
+                <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'D')} title="Gelijk" style={{ background: '#fef3c7', color: '#b45309' }}>G</div>
+                <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'L')} title="Uit wint" style={{ background: '#fee2e2', color: '#dc2626' }}>U</div>
+                <div className="whatif-preset-sm" onClick={() => onSetRound(round, null)} title="Reset" style={{ background: '#f0ede8', color: '#888' }}>?</div>
               </div>
-            )
-          })}
-        </div>
-      ))}
+            </div>
+            {round.matches.map(m => {
+              const locked = locks[m.lockKey] || null
+              const isMy = m.h === myTeam || m.a === myTeam
+              return (
+                <div key={m.lockKey} className="match-row" style={{ background: isMy && !locked ? '#eff6ff' : 'transparent', padding: '4px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                    <div style={{
+                      flex: 1, textAlign: 'right', padding: '5px 8px', fontSize: 12,
+                      fontWeight: m.h === myTeam ? 600 : 400,
+                      background: locked === 'W' ? '#dcfce7' : 'transparent',
+                      borderRadius: '4px 0 0 4px', cursor: 'pointer',
+                    }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'W' ? null : 'W')} title={`${m.h} wint`}>
+                      {m.h}
+                    </div>
+                    <div style={{
+                      padding: '5px 10px', fontSize: 10, color: locked === 'D' ? '#b45309' : '#ccc',
+                      background: locked === 'D' ? '#fef3c7' : 'transparent',
+                      cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
+                    }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'D' ? null : 'D')} title="Gelijk">
+                      {locked === 'D' ? 'G' : 'vs'}
+                    </div>
+                    <div style={{
+                      flex: 1, textAlign: 'left', padding: '5px 8px', fontSize: 12,
+                      fontWeight: m.a === myTeam ? 600 : 400,
+                      background: locked === 'L' ? '#dcfce7' : 'transparent',
+                      borderRadius: '0 4px 4px 0', cursor: 'pointer',
+                    }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'L' ? null : 'L')} title={`${m.a} wint`}>
+                      {m.a}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -380,10 +357,9 @@ function O16FinRes({ results, N, myTeam }) {
 // ══════════════════════════════════════
 // MAIN: unified SimTab
 // ══════════════════════════════════════
-export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
+export default function SimTab({ data, myTeam, effectiveComp }) {
   const o16 = IS_O16(effectiveComp)
   const pouleOrder = o16 ? POULE_ORDER_16 : POULE_ORDER_14
-  const isFocusMode = focusMode && !!myTeam
 
   // Find which poule the team is in
   const myPouleId = useMemo(() => {
@@ -394,9 +370,7 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
     return null
   }, [data, myTeam, pouleOrder])
 
-  const myMatches = useMemo(() => myTeam ? findMyMatches(data, myTeam, pouleOrder) : [], [data, myTeam, pouleOrder])
-
-  // All matches from my poule only (not all poules)
+  // All matches from my poule only
   const myPouleRounds = useMemo(() => {
     if (!myPouleId) return findAllMatchesByRound(data, pouleOrder)
     return findAllMatchesByRound(data, [myPouleId])
@@ -413,9 +387,7 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
   const hasLocks = Object.keys(locks).filter(k => locks[k]).length > 0
 
   function doSim(currentLocks) {
-    const simLocks = isFocusMode
-      ? buildFocusSimLocks(myMatches, currentLocks || locks)
-      : buildAllSimLocks(currentLocks || locks)
+    const simLocks = buildAllSimLocks(currentLocks || locks)
     setRunning(true)
     setTimeout(() => {
       const r = o16 ? runSimO16(data, N, 0, simLocks) : runSimO14(data, N, 0, simLocks)
@@ -442,7 +414,7 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
 
   function onSetAll(outcome) {
     const newLocks = {}
-    const matches = isFocusMode ? myMatches : myPouleRounds.flatMap(r => r.matches)
+    const matches = myPouleRounds.flatMap(r => r.matches)
     if (outcome !== null) { for (const m of matches) newLocks[m.lockKey] = outcome }
     setLocks(newLocks)
     doSim(newLocks)
@@ -458,26 +430,18 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
     doSim(newLocks)
   }
 
-  // For adjusted standings in all-matches mode, locks are already from home perspective
-  const standingsLocks = useMemo(() => {
-    if (isFocusMode) return buildFocusSimLocks(myMatches, locks)
-    return buildAllSimLocks(locks)
-  }, [isFocusMode, myMatches, locks])
-
   const subTabs = o16
     ? [['poules', 'Poules'], ['eindkansen', 'Eindkansen']]
     : [['super', 'Super-poules'], ['nk', 'NK Poulefase'], ['eindkansen', 'Eindkansen']]
 
   return (
     <div>
-      {/* What-if: focus mode or all-matches mode */}
-      {isFocusMode
-        ? <FocusWhatIfPanel myTeam={myTeam} myMatches={myMatches} locks={locks} onToggle={onToggle} onSetAll={onSetAll} />
-        : <AllMatchesPanel data={data} rounds={myPouleRounds} locks={locks} onToggle={onToggle} onSetRound={onSetRound} onResetAll={() => onSetAll(null)} myTeam={myTeam} />
-      }
+      {/* Poule timeline: played + remaining with outcome picker */}
+      <PouleTimeline data={data} myPouleId={myPouleId} myTeam={myTeam} locks={locks}
+        onToggle={onToggle} onSetRound={onSetRound} onResetAll={() => onSetAll(null)} />
 
       {/* Adjusted standings */}
-      {hasLocks && <AdjustedStandingsCards data={data} locks={standingsLocks} pouleOrder={pouleOrder} myTeam={myTeam} />}
+      {hasLocks && <AdjustedStandingsCards data={data} locks={locks} pouleOrder={pouleOrder} myTeam={myTeam} />}
 
       {/* NK chances for focus club */}
       <NKChances myTeam={myTeam} results={results} baseResults={baseResults} N={N} o16={o16} hasLocks={hasLocks} />

@@ -18,8 +18,16 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.3'
+export const VERSION = '5.4'
 export const CHANGELOG = [
+  { version: '5.4', date: '20 mei 2026', changes: [
+    'Simulatie tab: chronologische poule-weergave (gespeelde rondes + resterende rondes)',
+    'Gespeelde wedstrijden met uitslagen (zoals Speelschema tab)',
+    'Resterende wedstrijden met klik-interface: klik thuisteam/gelijk/uitteam',
+    'Geen apart scenario-panel meer — alles in één tijdlijn',
+    'Per ronde snelkeuze: T (thuis) / G (gelijk) / U (uit) / ? (reset)',
+    'Focus mode niet meer relevant voor Simulatie tab — altijd hele poule',
+  ]},
   { version: '5.3', date: '20 mei 2026', changes: [
     'Zonder focus club: alle resterende wedstrijden invulbaar per ronde',
     'Klik op thuisteam = thuis wint (groen), midden = gelijk (geel), uitteam = uit wint (groen)',
