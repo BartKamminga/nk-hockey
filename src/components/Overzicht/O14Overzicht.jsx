@@ -118,7 +118,8 @@ export function O14OverzichtTab({ data, filteredData, myTeam, nkSchedule, showFo
     : null
   const showA = !filteredData || myNKPoule === 'A'
   const showB = !filteredData || myNKPoule === 'B'
-  const gridClass = showA && showB ? 'grid-2' : ''
+  const nkGridClass = showA && showB ? 'grid-2' : ''
+  const nkSingleStyle = (showA && !showB) || (!showA && showB) ? { maxWidth: 500 } : {}
   const {
     schedA = [],
     schedB = [],
@@ -137,7 +138,7 @@ export function O14OverzichtTab({ data, filteredData, myTeam, nkSchedule, showFo
       </div>
 
       <div className="section-label">NK Poulefase — verwachte indeling</div>
-      <div className={gridClass}>
+      <div className={nkGridClass} style={nkSingleStyle}>
         {showA && <NkPhaseTable label={`Poulefase A${poulefaseDate ? ` · ${poulefaseDate}` : ''}`} entries={nkA} headerClass="card-header-a" myTeam={myTeam} />}
         {showB && <NkPhaseTable label={`Poulefase B${poulefaseDate ? ` · ${poulefaseDate}` : ''}`} entries={nkB} headerClass="card-header-b" myTeam={myTeam} />}
       </div>
@@ -145,7 +146,7 @@ export function O14OverzichtTab({ data, filteredData, myTeam, nkSchedule, showFo
       {schedA.length > 0 && (
         <>
           <div className="section-label">NK Speelschema{poulefaseDate ? ` · ${poulefaseDate}` : ''}</div>
-          <div className={gridClass}>
+          <div className={nkGridClass} style={nkSingleStyle}>
             {showA && <ScheduleSection schedule={schedA} times={timesA} headerClass="card-header-a" label="Poule A" slot2t={slot2t} myTeam={myTeam} filterMyTeam={Boolean(filteredData && myTeam)} />}
             {showB && <ScheduleSection schedule={schedB} times={timesB} headerClass="card-header-b" label="Poule B" slot2t={slot2t} myTeam={myTeam} filterMyTeam={Boolean(filteredData && myTeam)} />}
           </div>
