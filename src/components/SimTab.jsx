@@ -51,78 +51,54 @@ const OUTCOMES = [
 // ══════════════════════════════════════
 // POULE TIMELINE: played + remaining with outcome picker
 // ══════════════════════════════════════
-function PouleTimeline({ data, myPouleId, myTeam, locks, onToggle, onSetRound, onResetAll }) {
-  if (!myPouleId || !data[myPouleId]) return null
-  const poule = data[myPouleId]
+function PouleTimeline({ data, pouleIds, myTeam, locks, onToggle, onSetRound, onResetAll }) {
   const lockedCount = Object.keys(locks).filter(k => locks[k]).length
 
-  // Played matches grouped by round (ascending)
-  const playedRounds = {}
-  const ma = poule.matches_played || []
-  ma.forEach(m => { const r = m.round || '?'; if (!playedRounds[r]) playedRounds[r] = []; playedRounds[r].push(m) })
-  const playedKeys = Object.keys(playedRounds).sort((a, b) => parseInt(a) - parseInt(b))
-
-  // Remaining matches grouped by round
-  const mpr = Math.floor(poule.teams.length / 2)
-  const lr = ma.length > 0 ? Math.max(...ma.map(m => parseInt(m.round) || 0)) : 0
-  const remainingRounds = []
-  if (mpr > 0) {
-    for (let i = 0; i < poule.remaining.length; i += mpr) {
-      const ms = poule.remaining.slice(i, i + mpr)
-      const roundNum = lr + Math.floor(i / mpr) + 1
-      remainingRounds.push({
-        roundNum,
-        date: ms[0] && ms[0][2],
-        matches: ms.map(([h, a, date]) => ({ h, a, date, lockKey: `${h}_${a}` }))
-      })
+  // Build remaining rounds for each poule
+  const allRounds = []
+  for (const pouleId of pouleIds) {
+    const poule = data[pouleId]
+    if (!poule || poule.remaining.length === 0) continue
+    const mpr = Math.floor(poule.teams.length / 2)
+    const ma = poule.matches_played || []
+    const lr = ma.length > 0 ? Math.max(...ma.map(m => parseInt(m.round) || 0)) : 0
+    if (mpr > 0) {
+      for (let i = 0; i < poule.remaining.length; i += mpr) {
+        const ms = poule.remaining.slice(i, i + mpr)
+        const roundNum = lr + Math.floor(i / mpr) + 1
+        allRounds.push({
+          pouleId,
+          roundNum,
+          date: ms[0] && ms[0][2],
+          matches: ms.map(([h, a, date]) => ({ h, a, date, lockKey: `${h}_${a}` }))
+        })
+      }
     }
   }
+
+  if (allRounds.length === 0) return null
 
   return (
     <div className="card" style={{ marginBottom: 16 }}>
       <div className="card-header" style={{ justifyContent: 'space-between' }}>
-        <span>Poule {myPouleId} · {ma.length} gespeeld · {poule.remaining.length} resterend</span>
+        <span>Resterende wedstrijden{pouleIds.length === 1 ? ` · Poule ${pouleIds[0]}` : ` · ${pouleIds.length} poules`}</span>
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
           {lockedCount > 0 && <span style={{ fontSize: 10, color: '#3b82f6' }}>{lockedCount} vastgezet</span>}
           {lockedCount > 0 && <button className="whatif-preset" onClick={onResetAll} style={{ background: '#f0ede8', color: '#888', padding: '3px 8px', fontSize: 10 }}>Reset</button>}
         </div>
       </div>
 
-      {/* Played rounds */}
-      {playedKeys.map(r => {
-        const dateStr = fmtMatchDate(playedRounds[r][0] && playedRounds[r][0].date)
-        return (
-          <div key={'p' + r}>
-            <div style={{ padding: '5px 12px', fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono',monospace", color: '#888', background: '#f0ede8', borderBottom: '1px solid #e0ddd8', borderTop: '1px solid #e0ddd8', letterSpacing: '.5px', display: 'flex', justifyContent: 'space-between' }}>
-              <span>Ronde {r}</span>{dateStr && <span style={{ fontWeight: 400, color: '#999' }}>{dateStr}</span>}
-            </div>
-            {playedRounds[r].map((m, i) => {
-              const isMy = m.home === myTeam || m.away === myTeam
-              return (
-                <div className="match-row played" key={i} style={isMy ? { background: '#eff6ff' } : {}}>
-                  <div className="match-teams">
-                    <div className="match-team right" style={m.home === myTeam ? { fontWeight: 600 } : {}}>{m.home}</div>
-                    <div className="match-score">{m.score}</div>
-                    <div className="match-team" style={m.away === myTeam ? { fontWeight: 600 } : {}}>{m.away}</div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )
-      })}
-
-      {/* Remaining rounds with outcome picker */}
-      {remainingRounds.map(round => {
+      {allRounds.map(round => {
         const dateStr = fmtMatchDate(round.date)
+        const showPouleLabel = pouleIds.length > 1
         return (
-          <div key={'r' + round.roundNum}>
+          <div key={`${round.pouleId}_${round.roundNum}`}>
             <div style={{
               padding: '5px 12px', fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono',monospace",
               color: '#854d0e', background: '#fef9c3', borderBottom: '1px solid #fde68a', borderTop: '1px solid #fde68a',
               letterSpacing: '.5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
             }}>
-              <span>Ronde {round.roundNum}{dateStr ? ` · ${dateStr}` : ''}</span>
+              <span>{showPouleLabel ? `Poule ${round.pouleId} · ` : ''}Ronde {round.roundNum}{dateStr ? ` · ${dateStr}` : ''}</span>
               <div style={{ display: 'flex', gap: 3 }}>
                 <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'W')} title="Thuis wint" style={{ background: '#dcfce7', color: '#16a34a' }}>T</div>
                 <div className="whatif-preset-sm" onClick={() => onSetRound(round, 'D')} title="Gelijk" style={{ background: '#fef3c7', color: '#b45309' }}>G</div>
@@ -370,12 +346,6 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
     return null
   }, [data, myTeam, pouleOrder])
 
-  // All matches from my poule only
-  const myPouleRounds = useMemo(() => {
-    if (!myPouleId) return findAllMatchesByRound(data, pouleOrder)
-    return findAllMatchesByRound(data, [myPouleId])
-  }, [data, myPouleId, pouleOrder])
-
   const [N, setN] = useState(20000)
   const [locks, setLocks] = useState({})
   const [results, setResults] = useState(null)
@@ -412,10 +382,24 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
     doSim(newLocks)
   }
 
+  // Which poules to show in the timeline
+  const timelinePouleIds = useMemo(() => {
+    if (myPouleId) return [myPouleId]
+    return pouleOrder.filter(id => data[id])
+  }, [myPouleId, pouleOrder, data])
+
   function onSetAll(outcome) {
+    // Collect all matches from visible poules
+    const allMatches = []
+    for (const pouleId of timelinePouleIds) {
+      const poule = data[pouleId]
+      if (!poule) continue
+      for (const [h, a] of poule.remaining) {
+        allMatches.push({ lockKey: `${h}_${a}` })
+      }
+    }
     const newLocks = {}
-    const matches = myPouleRounds.flatMap(r => r.matches)
-    if (outcome !== null) { for (const m of matches) newLocks[m.lockKey] = outcome }
+    if (outcome !== null) { for (const m of allMatches) newLocks[m.lockKey] = outcome }
     setLocks(newLocks)
     doSim(newLocks)
   }
@@ -436,8 +420,8 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
 
   return (
     <div>
-      {/* Poule timeline: played + remaining with outcome picker */}
-      <PouleTimeline data={data} myPouleId={myPouleId} myTeam={myTeam} locks={locks}
+      {/* Poule timeline: remaining matches with outcome picker */}
+      <PouleTimeline data={data} pouleIds={timelinePouleIds} myTeam={myTeam} locks={locks}
         onToggle={onToggle} onSetRound={onSetRound} onResetAll={() => onSetAll(null)} />
 
       {/* Adjusted standings */}
