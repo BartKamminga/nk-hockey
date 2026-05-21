@@ -6,7 +6,7 @@ import { SchemaTab } from './components/Speelschema'
 import { O14OverzichtTab } from './components/Overzicht'
 import { O16OverzichtTab } from './components/Overzicht'
 import SimTab from './components/SimTab'
-import { useCompetitionData } from './hooks/useCompetitionData'
+import { useCompetitionData } from './dataloader/useCompetitionData'
 
 export default function App() {
   const [mainTab, setMainTab] = useState('overzicht')
