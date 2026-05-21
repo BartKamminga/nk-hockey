@@ -11,23 +11,40 @@ export const simMatch = (ha) => {
 
 const simGD = () => 1 + Math.floor(Math.random() * 4)
 
-function resolveMatch(ha, lock) {
-  let hp, ap, gd
-  if (lock) {
-    hp = lock === 'W' ? 3 : lock === 'D' ? 1 : 0
-    ap = lock === 'W' ? 0 : lock === 'D' ? 1 : 3
-    gd = lock === 'D' ? 0 : simGD()
-  } else {
-    ;[hp, ap] = simMatch(ha)
-    gd = simGD()
+// Generate a realistic score for a given result
+export function generateScore(result) {
+  if (result === 'D') {
+    const g = Math.random() < 0.4 ? 0 : Math.random() < 0.7 ? 1 : 2
+    return [g, g]
   }
-  return { hp, ap, gd }
+  const win = 1 + Math.floor(Math.random() * 4)  // 1-4 goals
+  const lose = Math.max(0, win - 1 - Math.floor(Math.random() * 3))  // 0 to win-1
+  return result === 'W' ? [win, lose] : [lose, win]
+}
+
+// Normalize lock value — supports both string ('W') and object ({result:'W', scoreH:3, scoreA:1})
+function getLock(lock) {
+  if (!lock) return null
+  if (typeof lock === 'string') return { result: lock, scoreH: null, scoreA: null }
+  return lock
+}
+
+function resolveMatch(ha, rawLock) {
+  const lock = getLock(rawLock)
+  if (lock) {
+    const r = lock.result
+    const hp = r === 'W' ? 3 : r === 'D' ? 1 : 0
+    const ap = r === 'W' ? 0 : r === 'D' ? 1 : 3
+    const gd = (lock.scoreH != null && lock.scoreA != null) ? lock.scoreH - lock.scoreA : (r === 'D' ? 0 : simGD())
+    return { hp, ap, gd }
+  }
+  const [hp, ap] = simMatch(ha)
+  return { hp, ap, gd: simGD() }
 }
 
 function simKOWithLock(locks, lockKey, home, away) {
-  const lock = locks && locks[lockKey]
-  if (lock === 'W') return home
-  if (lock === 'L') return away
+  const lock = getLock(locks && locks[lockKey])
+  if (lock) return lock.result === 'W' ? home : lock.result === 'L' ? away : (Math.random() < 0.5 ? home : away)
   return Math.random() < 0.5 ? home : away
 }
 
@@ -38,14 +55,21 @@ export function predictMatches(matches, poule) {
   const results = {}
   for (const m of matches) {
     const hi = poule.teams.indexOf(m.h), ai = poule.teams.indexOf(m.a)
-    if (hi < 0 || ai < 0) { results[m.lockKey] = m.isKO ? (Math.random() < 0.5 ? 'W' : 'L') : null; continue }
+    if (hi < 0 || ai < 0) {
+      const result = m.isKO ? (Math.random() < 0.5 ? 'W' : 'L') : null
+      results[m.lockKey] = result ? { result, scoreH: null, scoreA: null } : null
+      continue
+    }
     const ptsH = poule.pts[hi] || 0, ptsA = poule.pts[ai] || 0
     const dsH = poule.ds[hi] || 0, dsA = poule.ds[ai] || 0
     const ha = Math.max(-30, Math.min(30, ((ptsH - ptsA) * 2 + (dsH - dsA) * 0.5) / 20 * 100))
     let wC = 0, lC = 0
     for (let i = 0; i < N; i++) { const [hp] = simMatch(ha); if (hp === 3) wC++; else if (hp === 0) lC++ }
-    if (m.isKO) results[m.lockKey] = wC >= lC ? 'W' : 'L'
-    else results[m.lockKey] = wC >= lC && wC >= N - wC - lC ? 'W' : lC >= wC && lC >= N - wC - lC ? 'L' : 'D'
+    let result
+    if (m.isKO) result = wC >= lC ? 'W' : 'L'
+    else result = wC >= lC && wC >= N - wC - lC ? 'W' : lC >= wC && lC >= N - wC - lC ? 'L' : 'D'
+    const [scoreH, scoreA] = generateScore(result)
+    results[m.lockKey] = { result, scoreH, scoreA }
   }
   return results
 }
@@ -60,8 +84,8 @@ export function simPoule(poule, ha, locks) {
     if (hi < 0 || ai < 0) continue
     const { hp, ap, gd } = resolveMatch(ha, locks && locks[`${h}_${a}`])
     pts[hi] += hp; pts[ai] += ap
-    if (hp > ap) { ds[hi] += gd; ds[ai] -= gd }
-    else if (ap > hp) { ds[ai] += gd; ds[hi] -= gd }
+    if (hp > ap) { ds[hi] += Math.abs(gd); ds[ai] -= Math.abs(gd) }
+    else if (ap > hp) { ds[ai] += Math.abs(gd); ds[hi] -= Math.abs(gd) }
   }
   return pts.map((_, i) => i).sort((a, b) => pts[b] !== pts[a] ? pts[b] - pts[a] : ds[b] - ds[a])
 }
@@ -70,16 +94,20 @@ export function simPoule(poule, ha, locks) {
 export function simNKPoule(names, nkLocks, slotNames) {
   const n = names.length, pts = Array(n).fill(0), ds = Array(n).fill(0)
   for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
-    let lock = null
+    let rawLock = null
     if (nkLocks && slotNames) {
       const l1 = nkLocks[`${slotNames[i]}_${slotNames[j]}`]
       const l2 = nkLocks[`${slotNames[j]}_${slotNames[i]}`]
-      lock = l1 || (l2 ? (l2 === 'W' ? 'L' : l2 === 'L' ? 'W' : 'D') : null)
+      if (l1) rawLock = l1
+      else if (l2) {
+        const lk = getLock(l2)
+        if (lk) rawLock = { result: lk.result === 'W' ? 'L' : lk.result === 'L' ? 'W' : 'D', scoreH: lk.scoreA, scoreA: lk.scoreH }
+      }
     }
-    const { hp, ap, gd } = resolveMatch(0, lock)
+    const { hp, ap, gd } = resolveMatch(0, rawLock)
     pts[i] += hp; pts[j] += ap
-    if (hp > ap) { ds[i] += gd; ds[j] -= gd }
-    else if (ap > hp) { ds[j] += gd; ds[i] -= gd }
+    if (hp > ap) { ds[i] += Math.abs(gd); ds[j] -= Math.abs(gd) }
+    else if (ap > hp) { ds[j] += Math.abs(gd); ds[i] -= Math.abs(gd) }
   }
   return pts.map((_, i) => i).sort((a, b) => pts[b] !== pts[a] ? pts[b] - pts[a] : ds[b] - ds[a])
 }
@@ -90,7 +118,6 @@ function simPoulePhase(data, N, ha, locks, pouleOrder) {
   const ss = {}
   for (const id of Object.keys(data)) ss[id] = data[id].teams.map(() => Array(6).fill(0))
   const pk = pouleOrder.filter(k => data[k])
-
   function runOnce() {
     const st = {}
     for (const id of pk) {
@@ -111,7 +138,6 @@ export function runSimO14(data, N, ha, locks, nkSchedule) {
   const nkAp = {}, nkBp = {}, nkAa = {}, nkBa = {}, fin = {}
   const ensF = t => { if (!fin[t]) fin[t] = { appear: 0, sfReach: 0, finalist: 0, p1: 0, p2: 0, p3: 0, p4: 0 } }
 
-  // Build NK poulefase lock maps
   const nkLocksA = {}, nkLocksB = {}
   if (locks && nkSchedule) {
     for (const m of (nkSchedule.schedA || [])) { const k = `nk_A_${m.home}_${m.away}`; if (locks[k]) nkLocksA[`${m.home}_${m.away}`] = locks[k] }

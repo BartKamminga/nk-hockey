@@ -48,11 +48,12 @@ export default function O14NKPhase({ data, locks, myTeam, nkSchedule, onToggle, 
     teams.forEach(t => { pts[t] = 0 })
     for (const round of rounds) {
       for (const m of round.matches) {
-        const lock = locks[m.lockKey]
-        if (!lock) continue
-        if (lock === 'W') pts[m.h] = (pts[m.h] || 0) + 3
-        else if (lock === 'D') { pts[m.h] = (pts[m.h] || 0) + 1; pts[m.a] = (pts[m.a] || 0) + 1 }
-        else if (lock === 'L') pts[m.a] = (pts[m.a] || 0) + 3
+        const raw = locks[m.lockKey]
+        if (!raw) continue
+        const r = typeof raw === 'string' ? raw : raw.result
+        if (r === 'W') pts[m.h] = (pts[m.h] || 0) + 3
+        else if (r === 'D') { pts[m.h] = (pts[m.h] || 0) + 1; pts[m.a] = (pts[m.a] || 0) + 1 }
+        else if (r === 'L') pts[m.a] = (pts[m.a] || 0) + 3
       }
     }
     return [...teams].sort((a, b) => (pts[b] || 0) - (pts[a] || 0))
@@ -65,7 +66,7 @@ export default function O14NKPhase({ data, locks, myTeam, nkSchedule, onToggle, 
   const stA = showHF ? calcNKStandings(nkTeamsA, roundsA) : []
   const stB = showHF ? calcNKStandings(nkTeamsB, roundsB) : []
 
-  const winner = (lockKey, h, a) => { const l = locks[lockKey]; return l === 'W' ? h : l === 'L' ? a : null }
+  const winner = (lockKey, h, a) => { const raw = locks[lockKey]; if (!raw) return null; const r = typeof raw === 'string' ? raw : raw.result; return r === 'W' ? h : r === 'L' ? a : null }
   const hf1h = showHF ? stA[0] : 'NK A nr 1', hf1a = showHF ? stB[1] : 'NK B nr 2'
   const hf2h = showHF ? stB[0] : 'NK B nr 1', hf2a = showHF ? stA[1] : 'NK A nr 2'
   const hfMatches = [{ h: hf1h, a: hf1a, lockKey: 'nk_hf1', isKO: true }, { h: hf2h, a: hf2a, lockKey: 'nk_hf2', isKO: true }]

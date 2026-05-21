@@ -1,7 +1,14 @@
 import React from 'react'
 
-export const VERSION = '5.13'
+export const VERSION = '5.14'
 export const CHANGELOG = [
+  { version: '5.14', date: '21 mei 2026', changes: [
+    'Score-voorspelling: ✦ genereert realistische scores (bijv. 3-1, 0-0, 2-4)',
+    'Scores zichtbaar in de wedstrijd-cards (i.p.v. alleen groene highlight)',
+    'Doelsaldo in de stand berekend uit ingevulde scores',
+    'Handmatig klikken (W/G/V) genereert ook automatisch een passende score',
+    'Backward compatible: oude string locks ("W") worden nog steeds ondersteund',
+  ]},
   { version: '5.13', date: '21 mei 2026', changes: [
     'Vorm-indicator: laatste 5 wedstrijden als gekleurde bolletjes (groen/geel/rood)',
     'Zichtbaar in Overzicht (PouleCard) en Simulaties (SimPouleCard)',

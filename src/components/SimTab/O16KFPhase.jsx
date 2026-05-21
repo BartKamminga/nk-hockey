@@ -23,7 +23,7 @@ export default function O16KFPhase({ data, locks, myTeam, onToggle, onSetRound, 
   const kfTeams = [...new Set(kf.flatMap(m => [m.h, m.a]))]
   const kfRounds = [{ roundNum: 1, date: '', time: '', matches: kf }]
 
-  const winner = (lockKey, h, a) => { const l = locks[lockKey]; return l === 'W' ? h : l === 'L' ? a : null }
+  const winner = (lockKey, h, a) => { const raw = locks[lockKey]; if (!raw) return null; const r = typeof raw === 'string' ? raw : raw.result; return r === 'W' ? h : r === 'L' ? a : null }
   const kfW1 = winner('nk_kf1', kf[0].h, kf[0].a), kfW2 = winner('nk_kf2', kf[1].h, kf[1].a)
   const kfW3 = winner('nk_kf3', kf[2].h, kf[2].a), kfW4 = winner('nk_kf4', kf[3].h, kf[3].a)
 

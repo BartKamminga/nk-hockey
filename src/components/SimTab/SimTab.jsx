@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { POULE_ORDER_14, POULE_ORDER_16, IS_O16 } from '../../constants'
 import { NK_SCHEDULES } from '../../lib/nk-schedules'
-import { runSimO14, runSimO16, predictMatches } from './simulation'
+import { runSimO14, runSimO16, predictMatches, generateScore } from './simulation'
 import { buildAllSimLocks } from './helpers'
 import RemainingPouleCards from './RemainingPouleCards'
 import O14NKPhase from './O14NKPhase'
@@ -27,7 +27,7 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
   const [running, setRunning] = useState(false)
   const [simNote, setSimNote] = useState('')
 
-  const hasLocks = Object.keys(locks).filter(k => locks[k]).length > 0
+  const hasLocks = Object.keys(locks).length > 0
 
   const timelinePouleIds = useMemo(() => pouleOrder.filter(id => data[id]), [pouleOrder, data])
 
@@ -55,8 +55,19 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
 
   function onToggle(lockKey, outcome) {
     const newLocks = { ...locks }
-    if (outcome === null || locks[lockKey] === outcome) delete newLocks[lockKey]
-    else newLocks[lockKey] = outcome
+    if (outcome === null) {
+      delete newLocks[lockKey]
+    } else {
+      // Check if current lock has same result — if so, remove
+      const cur = newLocks[lockKey]
+      const curResult = cur ? (typeof cur === 'string' ? cur : cur.result) : null
+      if (curResult === outcome) {
+        delete newLocks[lockKey]
+      } else {
+        const [scoreH, scoreA] = generateScore(outcome)
+        newLocks[lockKey] = { result: outcome, scoreH, scoreA }
+      }
+    }
     setLocks(newLocks)
     doSim(newLocks)
   }
@@ -65,7 +76,10 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
     const newLocks = { ...locks }
     for (const m of round.matches) {
       if (outcome === null) delete newLocks[m.lockKey]
-      else newLocks[m.lockKey] = outcome
+      else {
+        const [scoreH, scoreA] = generateScore(outcome)
+        newLocks[m.lockKey] = { result: outcome, scoreH, scoreA }
+      }
     }
     setLocks(newLocks)
     doSim(newLocks)
@@ -98,8 +112,9 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
     for (const round of (Array.isArray(rounds) ? rounds : [rounds])) {
       for (const m of round.matches) {
         if (newLocks[m.lockKey]) continue
-        if (m.isKO) newLocks[m.lockKey] = Math.random() < 0.5 ? 'W' : 'L'
-        else { const r = Math.random(); newLocks[m.lockKey] = r < 0.4 ? 'W' : r < 0.65 ? 'D' : 'L' }
+        const result = m.isKO ? (Math.random() < 0.5 ? 'W' : 'L') : (() => { const r = Math.random(); return r < 0.4 ? 'W' : r < 0.65 ? 'D' : 'L' })()
+        const [scoreH, scoreA] = generateScore(result)
+        newLocks[m.lockKey] = { result, scoreH, scoreA }
       }
     }
     setLocks(newLocks)

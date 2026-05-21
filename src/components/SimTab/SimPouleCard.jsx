@@ -16,11 +16,16 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
   teams.forEach((t, i) => { pts[t] = basePts[i] || 0; ds[t] = baseDs[i] || 0 })
   for (const round of rounds) {
     for (const m of round.matches) {
-      const lock = locks[m.lockKey]
-      if (!lock) continue
-      if (lock === 'W') pts[m.h] = (pts[m.h] || 0) + 3
-      else if (lock === 'D') { pts[m.h] = (pts[m.h] || 0) + 1; pts[m.a] = (pts[m.a] || 0) + 1 }
-      else if (lock === 'L') pts[m.a] = (pts[m.a] || 0) + 3
+      const raw = locks[m.lockKey]
+      if (!raw) continue
+      const lock = typeof raw === 'string' ? { result: raw } : raw
+      if (lock.result === 'W') pts[m.h] = (pts[m.h] || 0) + 3
+      else if (lock.result === 'D') { pts[m.h] = (pts[m.h] || 0) + 1; pts[m.a] = (pts[m.a] || 0) + 1 }
+      else if (lock.result === 'L') pts[m.a] = (pts[m.a] || 0) + 3
+      if (lock.scoreH != null && lock.scoreA != null) {
+        ds[m.h] = (ds[m.h] || 0) + lock.scoreH - lock.scoreA
+        ds[m.a] = (ds[m.a] || 0) + lock.scoreA - lock.scoreH
+      }
     }
   }
   const standings = teams.map((t, i) => ({ team: t, pts: pts[t] || 0, ds: ds[t] || 0, origRank: i }))
@@ -67,42 +72,51 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
               </div>
             </div>
             {round.matches.map(m => {
-              const locked = locks[m.lockKey] || null
+              const raw = locks[m.lockKey] || null
+              const lock = raw ? (typeof raw === 'string' ? { result: raw } : raw) : null
+              const result = lock ? lock.result : null
+              const hasScore = lock && lock.scoreH != null && lock.scoreA != null
               const isMy = m.h === myTeam || m.a === myTeam
               const ko = m.isKO
               return (
-                <div key={m.lockKey} className="match-row" style={{ background: isMy && !locked ? '#eff6ff' : 'transparent', padding: '4px 0' }}>
+                <div key={m.lockKey} className="match-row" style={{ background: isMy && !lock ? '#eff6ff' : 'transparent', padding: '4px 0' }}>
                   <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
                     <div style={{
                       flex: 1, textAlign: 'right', padding: '5px 8px', fontSize: 12,
                       fontWeight: m.h === myTeam ? 600 : 400,
-                      background: locked === 'W' ? '#dcfce7' : 'transparent',
+                      background: result === 'W' ? '#dcfce7' : 'transparent',
                       borderRadius: '4px 0 0 4px', cursor: 'pointer',
-                    }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'W' ? null : 'W')}>
+                    }} onClick={() => onToggle(m.lockKey, result === 'W' ? null : 'W')}>
                       {m.h}
                     </div>
-                    {ko ? (
+                    {hasScore ? (
+                      <div className="match-score" style={{ cursor: 'pointer', minWidth: 36 }}
+                        onClick={() => { if (ko) onToggle(m.lockKey, null); else onToggle(m.lockKey, result === 'D' ? null : 'D') }}
+                        title={ko ? 'Reset' : (result === 'D' ? 'Reset' : 'Gelijk')}>
+                        {lock.scoreH}-{lock.scoreA}
+                      </div>
+                    ) : ko ? (
                       <div style={{
                         padding: '5px 10px', fontSize: 10, color: '#ccc',
-                        cursor: locked ? 'pointer' : 'default', fontWeight: 700, textAlign: 'center', minWidth: 30,
-                      }} onClick={() => { if (locked) onToggle(m.lockKey, null) }} title={locked ? 'Reset' : ''}>
+                        cursor: lock ? 'pointer' : 'default', fontWeight: 700, textAlign: 'center', minWidth: 30,
+                      }} onClick={() => { if (lock) onToggle(m.lockKey, null) }} title={lock ? 'Reset' : ''}>
                         vs
                       </div>
                     ) : (
                       <div style={{
-                        padding: '5px 10px', fontSize: 10, color: locked === 'D' ? '#b45309' : '#ccc',
-                        background: locked === 'D' ? '#fef3c7' : 'transparent',
+                        padding: '5px 10px', fontSize: 10, color: result === 'D' ? '#b45309' : '#ccc',
+                        background: result === 'D' ? '#fef3c7' : 'transparent',
                         cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
-                      }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'D' ? null : 'D')}>
-                        {locked === 'D' ? 'G' : 'vs'}
+                      }} onClick={() => onToggle(m.lockKey, result === 'D' ? null : 'D')}>
+                        {result === 'D' ? 'G' : 'vs'}
                       </div>
                     )}
                     <div style={{
                       flex: 1, textAlign: 'left', padding: '5px 8px', fontSize: 12,
                       fontWeight: m.a === myTeam ? 600 : 400,
-                      background: locked === 'L' ? '#dcfce7' : 'transparent',
+                      background: result === 'L' ? '#dcfce7' : 'transparent',
                       borderRadius: '0 4px 4px 0', cursor: 'pointer',
-                    }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'L' ? null : 'L')}>
+                    }} onClick={() => onToggle(m.lockKey, result === 'L' ? null : 'L')}>
                       {m.a}
                     </div>
                   </div>
