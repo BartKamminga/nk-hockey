@@ -568,11 +568,11 @@ function O16FinRes({ results, N, myTeam }) {
 // ══════════════════════════════════════
 // MAIN: unified SimTab
 // ══════════════════════════════════════
-export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
+export default function SimTab({ data, myTeam, effectiveComp }) {
   const o16 = IS_O16(effectiveComp)
   const pouleOrder = o16 ? POULE_ORDER_16 : POULE_ORDER_14
 
-  // Find which poule the team is in
+  // Find which poule the team is in (for highlighting only)
   const myPouleId = useMemo(() => {
     if (!myTeam) return null
     for (const id of pouleOrder) {
@@ -616,11 +616,10 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
     doSim(newLocks)
   }
 
-  // Which poules to show: focus mode = only my poule, otherwise all
+  // Always show all poules (no focus filtering in SimTab)
   const timelinePouleIds = useMemo(() => {
-    if (focusMode && myPouleId) return [myPouleId]
     return pouleOrder.filter(id => data[id])
-  }, [focusMode, myPouleId, pouleOrder, data])
+  }, [pouleOrder, data])
 
   function onSetAll(outcome) {
     // Collect all matches from visible poules
