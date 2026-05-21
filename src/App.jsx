@@ -21,6 +21,15 @@ export default function App() {
   })
   const [showForm, setShowForm] = useState(getSavedForm)
   const [showPlayed, setShowPlayed] = useState(getSavedPlayed)
+  const [darkMode, setDarkMode] = useState(() => {
+    try { const s = localStorage.getItem('nk_dark_mode'); return s === 'true' || (s === null && window.matchMedia('(prefers-color-scheme: dark)').matches) } catch { return false }
+  })
+
+  // Apply theme to document
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
+    try { localStorage.setItem('nk_dark_mode', darkMode ? 'true' : 'false') } catch {}
+  }, [darkMode])
 
   function dismissDisclaimer() {
     setShowDisclaimer(false)
@@ -37,7 +46,7 @@ export default function App() {
   if (!comps) return (
     <div className="loading">
       <p>Geen data beschikbaar.</p>
-      <p style={{ fontSize: 12, color: '#888' }}>Gebruik de Chrome extensie om data te laden, of controleer of de data bestanden beschikbaar zijn.</p>
+      <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>Gebruik de Chrome extensie om data te laden, of controleer of de data bestanden beschikbaar zijn.</p>
     </div>
   )
 
@@ -50,7 +59,7 @@ export default function App() {
               style={{ cursor: 'pointer', border: focusMode ? '2px solid #3b82f6' : '2px solid transparent', borderRadius: '50%' }}
               title={focusMode ? 'Toon alles' : 'Toon alleen ' + focusClub}>🏑</div>
             <div className="top-team-name" onClick={() => setShowSettings(true)} style={{ cursor: 'pointer' }} title="Instellingen">
-              {focusClub || 'Kies club'}{focusMode && <span style={{ fontSize: 10, color: '#3b82f6', marginLeft: 4 }}>focus</span>}
+              {focusClub || 'Kies club'}{focusMode && <span style={{ fontSize: 10, color: 'var(--accent)', marginLeft: 4 }}>focus</span>}
             </div>
           </div>
           <div className="top-end">
@@ -83,17 +92,18 @@ export default function App() {
       {/* Settings */}
       {showSettings && <Popup title="⚙️ Instellingen" onClose={() => setShowSettings(false)} maxWidth={400}>
         <div style={{ padding: '12px 16px' }}>
+          <Toggle checked={darkMode} onChange={() => setDarkMode(!darkMode)} label="🌙 Dark mode" hint="donker thema" />
           <Toggle checked={showForm} onChange={() => { const v = !showForm; setShowForm(v); saveForm(v) }} label="🔥 Vorm-badges" hint="laatste 5 wedstrijden" />
           <Toggle checked={showPlayed} onChange={() => { const v = !showPlayed; setShowPlayed(v); savePlayed(v) }} label="🎮 Gespeeld" hint="W-G-V per team" />
-          <div style={{ borderTop: '1px solid #e0ddd8', marginTop: 8, paddingTop: 12 }}>
+          <div style={{ borderTop: '1px solid var(--border)', marginTop: 8, paddingTop: 12 }}>
             <Toggle checked={focusMode} onChange={() => setFocusMode(!focusMode)} label="🏑 Focus mode" hint="alleen poule van club" />
             <div style={{ marginTop: 4 }}>
-              <div style={{ fontSize: 11, color: '#888', marginBottom: 6, fontWeight: 600 }}>Club</div>
-              <div className="club-list" style={{ maxHeight: 200, overflowY: 'auto', border: '1px solid #e0ddd8', borderRadius: 8 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 6, fontWeight: 600 }}>Club</div>
+              <div className="club-list" style={{ maxHeight: 200, overflowY: 'auto', border: '1px solid var(--border)', borderRadius: 8 }}>
                 {allClubs.map(club => (
                   <div key={club} className={'club-item' + (club === focusClub ? ' club-active' : '')}
                     onClick={() => setFocusClub(club)}>
-                    {club === focusClub && <span style={{ color: '#3b82f6', marginRight: 6 }}>✓</span>}{club}
+                    {club === focusClub && <span style={{ color: 'var(--accent)', marginRight: 6 }}>✓</span>}{club}
                   </div>
                 ))}
               </div>

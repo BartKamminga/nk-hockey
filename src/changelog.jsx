@@ -1,7 +1,14 @@
 import React from 'react'
 
-export const VERSION = '5.21'
+export const VERSION = '5.22'
 export const CHANGELOG = [
+  { version: '5.22', date: '21 mei 2026', changes: [
+    '🌙 Dark mode — volledig donker thema met CSS variables',
+    'Toggle in ⚙️ instellingen, opgeslagen in localStorage',
+    'Respecteert systeem-voorkeur (prefers-color-scheme) bij eerste bezoek',
+    'Alle CSS kleuren via variabelen: 40+ kleuren, licht en donker',
+    'Popups, changelog, disclaimer aangepast voor dark mode',
+  ]},
   { version: '5.21', date: '21 mei 2026', changes: [
     'CSS opgeschoond: 16 ongebruikte classes verwijderd (import-screen, sub-tabs, sim-table, etc.)',
     'Stylesheet geformateerd en logisch gegroepeerd (Reset, Top bar, Cards, Match rows, etc.)',
@@ -308,12 +315,12 @@ export function ChangelogContent() {
         <div key={e.version} className="card" style={{ marginBottom: 12 }}>
           <div className="card-header" style={{ justifyContent: 'space-between' }}>
             <span>v{e.version}</span>
-            <span style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', fontWeight: 400 }}>{e.date}</span>
+            <span style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: 'var(--text-muted)', fontWeight: 400 }}>{e.date}</span>
           </div>
           <div style={{ padding: '10px 14px' }}>
             {e.changes.map((c, i) => (
-              <div key={i} style={{ fontSize: 12.5, color: '#444', padding: '3px 0', display: 'flex', gap: 8 }}>
-                <span style={{ color: '#16a34a', flexShrink: 0 }}>+</span><span>{c}</span>
+              <div key={i} style={{ fontSize: 12.5, color: 'var(--text-secondary)', padding: '3px 0', display: 'flex', gap: 8 }}>
+                <span style={{ color: 'var(--win)', flexShrink: 0 }}>+</span><span>{c}</span>
               </div>
             ))}
           </div>
