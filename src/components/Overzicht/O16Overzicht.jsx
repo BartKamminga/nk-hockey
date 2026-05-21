@@ -12,7 +12,7 @@ const rankLabel = (index) =>
   : '4e'
 
 const renderTeamRow = (team, label, myTeam) => (
-  <tr key={team.team} style={team.team === myTeam ? { background: 'var(--bg-highlight)' } : {}}>
+  <tr key={team.team} className={team.team === myTeam ? 'row-my' : ''}>
     <td className="td-rank">{label}</td>
     <td style={team.team === myTeam ? { fontWeight: 600 } : {}}>
       {team.team}
@@ -50,7 +50,7 @@ function KnockoutPreview({ nr1s, nr2s, myTeam }) {
           const hMy = kf.home.team === myTeam
           const aMy = kf.away.team === myTeam
           return (
-            <div key={i} className="match-row" style={hMy || aMy ? { background: 'var(--bg-highlight)' } : {}}>
+            <div key={i} className={`match-row${hMy || aMy ? ' row-my-match' : ''}`}>
               <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 36 }}>{kf.label}</div>
               <div className="match-teams">
                 <div className="match-team right" style={hMy ? { fontWeight: 600, color: '#1d4ed8' } : {}}>

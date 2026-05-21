@@ -20,7 +20,7 @@ function PlayedCard({ id, poule, myTeam }) {
             {rounds[r].map((m, i) => {
               const isMy = m.home === myTeam || m.away === myTeam
               return (
-                <div className="match-row played" key={i} style={isMy ? { background: '#eff6ff' } : {}}>
+                <div className="match-row played" key={i} className={isMy ? 'row-my-match' : ''}>
                   <div className="match-teams">
                     <div className="match-team right" style={m.home === myTeam ? { fontWeight: 600 } : {}}>{m.home}</div>
                     <div className="match-score">{m.score}</div>
@@ -56,7 +56,7 @@ function RemainingCard({ id, poule, myTeam }) {
             {ms.map((m, mi) => {
               const h = m[0], a = m[1], isMy = h === myTeam || a === myTeam
               return (
-                <div className="match-row" key={mi} style={isMy ? { background: '#eff6ff' } : {}}>
+                <div className="match-row" key={mi} className={isMy ? 'row-my-match' : ''}>
                   <div className="match-teams">
                     <div className="match-team right" style={h === myTeam ? { fontWeight: 600 } : {}}>{h}</div>
                     <div className="match-vs">vs</div>

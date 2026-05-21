@@ -32,7 +32,7 @@ function MatchRow({ match, slot2t, myTeam }) {
   const isMyAway = away === myTeam
 
   return (
-    <div className="match-row" style={(isMyHome || isMyAway) ? { background: 'var(--bg-highlight)' } : {}}>
+    <div className={`match-row${(isMyHome || isMyAway) ? ' row-my-match' : ''}`}>
       <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 38 }}>{match.time}</div>
       <div className="match-teams">
         <div className="match-team right" style={isMyHome ? { fontWeight: 600, color: '#1d4ed8' } : {}}>
@@ -86,7 +86,7 @@ function NkPhaseTable({ label, entries, headerClass, myTeam }) {
       <table>
         <tbody>
           {entries.map((entry, i) => (
-            <tr key={i} style={entry.team === myTeam ? { background: 'var(--bg-highlight)' } : {}}>
+            <tr key={i} className={entry.team === myTeam ? 'row-my' : ''}>
               <td className="td-rank">{i + 1}</td>
               <td style={entry.team === myTeam ? { fontWeight: 600 } : {}}>
                 {entry.team}<span className="origin"> {entry.origin}</span>

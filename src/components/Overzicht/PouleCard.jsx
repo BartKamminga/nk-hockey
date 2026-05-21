@@ -14,7 +14,7 @@ export function PouleCard({ id, poule, myTeam, slots, showForm, showPlayed }) {
         const isMy = team === myTeam
         const form = getTeamForm(team, poule.matches_played)
         return (
-          <tr key={team} style={isMy ? { background: 'var(--bg-highlight)' } : {}}>
+          <tr key={team} className={isMy ? 'row-my' : ''}>
             <td className="td-rank">{rank}</td>
             <td className="td-name" style={{ fontWeight: (is1 || isMy) ? 600 : 400, paddingLeft: slot ? undefined : 8 }}>
               {slot && <span className={`dot dot-${slot.toLowerCase()}`} style={{ marginRight: 4 }}></span>}{team}

@@ -63,7 +63,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
             }
           }
           return (
-            <tr key={s.team} style={isMy ? { background: 'var(--bg-highlight)' } : {}}>
+            <tr key={s.team} className={isMy ? 'row-my' : ''}>
               <td className="td-rank">{i + 1}</td>
               <td className="td-name" style={{ fontWeight: isMy ? 600 : 400 }}>{s.team}</td>
               <td className="td-pts">{s.pts > 0 ? s.pts : hasAnyBase ? '0' : '-'}</td>
@@ -95,7 +95,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
               const isMy = m.h === myTeam || m.a === myTeam
               const ko = m.isKO
               return (
-                <div key={m.lockKey} className="match-row" style={{ background: isMy && !lock ? '#eff6ff' : 'transparent', padding: '4px 0' }}>
+                <div key={m.lockKey} className={`match-row${isMy && !lock ? ' row-my-match' : ''}`} style={{ padding: '4px 0' }}>
                   <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
                     <div style={{
                       flex: 1, textAlign: 'right', padding: '5px 8px', fontSize: 12,
