@@ -44,7 +44,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
     <div className="card">
       <div className={`card-header ${headerClass || ''}`} style={{ justifyContent: 'space-between' }}>
         <span>{title}<span className="played-count" style={{ marginLeft: 8 }}>{openRounds > 0 ? `nog ${openRounds} ronde${openRounds > 1 ? 's' : ''}` : '✓ klaar'}</span></span>
-        {openRounds > 0 && <div className="whatif-preset-sm" onClick={onPredictAll} title="Voorspel alle resterende wedstrijden" style={{ background: '#dbeafe', color: '#2563eb', fontStyle: 'italic' }}>✦</div>}
+        {openRounds > 0 && <div className="whatif-preset-sm" onClick={onPredictAll} title="Voorspel alle resterende wedstrijden" style={{ background: 'var(--btn-predict-bg)', color: 'var(--btn-predict-text)', fontStyle: 'italic' }}>✦</div>}
       </div>
 
       {!hideStandings && <table><tbody>
@@ -83,8 +83,8 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
             <div className="round-header round-header-remaining">
               <span>Ronde {round.roundNum}{dateStr ? ` · ${dateStr}` : ''}{timeStr ? ` · ${timeStr}` : ''}</span>
               <div style={{ display: 'flex', gap: 3 }}>
-                <div className="whatif-preset-sm" onClick={() => onPredict(round)} title="Voorspel deze ronde" style={{ background: '#dbeafe', color: '#2563eb', fontStyle: 'italic' }}>✦</div>
-                <div className="whatif-preset-sm" onClick={() => onSetRound(round, null)} title="Reset ronde" style={{ background: '#f0ede8', color: '#888' }}>?</div>
+                <div className="whatif-preset-sm" onClick={() => onPredict(round)} title="Voorspel deze ronde" style={{ background: 'var(--btn-predict-bg)', color: 'var(--btn-predict-text)', fontStyle: 'italic' }}>✦</div>
+                <div className="whatif-preset-sm" onClick={() => onSetRound(round, null)} title="Reset ronde" style={{ background: 'var(--btn-reset-bg)', color: 'var(--btn-reset-text)' }}>?</div>
               </div>
             </div>
             {round.matches.map(m => {
@@ -100,7 +100,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
                     <div style={{
                       flex: 1, textAlign: 'right', padding: '5px 8px', fontSize: 12,
                       fontWeight: m.h === myTeam ? 600 : 400,
-                      background: result === 'W' ? '#dcfce7' : 'transparent',
+                      background: result === 'W' ? 'var(--lock-win-bg)' : 'transparent',
                       borderRadius: '4px 0 0 4px', cursor: 'pointer',
                     }} onClick={() => onToggle(m.lockKey, result === 'W' ? null : 'W')}>
                       {m.h}
@@ -120,8 +120,8 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
                       </div>
                     ) : (
                       <div style={{
-                        padding: '5px 10px', fontSize: 10, color: result === 'D' ? '#b45309' : '#ccc',
-                        background: result === 'D' ? '#fef3c7' : 'transparent',
+                        padding: '5px 10px', fontSize: 10, color: result === 'D' ? 'var(--lock-draw-text)' : '#ccc',
+                        background: result === 'D' ? 'var(--lock-draw-bg)' : 'transparent',
                         cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
                       }} onClick={() => onToggle(m.lockKey, result === 'D' ? null : 'D')}>
                         {result === 'D' ? 'G' : 'vs'}
@@ -130,7 +130,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
                     <div style={{
                       flex: 1, textAlign: 'left', padding: '5px 8px', fontSize: 12,
                       fontWeight: m.a === myTeam ? 600 : 400,
-                      background: result === 'L' ? '#dcfce7' : 'transparent',
+                      background: result === 'L' ? 'var(--lock-win-bg)' : 'transparent',
                       borderRadius: '0 4px 4px 0', cursor: 'pointer',
                     }} onClick={() => onToggle(m.lockKey, result === 'L' ? null : 'L')}>
                       {m.a}
