@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { VERSION, COMP_LABELS, getSavedForm, saveForm, getSavedPlayed, savePlayed } from './constants'
+import { VERSION, COMP_LABELS, getSavedForm, saveForm, getSavedPlayed, savePlayed, getSavedSimCount, saveSimCount } from './constants'
 import { ChangelogContent } from './changelog'
 import { NK_SCHEDULES } from './lib/nk-schedules'
 import { SchemaTab } from './components/Speelschema'
@@ -21,6 +21,7 @@ export default function App() {
   })
   const [showForm, setShowForm] = useState(getSavedForm)
   const [showPlayed, setShowPlayed] = useState(getSavedPlayed)
+  const [simCount, setSimCount] = useState(getSavedSimCount)
   const [theme, setTheme] = useState(() => {
     try { const s = localStorage.getItem('nk_theme'); return s || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') } catch { return 'light' }
   })
@@ -110,6 +111,15 @@ export default function App() {
           </div>
           <Toggle checked={showForm} onChange={() => { const v = !showForm; setShowForm(v); saveForm(v) }} label="🔥 Vorm-badges" hint="laatste 5 wedstrijden" />
           <Toggle checked={showPlayed} onChange={() => { const v = !showPlayed; setShowPlayed(v); savePlayed(v) }} label="🎮 Gespeeld" hint="W-G-V per team" />
+          <div style={{ padding: '8px 0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
+              <span>🎲 Simulaties</span>
+              <input type="range" min="500" max="40000" step="500" value={simCount}
+                onChange={e => { const v = parseInt(e.target.value); setSimCount(v); saveSimCount(v) }}
+                style={{ flex: 1 }} />
+              <span style={{ fontSize: 11, fontFamily: "'DM Mono',monospace", color: 'var(--text-muted)', minWidth: 45, textAlign: 'right' }}>{simCount.toLocaleString('nl-NL')}</span>
+            </div>
+          </div>
           <div style={{ borderTop: '1px solid var(--border)', marginTop: 8, paddingTop: 12 }}>
             <Toggle checked={focusMode} onChange={() => setFocusMode(!focusMode)} label="🏑 Focus mode" hint="alleen poule van club" />
             <div style={{ marginTop: 4 }}>
@@ -137,7 +147,7 @@ export default function App() {
         : <O14OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]} showForm={showForm} showPlayed={showPlayed} />
       )}
       {mainTab === 'schema' && <SchemaTab data={focusMode ? filteredData : data} myTeam={myTeam} pouleOrder={pouleOrder} />}
-      {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} showForm={showForm} showPlayed={showPlayed} key={effectiveComp + '_sim'} />}
+      {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} showForm={showForm} showPlayed={showPlayed} simCount={simCount} key={effectiveComp + '_sim'} />}
     </>
   )
 }

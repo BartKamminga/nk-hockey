@@ -24,6 +24,8 @@ export function getSavedPlayed() { try { return localStorage.getItem(STORAGE_KEY
 export function savePlayed(v) { try { localStorage.setItem(STORAGE_KEY_PLAYED, v ? 'true' : 'false') } catch {} }
 export function getSavedFocus() { try { return localStorage.getItem(STORAGE_KEY_FOCUS) === 'true' } catch { return false } }
 export function saveFocus(v) { try { localStorage.setItem(STORAGE_KEY_FOCUS, v ? 'true' : 'false') } catch {} }
+export function getSavedSimCount() { try { return parseInt(localStorage.getItem('nk_sim_count')) || 15000 } catch { return 15000 } }
+export function saveSimCount(v) { try { localStorage.setItem('nk_sim_count', String(v)) } catch {} }
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 

@@ -8,9 +8,10 @@ import O14NKPhase from './O14NKPhase'
 import O16KFPhase from './O16KFPhase'
 import NKChances from './NKChances'
 
-export default function SimTab({ data, myTeam, effectiveComp, showForm, showPlayed }) {
+export default function SimTab({ data, myTeam, effectiveComp, showForm, showPlayed, simCount }) {
   const o16 = IS_O16(effectiveComp)
   const pouleOrder = o16 ? POULE_ORDER_16 : POULE_ORDER_14
+  const N = simCount || 15000
 
   const myPouleId = useMemo(() => {
     if (!myTeam) return null
@@ -20,7 +21,6 @@ export default function SimTab({ data, myTeam, effectiveComp, showForm, showPlay
     return null
   }, [data, myTeam, pouleOrder])
 
-  const [N, setN] = useState(20000)
   const [locks, setLocks] = useState({})
   const [results, setResults] = useState(null)
   const [baseResults, setBaseResults] = useState(null)
@@ -173,11 +173,8 @@ export default function SimTab({ data, myTeam, effectiveComp, showForm, showPlay
 
       <NKChances myTeam={myTeam} results={results} baseResults={baseResults} N={N} o16={o16} hasLocks={hasLocks} />
 
-      <div className="sim-controls">
-        <span className="ctrl-label">Simulaties:</span>
-        <input type="range" min="2000" max="500000" step="2000" value={N} onChange={e => setN(parseInt(e.target.value, 10))} style={{ width: 180 }} />
-        <span className="ctrl-val">{N.toLocaleString('nl-NL')}</span>
-        <button className="run-btn" onClick={() => doSim()} disabled={running}>{running ? 'Bezig...' : 'Herbereken'}</button>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, alignItems: 'center', marginBottom: 8 }}>
+        <button className="run-btn" onClick={() => doSim()} disabled={running} style={{ marginLeft: 0 }}>{running ? 'Bezig...' : `Herbereken (${N.toLocaleString('nl-NL')})`}</button>
       </div>
 
       {simNote && <div className="sim-note">{simNote}</div>}
