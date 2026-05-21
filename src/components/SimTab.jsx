@@ -548,24 +548,6 @@ function NKChances({ myTeam, results, baseResults, N, o16, hasLocks }) {
 
 // ══════════════════════════════════════
 // ══════════════════════════════════════
-// EINDKANSEN TABLES
-// ══════════════════════════════════════
-function O14FinRes({ results, N, myTeam }) {
-  const teams = Object.keys(results.fin).sort((a, b) => results.fin[b].p1 - results.fin[a].p1).filter(t => results.fin[t].appear / N > 0.02)
-  return (<div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(HF)</th><th>P(finale)</th><th>P(🥇)</th><th>P(🥈)</th><th>P(🥉)</th><th>P(podium)</th></tr></thead><tbody>
-    {teams.map(t => { const s = results.fin[t], pSF = pct(s.sfReach, N), pFin = pct(s.finalist, N), p1 = pct(s.p1, N), p2 = pct(s.p2, N), p3 = pct(s.p3, N), pPod = p1 + p2 + p3, isMy = t === myTeam; return <tr key={t} className={isMy ? 'row-my' : p1 >= 10 ? 'row-gold' : ''}><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{t}</td><td className={pc(pSF, 20, 10)}>{pSF}%</td><td className={pc(pFin, 15, 8)}>{pFin}%</td><td><Bar p={p1} col="#f59e0b" /></td><td><Bar p={p2} col="#94a3b8" /></td><td><Bar p={p3} col="#cd7c2f" /></td><td className={pc(pPod, 25, 12)}>{pPod}%</td></tr> })}
-  </tbody></table></div>)
-}
-function O16FinRes({ results, N, myTeam }) {
-  return (<div className="sim-table-wrap"><table className="sim-table"><thead><tr><th>Team</th><th>P(KF)</th><th>P(HF)</th><th>P(finale)</th><th>P(1e 🥇)</th><th>P(2e 🥈)</th></tr></thead><tbody>
-    {Object.keys(results.fin).sort((a, b) => results.fin[b].p1 - results.fin[a].p1).filter(t => results.fin[t].kf / N > 0.02).map(t => {
-      const s = results.fin[t], pKF = pct(s.kf, N), pHF = pct(s.hf, N), pFin = pct(s.finalist, N), p1 = pct(s.p1, N), p2 = pct(s.p2, N), isMy = t === myTeam
-      return <tr key={t} className={isMy ? 'row-my' : p1 >= 10 ? 'row-gold' : ''}><td className="team" style={isMy ? { fontWeight: 700 } : {}}>{t}</td><td className={pc(pKF, 30, 15)}>{pKF}%</td><td className={pc(pHF, 20, 10)}>{pHF}%</td><td className={pc(pFin, 15, 8)}>{pFin}%</td><td><Bar p={p1} col="#f59e0b" /></td><td><Bar p={p2} col="#94a3b8" /></td></tr>
-    })}
-  </tbody></table></div>)
-}
-
-// ══════════════════════════════════════
 // MAIN: unified SimTab
 // ══════════════════════════════════════
 export default function SimTab({ data, myTeam, effectiveComp }) {
@@ -726,11 +708,6 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
       </div>
 
       {/* Eindkansen */}
-      {results && <>
-        {!o16 && <O14FinRes results={results} N={N} myTeam={myTeam} />}
-        {o16 && <O16FinRes results={results} N={N} myTeam={myTeam} />}
-      </>}
-
       {simNote && <div className="sim-note">{simNote}</div>}
     </div>
   )
