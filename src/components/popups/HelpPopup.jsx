@@ -59,6 +59,23 @@ const HELP = {
         <p className="help-tip">💡 De NK-kansen bovenaan updaten automatisch bij elke wijziging. Alle ingevulde resultaten worden meegenomen in de Monte Carlo simulatie.</p>
       </div>
     )
+  },
+  settings: {
+    title: '⚙️ Instellingen',
+    content: (
+      <div>
+        <p>Pas de website aan naar jouw voorkeuren.</p>
+        <ul>
+          <li><strong>Thema</strong> — kies tussen Licht, Donker of Victoria (zwart/geel/rood)</li>
+          <li><strong>🔥 Vorm-badges</strong> — toon een gekleurde cirkel met punten uit de laatste 5 wedstrijden per team</li>
+          <li><strong>🎮 Gespeeld</strong> — toon het W-G-V record (winst-gelijk-verlies) per team</li>
+          <li><strong>🎲 Simulaties</strong> — aantal Monte Carlo simulaties (meer = nauwkeuriger, langzamer)</li>
+          <li><strong>🏑 Focus mode</strong> — toon alleen de poule van jouw club op Overzicht en Speelschema</li>
+          <li><strong>Club</strong> — kies jouw club voor highlighting en focus mode</li>
+        </ul>
+        <p className="help-tip">💡 Alle instellingen worden automatisch opgeslagen en onthouden bij een volgend bezoek.</p>
+      </div>
+    )
   }
 }
 
