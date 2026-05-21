@@ -10,12 +10,14 @@ import Popup from './components/common/Popup'
 import Toggle from './components/common/Toggle'
 import DisclaimerPopup from './components/popups/DisclaimerPopup'
 import FeedbackPopup from './components/popups/FeedbackPopup'
+import HelpPopup from './components/popups/HelpPopup'
 
 export default function App() {
   const [mainTab, setMainTab] = useState('overzicht')
   const [showVersion, setShowVersion] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showFeedback, setShowFeedback] = useState(false)
+  const [showHelp, setShowHelp] = useState(false)
   const [showDisclaimer, setShowDisclaimer] = useState(() => {
     try { return localStorage.getItem('nk_disclaimer_seen') !== 'true' } catch { return true }
   })
@@ -78,10 +80,11 @@ export default function App() {
 
       {/* Menu popup */}
       {showVersion && <Popup title={`🏑 NK Hockey v${VERSION}`} onClose={() => setShowVersion(false)}>
-        <div style={{ marginBottom: 12, display: 'flex', gap: 6 }}>
+        <div style={{ marginBottom: 12, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           <button className="reload-btn" onClick={() => { fetchFromServer(); setShowVersion(false) }} style={{ fontSize: 12, padding: '6px 12px' }}>↻ Herlaad</button>
           <button className="reload-btn" onClick={() => { setShowVersion(false); setShowDisclaimer(true) }} style={{ fontSize: 12, padding: '6px 12px' }}>ℹ️ Over</button>
           <button className="reload-btn" onClick={() => { setShowVersion(false); setShowFeedback(true) }} style={{ fontSize: 12, padding: '6px 12px' }}>💬 Feedback</button>
+          <button className="reload-btn" onClick={() => { setShowVersion(false); setShowHelp(true) }} style={{ fontSize: 12, padding: '6px 12px' }}>❓ Uitleg</button>
         </div>
         <ChangelogContent />
       </Popup>}
@@ -91,6 +94,8 @@ export default function App() {
 
       {/* Feedback */}
       {showFeedback && <FeedbackPopup onClose={() => setShowFeedback(false)} />}
+
+      {showHelp && <HelpPopup tab={mainTab} onClose={() => setShowHelp(false)} />}
 
       {/* Settings */}
       {showSettings && <Popup title="⚙️ Instellingen" onClose={() => setShowSettings(false)} maxWidth={400}>

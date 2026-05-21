@@ -1,7 +1,13 @@
 import React from 'react'
 
-export const VERSION = '5.23'
+export const VERSION = '5.24'
 export const CHANGELOG = [
+  { version: '5.24', date: '21 mei 2026', changes: [
+    '❓ Uitleg popup — tab-aware instructies voor Overzicht, Speelschema en Simulaties',
+    'Bereikbaar via menu → ❓ Uitleg knop',
+    'Toont uitleg specifiek voor de actieve tab',
+    'Tips over focus mode, snelknoppen en NK fases',
+  ]},
   { version: '5.23', date: '21 mei 2026', changes: [
     'Victoria club thema: zwart/geel/rood kleurenschema',
     'Thema-keuze in settings: ☀️ Licht, 🌙 Donker, Victoria (met logo)',

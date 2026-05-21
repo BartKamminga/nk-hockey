@@ -321,6 +321,13 @@ tr.row-my td { background: var(--bg-highlight); }
 .club-active { background: var(--bg-highlight); font-weight: 600; }
 .club-active:hover { background: var(--accent-bg); }
 
+/* ── Help content ── */
+.help-content { padding: 16px 20px; font-size: 13px; line-height: 1.7; color: var(--text); }
+.help-content p { margin-bottom: 6px; }
+.help-content ul { margin: 6px 0 10px 20px; }
+.help-content li { margin-bottom: 4px; }
+.help-tip { margin-top: 12px; padding: 10px 12px; background: var(--bg-round-remaining); border-radius: 8px; font-size: 12px; color: var(--text-round-remaining); }
+
 /* ── Loading ── */
 .loading { text-align: center; padding: 80px 20px; color: var(--text-muted); font-size: 14px; }
 
