@@ -53,7 +53,7 @@ const OUTCOMES = [
 // SHARED: SimPouleCard — stand + remaining rounds with outcome picker
 // Used for both Super poules and NK Poulefase
 // ══════════════════════════════════════
-function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, locks, myTeam, onToggle, onSetRound, onPredict, onPredictAll }) {
+function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, locks, myTeam, onToggle, onSetRound, onPredict, onPredictAll, hideStandings }) {
   // Calculate standings from base + locks
   const pts = {}, ds = {}
   teams.forEach((t, i) => { pts[t] = basePts[i] || 0; ds[t] = baseDs[i] || 0 })
@@ -81,8 +81,8 @@ function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, lock
         {openRounds > 0 && <div className="whatif-preset-sm" onClick={onPredictAll} title="Voorspel alle resterende wedstrijden" style={{ background: '#dbeafe', color: '#2563eb', fontStyle: 'italic' }}>✦</div>}
       </div>
 
-      {/* Standings */}
-      <table><tbody>
+      {/* Standings (hidden for KO phases) */}
+      {!hideStandings && <table><tbody>
         {standings.map((s, i) => {
           const isMy = s.team === myTeam
           return (
@@ -94,7 +94,7 @@ function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, lock
             </tr>
           )
         })}
-      </tbody></table>
+      </tbody></table>}
 
       {/* Rounds */}
       {rounds.map(round => {
@@ -345,7 +345,7 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
 
       {showHF && <>
         <div className="section-label">NK Halve Finales{finaleDate ? ` · ${finaleDate}` : ''}</div>
-        <SimPouleCard title="Halve Finales" teams={hfTeams} basePts={hfTeams.map(() => 0)} baseDs={hfTeams.map(() => 0)}
+        <SimPouleCard title="Halve Finales" hideStandings teams={hfTeams} basePts={hfTeams.map(() => 0)} baseDs={hfTeams.map(() => 0)}
           rounds={hfRounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
           onPredict={onSetRound} onPredictAll={() => onPredictAll(hfRounds)} />
       </>}
@@ -353,12 +353,12 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
       {showFin && <>
         <div className="section-label">NK Finale 🏆{finaleDate ? ` · ${finaleDate}` : ''}</div>
         <div className="grid-2">
-          <SimPouleCard title="3e/4e plaats" teams={[...new Set(fin34Matches.flatMap(m => [m.h, m.a]))]}
+          <SimPouleCard title="3e/4e plaats" hideStandings teams={[...new Set(fin34Matches.flatMap(m => [m.h, m.a]))]}
             basePts={[0, 0]} baseDs={[0, 0]}
             rounds={[{ roundNum: 1, date: finaleDate || '', time: '', matches: fin34Matches }]}
             locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
             onPredict={onSetRound} onPredictAll={() => {}} />
-          <SimPouleCard title="Finale 🏆" teams={[...new Set(finMatches.flatMap(m => [m.h, m.a]))]}
+          <SimPouleCard title="Finale 🏆" hideStandings teams={[...new Set(finMatches.flatMap(m => [m.h, m.a]))]}
             basePts={[0, 0]} baseDs={[0, 0]}
             rounds={[{ roundNum: 1, date: finaleDate || '', time: '', matches: finMatches }]}
             locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
@@ -422,20 +422,20 @@ function O16KFPhaseCard({ data, locks, myTeam, onToggle, onSetRound, onPredictAl
   return (
     <div>
       <div className="section-label">NK Kwartfinales</div>
-      <SimPouleCard title="Kwartfinales" teams={kfTeams} basePts={kfTeams.map(() => 0)} baseDs={kfTeams.map(() => 0)}
+      <SimPouleCard title="Kwartfinales" hideStandings teams={kfTeams} basePts={kfTeams.map(() => 0)} baseDs={kfTeams.map(() => 0)}
         rounds={kfRounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
         onPredict={onSetRound} onPredictAll={() => onPredictAll(kfRounds)} />
 
       {showHF && <>
         <div className="section-label">NK Halve Finales</div>
-        <SimPouleCard title="Halve Finales" teams={hfTeams} basePts={hfTeams.map(() => 0)} baseDs={hfTeams.map(() => 0)}
+        <SimPouleCard title="Halve Finales" hideStandings teams={hfTeams} basePts={hfTeams.map(() => 0)} baseDs={hfTeams.map(() => 0)}
           rounds={hfRounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
           onPredict={onSetRound} onPredictAll={() => onPredictAll(hfRounds)} />
       </>}
 
       {showFin && <>
         <div className="section-label">NK Finale 🏆</div>
-        <SimPouleCard title="Finale" teams={finTeams} basePts={finTeams.map(() => 0)} baseDs={finTeams.map(() => 0)}
+        <SimPouleCard title="Finale" hideStandings teams={finTeams} basePts={finTeams.map(() => 0)} baseDs={finTeams.map(() => 0)}
           rounds={finRounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
           onPredict={onSetRound} onPredictAll={() => onPredictAll(finRounds)} />
       </>}
@@ -674,8 +674,12 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
     for (const round of rounds) {
       for (const m of round.matches) {
         if (newLocks[m.lockKey]) continue
-        const r = Math.random()
-        newLocks[m.lockKey] = r < 0.4 ? 'W' : r < 0.65 ? 'D' : 'L'
+        if (m.isKO) {
+          newLocks[m.lockKey] = Math.random() < 0.5 ? 'W' : 'L'
+        } else {
+          const r = Math.random()
+          newLocks[m.lockKey] = r < 0.4 ? 'W' : r < 0.65 ? 'D' : 'L'
+        }
       }
     }
     setLocks(newLocks)
@@ -686,8 +690,12 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
   function onPredictNK(round) {
     const newLocks = { ...locks }
     for (const m of round.matches) {
-      const r = Math.random()
-      newLocks[m.lockKey] = r < 0.4 ? 'W' : r < 0.65 ? 'D' : 'L'
+      if (m.isKO) {
+        newLocks[m.lockKey] = Math.random() < 0.5 ? 'W' : 'L'
+      } else {
+        const r = Math.random()
+        newLocks[m.lockKey] = r < 0.4 ? 'W' : r < 0.65 ? 'D' : 'L'
+      }
     }
     setLocks(newLocks)
     doSim(newLocks)

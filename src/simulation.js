@@ -18,7 +18,7 @@ export function predictMatches(matches, poule) {
   for (const m of matches) {
     const hi = poule.teams.indexOf(m.h)
     const ai = poule.teams.indexOf(m.a)
-    if (hi < 0 || ai < 0) { results[m.lockKey] = null; continue }
+    if (hi < 0 || ai < 0) { results[m.lockKey] = m.isKO ? (Math.random() < 0.5 ? 'W' : 'L') : null; continue }
     // Strength advantage: difference in points normalized
     const ptsH = poule.pts[hi] || 0, ptsA = poule.pts[ai] || 0
     const dsH = poule.ds[hi] || 0, dsA = poule.ds[ai] || 0
@@ -32,9 +32,14 @@ export function predictMatches(matches, poule) {
       else if (hp === ap) dCount++
       else lCount++
     }
-    if (wCount >= dCount && wCount >= lCount) results[m.lockKey] = 'W'
-    else if (lCount >= dCount && lCount >= wCount) results[m.lockKey] = 'L'
-    else results[m.lockKey] = 'D'
+    if (m.isKO) {
+      // KO: no draws, pick most likely winner
+      results[m.lockKey] = wCount >= lCount ? 'W' : 'L'
+    } else {
+      if (wCount >= dCount && wCount >= lCount) results[m.lockKey] = 'W'
+      else if (lCount >= dCount && lCount >= wCount) results[m.lockKey] = 'L'
+      else results[m.lockKey] = 'D'
+    }
   }
   return results
 }

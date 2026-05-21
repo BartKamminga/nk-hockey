@@ -18,8 +18,23 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.9'
+export const VERSION = '5.9.4'
 export const CHANGELOG = [
+  { version: '5.9.4', date: '21 mei 2026', changes: [
+    'KO-fases (KF/HF/Finale/3e4e): geen stand-tabel meer — alleen wedstrijden',
+    'KO-fases: ✦ voorspelling geeft altijd een winnaar (nooit gelijkspel)',
+    'KO-fases: klik op team = die wint, klik vs = reset, geen gelijkspel optie',
+    'SimPouleCard: hideStandings prop voor KO-cards',
+  ]},
+  { version: '5.9.3', date: '21 mei 2026', changes: [
+    'KO-wedstrijden: geen gelijkspel-klik meer in de interface',
+  ]},
+  { version: '5.9.2', date: '21 mei 2026', changes: [
+    'Eindkansen tabellen verwijderd (alle teams overzicht)',
+  ]},
+  { version: '5.9.1', date: '21 mei 2026', changes: [
+    'Eindkansen section label verwijderd',
+  ]},
   { version: '5.9', date: '21 mei 2026', changes: [
     'Eindkansen verwerken nu alle ingevulde resultaten uit alle fases',
     'O14: NK Poulefase locks, HF locks en Finale locks meegerekend in Monte Carlo',
