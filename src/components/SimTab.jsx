@@ -297,10 +297,10 @@ function O16KFPhaseCard({ data, locks, myTeam, onToggle, onSetRound, onPredictAl
   const pk = POULE_ORDER_16.filter(id => expected[id])
   if (pk.length < 4) return null
 
-  const nr1s = pk.map(k => ({ team: expected[k][0]?.team, poule: k, pts: (expected[k][0]?.newPts || expected[k][0]?.pts || 0) }))
-    .sort((a, b) => b.pts - a.pts)
-  const nr2s = pk.map(k => ({ team: expected[k][1]?.team, poule: k, pts: (expected[k][1]?.newPts || expected[k][1]?.pts || 0) }))
-    .sort((a, b) => b.pts - a.pts)
+  const nr1s = pk.map(k => ({ team: expected[k][0]?.team, poule: k, pts: expected[k][0]?.newPts || 0, ds: expected[k][0]?.ds || 0 }))
+    .sort((a, b) => b.pts !== a.pts ? b.pts - a.pts : b.ds - a.ds)
+  const nr2s = pk.map(k => ({ team: expected[k][1]?.team, poule: k, pts: expected[k][1]?.newPts || 0, ds: expected[k][1]?.ds || 0 }))
+    .sort((a, b) => b.pts !== a.pts ? b.pts - a.pts : b.ds - a.ds)
 
   const kfTeams = [nr1s[0].team, nr2s[3].team, nr1s[1].team, nr2s[2].team, nr1s[2].team, nr2s[1].team, nr1s[3].team, nr2s[0].team]
   const kfRounds = [{
