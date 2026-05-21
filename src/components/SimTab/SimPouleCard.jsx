@@ -113,8 +113,8 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
                       </div>
                     ) : ko ? (
                       <div style={{
-                        padding: '5px 10px', fontSize: 10, color: '#ccc',
-                        cursor: lock ? 'pointer' : 'default', fontWeight: 700, textAlign: 'center', minWidth: 30,
+                        padding: '5px 10px', fontSize: 10, color: 'var(--text-vs)',
+                        cursor: lock ? 'pointer' : 'default', fontWeight: 700, textAlign: 'center', minWidth: 36,
                       }} onClick={() => { if (lock) onToggle(m.lockKey, null) }} title={lock ? 'Reset' : ''}>
                         vs
                       </div>
@@ -122,7 +122,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
                       <div style={{
                         padding: '5px 10px', fontSize: 10, color: result === 'D' ? 'var(--lock-draw-text)' : '#ccc',
                         background: result === 'D' ? 'var(--lock-draw-bg)' : 'transparent',
-                        cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
+                        cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 36,
                       }} onClick={() => onToggle(m.lockKey, result === 'D' ? null : 'D')}>
                         {result === 'D' ? 'G' : 'vs'}
                       </div>

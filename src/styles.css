@@ -227,10 +227,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); padding: 32px;
 .match-teams { display: flex; align-items: center; gap: 8px; flex: 1; }
 .match-team { flex: 1; font-size: 12px; }
 .match-team.right { text-align: right; }
-.match-vs { font-size: 10px; color: var(--text-vs); min-width: 18px; text-align: center; }
+.match-vs { font-size: 10px; color: var(--text-vs); min-width: 36px; text-align: center; font-weight: 700; flex-shrink: 0; }
 .match-score {
   font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600;
-  min-width: 36px; text-align: center; color: var(--text);
+  min-width: 36px; text-align: center; color: var(--text); flex-shrink: 0;
 }
 
 /* ── Round headers ── */
