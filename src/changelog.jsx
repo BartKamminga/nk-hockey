@@ -1,7 +1,14 @@
 import React from 'react'
 
-export const VERSION = '5.19'
+export const VERSION = '5.20'
 export const CHANGELOG = [
+  { version: '5.20', date: '21 mei 2026', changes: [
+    'Grote refactor: App.jsx van 220 naar 118 regels',
+    'Herbruikbare componenten: Popup, Toggle, FormBadge in common/',
+    'DisclaimerPopup en FeedbackPopup als eigen componenten in popups/',
+    'FormBadge deduplicatie: één bron in common/ i.p.v. kopieën in PouleCard + SimPouleCard',
+    'Settings popup gebruikt Toggle component',
+  ]},
   { version: '5.19', date: '21 mei 2026', changes: [
     '💬 Feedback popup: emoji-rating + tekstveld',
     '"Backhand in de kruising 🏑" knop opent een GitHub Issue',

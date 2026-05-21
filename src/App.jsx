@@ -3,18 +3,19 @@ import { VERSION, COMP_LABELS, getSavedForm, saveForm, getSavedPlayed, savePlaye
 import { ChangelogContent } from './changelog'
 import { NK_SCHEDULES } from './lib/nk-schedules'
 import { SchemaTab } from './components/Speelschema'
-import { O14OverzichtTab } from './components/Overzicht'
-import { O16OverzichtTab } from './components/Overzicht'
+import { O14OverzichtTab, O16OverzichtTab } from './components/Overzicht'
 import SimTab from './components/SimTab'
 import { useCompetitionData } from './dataloader/useCompetitionData'
+import Popup from './components/common/Popup'
+import Toggle from './components/common/Toggle'
+import DisclaimerPopup from './components/popups/DisclaimerPopup'
+import FeedbackPopup from './components/popups/FeedbackPopup'
 
 export default function App() {
   const [mainTab, setMainTab] = useState('overzicht')
   const [showVersion, setShowVersion] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showFeedback, setShowFeedback] = useState(false)
-  const [feedbackEmoji, setFeedbackEmoji] = useState(null)
-  const [feedbackText, setFeedbackText] = useState('')
   const [showDisclaimer, setShowDisclaimer] = useState(() => {
     try { return localStorage.getItem('nk_disclaimer_seen') !== 'true' } catch { return true }
   })
@@ -27,32 +28,16 @@ export default function App() {
   }
 
   const {
-    comps,
-    loading,
-    dataSource,
-    focusClub,
-    focusMode,
-    effectiveComp,
-    data,
-    filteredData,
-    label,
-    myTeam,
-    o16,
-    pouleOrder,
-    visibleTypes,
-    allClubs,
-    fetchFromServer,
-    setActiveCompetition,
-    setFocusClub,
-    setFocusMode,
+    comps, loading, dataSource, focusClub, focusMode, effectiveComp, data, filteredData,
+    label, myTeam, allClubs, visibleTypes, pouleOrder, o16,
+    setFocusClub, setFocusMode, setActiveCompetition, fetchFromServer
   } = useCompetitionData()
 
-  if (loading) return <div className="import-screen"><h2>🏑 NK Simulatie</h2><p>Data laden...</p></div>
+  if (loading) return <div className="loading">Laden...</div>
   if (!comps) return (
-    <div className="import-screen">
-      <h2>🏑 NK Simulatie</h2>
-      <p>Kon de data niet laden vanaf de server.</p>
-      <button className="reload-btn" onClick={fetchFromServer}>Opnieuw proberen</button>
+    <div className="loading">
+      <p>Geen data beschikbaar.</p>
+      <p style={{ fontSize: 12, color: '#888' }}>Gebruik de Chrome extensie om data te laden, of controleer of de data bestanden beschikbaar zijn.</p>
     </div>
   )
 
@@ -75,136 +60,51 @@ export default function App() {
         </div>
         <div className="top-comp-row">
           {visibleTypes.map(t => <button key={t} className={`top-comp-btn ${effectiveComp === t ? 'active' : ''}`}
-            onClick={() => { setActiveCompetition(t) }}>{COMP_LABELS[t] || t}</button>)}
+            onClick={() => setActiveCompetition(t)}>{COMP_LABELS[t] || t}</button>)}
         </div>
       </div>
 
-      {showVersion && <>
-        <div className="version-overlay" onClick={() => setShowVersion(false)}></div>
-        <div className="version-popup">
-          <div className="version-popup-header"><span>🏑 NK Hockey v{VERSION}</span><button className="version-close" onClick={() => setShowVersion(false)}>✕</button></div>
-          <div className="version-popup-body">
-            <div style={{ marginBottom: 12, display: 'flex', gap: 6 }}>
-              <button className="reload-btn" onClick={() => { fetchFromServer(); setShowVersion(false) }} style={{ fontSize: 12, padding: '6px 12px' }}>↻ Herlaad data</button>
-              <button className="reload-btn" onClick={() => { setShowVersion(false); setShowDisclaimer(true) }} style={{ fontSize: 12, padding: '6px 12px' }}>ℹ️ Over</button>
-              <button className="reload-btn" onClick={() => { setShowVersion(false); setShowFeedback(true); setFeedbackEmoji(null); setFeedbackText('') }} style={{ fontSize: 12, padding: '6px 12px' }}>💬 Feedback</button>
-            </div>
-            <ChangelogContent />
-          </div>
+      {/* Menu popup */}
+      {showVersion && <Popup title={`🏑 NK Hockey v${VERSION}`} onClose={() => setShowVersion(false)}>
+        <div style={{ marginBottom: 12, display: 'flex', gap: 6 }}>
+          <button className="reload-btn" onClick={() => { fetchFromServer(); setShowVersion(false) }} style={{ fontSize: 12, padding: '6px 12px' }}>↻ Herlaad</button>
+          <button className="reload-btn" onClick={() => { setShowVersion(false); setShowDisclaimer(true) }} style={{ fontSize: 12, padding: '6px 12px' }}>ℹ️ Over</button>
+          <button className="reload-btn" onClick={() => { setShowVersion(false); setShowFeedback(true) }} style={{ fontSize: 12, padding: '6px 12px' }}>💬 Feedback</button>
         </div>
-      </>}
+        <ChangelogContent />
+      </Popup>}
 
-      {showDisclaimer && <>
-        <div className="version-overlay" onClick={dismissDisclaimer}></div>
-        <div className="version-popup" style={{ maxWidth: 520 }}>
-          <div className="version-popup-header"><span>ℹ️ Over deze website</span><button className="version-close" onClick={dismissDisclaimer}>✕</button></div>
-          <div className="version-popup-body" style={{ padding: '16px 20px' }}>
-            <div style={{ fontSize: 13, lineHeight: 1.7, color: '#333' }}>
-              <p style={{ fontWeight: 600, fontSize: 14, marginBottom: 12 }}>Onafhankelijk hobbyproject</p>
-              <p>Deze website is een persoonlijk hobbyproject en is op geen enkele wijze verbonden aan, goedgekeurd door, of geassocieerd met de Koninklijke Nederlandse Hockey Bond (KNHB) of hockey.nl.</p>
-              <p style={{ marginTop: 10 }}>De wedstrijddata die op deze website wordt getoond is afkomstig van publiek beschikbare informatie op hockey.nl. Er is op dit moment geen officieel akkoord of licentieovereenkomst met de KNHB voor het gebruik van deze data.</p>
-              <p style={{ marginTop: 10 }}>De op deze website getoonde simulaties, voorspellingen en scenario-analyses zijn puur indicatief en gebaseerd op statistische modellen (Monte Carlo simulatie). Aan de uitkomsten kunnen geen rechten worden ontleend.</p>
-              <p style={{ marginTop: 10 }}>De maker van deze website aanvaardt geen aansprakelijkheid voor de juistheid, volledigheid of actualiteit van de getoonde informatie. Raadpleeg altijd hockey.nl voor officiële standen en uitslagen.</p>
-              <p style={{ marginTop: 10, fontSize: 12, color: '#888' }}>Mocht de KNHB bezwaar hebben tegen het gebruik van de data, dan zal de website onmiddellijk worden aangepast of verwijderd.</p>
-            </div>
-            <div style={{ marginTop: 16, textAlign: 'right' }}>
-              <button className="run-btn" onClick={dismissDisclaimer} style={{ padding: '8px 24px' }}>Begrepen</button>
-            </div>
-          </div>
-        </div>
-      </>}
+      {/* Disclaimer */}
+      {showDisclaimer && <DisclaimerPopup onClose={dismissDisclaimer} />}
 
-      {showFeedback && <>
-        <div className="version-overlay" onClick={() => setShowFeedback(false)}></div>
-        <div className="version-popup" style={{ maxWidth: 420 }}>
-          <div className="version-popup-header"><span>💬 Feedback</span><button className="version-close" onClick={() => setShowFeedback(false)}>✕</button></div>
-          <div className="version-popup-body" style={{ padding: '16px 20px' }}>
-            <div style={{ fontSize: 13, marginBottom: 12, color: '#555' }}>Hoe vind je deze website?</div>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 16 }}>
-              {[['😍','Top!'],['😊','Leuk'],['😐','Mwah'],['😤','Bah'],['🤯','Wauw']].map(([emoji, label]) => (
-                <div key={emoji} onClick={() => setFeedbackEmoji(emoji)} style={{
-                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, cursor: 'pointer', padding: '8px 10px', borderRadius: 8,
-                  background: feedbackEmoji === emoji ? '#dbeafe' : 'transparent', border: feedbackEmoji === emoji ? '2px solid #3b82f6' : '2px solid transparent',
-                  transition: 'all .15s',
-                }}>
-                  <span style={{ fontSize: 28 }}>{emoji}</span>
-                  <span style={{ fontSize: 10, color: '#888' }}>{label}</span>
-                </div>
-              ))}
-            </div>
-            <textarea value={feedbackText} onChange={e => setFeedbackText(e.target.value)}
-              placeholder="Idee? Bug? Klacht over je doelsaldo?"
-              style={{ width: '100%', minHeight: 70, padding: '10px 12px', border: '1px solid #e0ddd8', borderRadius: 8, fontSize: 13, fontFamily: "'DM Sans',sans-serif", resize: 'vertical', boxSizing: 'border-box' }} />
-            <div style={{ marginTop: 12, textAlign: 'center' }}>
-              <button className="run-btn" style={{ padding: '8px 24px', fontSize: 13 }}
-                disabled={!feedbackEmoji && !feedbackText.trim()}
-                onClick={() => {
-                  const title = feedbackEmoji ? `Feedback: ${feedbackEmoji}` : 'Feedback'
-                  const body = [feedbackEmoji && `Rating: ${feedbackEmoji}`, feedbackText.trim(), `---`, `v${VERSION} · ${new Date().toLocaleString('nl-NL')}`].filter(Boolean).join('\n\n')
-                  window.open(`https://github.com/BartKamminga/nk-hockey/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`, '_blank')
-                  setShowFeedback(false)
-                }}>
-                Backhand in de kruising 🏑
-              </button>
-            </div>
-          </div>
-        </div>
-      </>}
+      {/* Feedback */}
+      {showFeedback && <FeedbackPopup onClose={() => setShowFeedback(false)} />}
 
-      {showSettings && <>
-        <div className="version-overlay" onClick={() => setShowSettings(false)}></div>
-        <div className="version-popup" style={{ maxWidth: 400 }}>
-          <div className="version-popup-header"><span>⚙️ Instellingen</span><button className="version-close" onClick={() => setShowSettings(false)}>✕</button></div>
-          <div className="version-popup-body" style={{ padding: '12px 16px' }}>
-            {/* Display toggles */}
-            <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer', fontSize: 13 }}
-              onClick={() => { const v = !showForm; setShowForm(v); saveForm(v) }}>
-              <span style={{ width: 32, height: 18, borderRadius: 9, background: showForm ? '#3b82f6' : '#ccc', position: 'relative', display: 'inline-block', transition: 'background .2s', flexShrink: 0 }}>
-                <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, left: showForm ? 16 : 2, transition: 'left .2s' }} />
-              </span>
-              <span>🔥 Vorm-badges</span>
-              <span style={{ fontSize: 11, color: '#888', marginLeft: 'auto' }}>laatste 5 wedstrijden</span>
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer', fontSize: 13 }}
-              onClick={() => { const v = !showPlayed; setShowPlayed(v); savePlayed(v) }}>
-              <span style={{ width: 32, height: 18, borderRadius: 9, background: showPlayed ? '#3b82f6' : '#ccc', position: 'relative', display: 'inline-block', transition: 'background .2s', flexShrink: 0 }}>
-                <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, left: showPlayed ? 16 : 2, transition: 'left .2s' }} />
-              </span>
-              <span>🎮 Gespeeld</span>
-              <span style={{ fontSize: 11, color: '#888', marginLeft: 'auto' }}>W-G-V per team</span>
-            </label>
-
-            {/* Focus + Club */}
-            <div style={{ borderTop: '1px solid #e0ddd8', marginTop: 8, paddingTop: 12 }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer', fontSize: 13 }}
-                onClick={() => setFocusMode(!focusMode)}>
-                <span style={{ width: 32, height: 18, borderRadius: 9, background: focusMode ? '#3b82f6' : '#ccc', position: 'relative', display: 'inline-block', transition: 'background .2s', flexShrink: 0 }}>
-                  <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, left: focusMode ? 16 : 2, transition: 'left .2s' }} />
-                </span>
-                <span>🏑 Focus mode</span>
-                <span style={{ fontSize: 11, color: '#888', marginLeft: 'auto' }}>alleen poule van club</span>
-              </label>
-              <div style={{ marginTop: 4 }}>
-                <div style={{ fontSize: 11, color: '#888', marginBottom: 6, fontWeight: 600 }}>Club</div>
-                <div className="club-list" style={{ maxHeight: 200, overflowY: 'auto', border: '1px solid #e0ddd8', borderRadius: 8 }}>
-                  {allClubs.map(club => {
-                    const active = club === focusClub
-                    return <div key={club} className={'club-item' + (active ? ' club-active' : '')}
-                      onClick={() => setFocusClub(club)}>
-                      {active && <span style={{ color: '#3b82f6', marginRight: 6 }}>✓</span>}{club}
-                    </div>
-                  })}
-                </div>
+      {/* Settings */}
+      {showSettings && <Popup title="⚙️ Instellingen" onClose={() => setShowSettings(false)} maxWidth={400}>
+        <div style={{ padding: '12px 16px' }}>
+          <Toggle checked={showForm} onChange={() => { const v = !showForm; setShowForm(v); saveForm(v) }} label="🔥 Vorm-badges" hint="laatste 5 wedstrijden" />
+          <Toggle checked={showPlayed} onChange={() => { const v = !showPlayed; setShowPlayed(v); savePlayed(v) }} label="🎮 Gespeeld" hint="W-G-V per team" />
+          <div style={{ borderTop: '1px solid #e0ddd8', marginTop: 8, paddingTop: 12 }}>
+            <Toggle checked={focusMode} onChange={() => setFocusMode(!focusMode)} label="🏑 Focus mode" hint="alleen poule van club" />
+            <div style={{ marginTop: 4 }}>
+              <div style={{ fontSize: 11, color: '#888', marginBottom: 6, fontWeight: 600 }}>Club</div>
+              <div className="club-list" style={{ maxHeight: 200, overflowY: 'auto', border: '1px solid #e0ddd8', borderRadius: 8 }}>
+                {allClubs.map(club => (
+                  <div key={club} className={'club-item' + (club === focusClub ? ' club-active' : '')}
+                    onClick={() => setFocusClub(club)}>
+                    {club === focusClub && <span style={{ color: '#3b82f6', marginRight: 6 }}>✓</span>}{club}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
-      </>}
+      </Popup>}
 
       <div className="main-tabs">
         {[['overzicht', '📋 Overzicht'], ['schema', '📅 Speelschema'], ['sim', '🎲 Simulaties']].map(([id, lbl]) =>
-          <button key={id} className={`main-tab ${mainTab === id ? 'active' : ''}`} onClick={() => setMainTab(id)}>{lbl}</button>
-        )}
+          <button key={id} className={`main-tab ${mainTab === id ? 'active' : ''}`} onClick={() => setMainTab(id)}>{lbl}</button>)}
       </div>
 
       {mainTab === 'overzicht' && (o16
@@ -213,8 +113,6 @@ export default function App() {
       )}
       {mainTab === 'schema' && <SchemaTab data={focusMode ? filteredData : data} myTeam={myTeam} pouleOrder={pouleOrder} />}
       {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} showForm={showForm} showPlayed={showPlayed} key={effectiveComp + '_sim'} />}
-
-      <footer>NK {label} · v{VERSION} · data {dataSource === 'server' ? 'van server' : 'handmatig'}</footer>
     </>
   )
 }
