@@ -237,7 +237,7 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
     slot2t[`${id} nr 2`] = expected[id][1]?.team || `${id} nr 2`
   }
 
-  const { schedA, schedB, timesA, timesB, poulefaseDate } = nkSchedule
+  const { schedA, schedB, timesA, timesB, poulefaseDate, finaleDate } = nkSchedule
 
   // Collect teams per NK poule using NK14_SLOTS mapping
   // NK14_SLOTS[A] = ['A','B'] means: A nr 1 → NK Poule A, A nr 2 → NK Poule B
@@ -318,8 +318,6 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
   const fin34Matches = [
     { h: hfL1 || 'Verliezer HF1', a: hfL2 || 'Verliezer HF2', lockKey: 'nk_3e4e' },
   ]
-
-  const { finaleDate } = nkSchedule || {}
 
   return (
     <div>
