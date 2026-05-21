@@ -16,8 +16,8 @@ const FormBadge = ({ form }) => {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      width: 22, height: 22, borderRadius: '50%', background: col,
-      color: '#fff', fontSize: 10, fontWeight: 700, fontFamily: "'DM Mono',monospace",
+      width: 16, height: 16, borderRadius: '50%', background: col,
+      color: '#fff', fontSize: 8, fontWeight: 700, fontFamily: "'DM Mono',monospace",
     }} title={title}>{pts}</span>
   )
 }
