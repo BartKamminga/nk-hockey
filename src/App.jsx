@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react'
-import { VERSION, CHANGELOG, COMP_ORDER, COMP_LABELS, COMP_LABELS_LONG, IS_O16, POULE_ORDER_14, POULE_ORDER_16, NK14_SLOTS, DATA_URLS, getSavedClub, saveClub, getSavedComp, saveComp } from './constants'
+import React, { useState } from 'react'
+import { VERSION, CHANGELOG, COMP_LABELS } from './constants'
 import { NK_SCHEDULES } from './data/nk-schedules'
-import { parseO14, parseO16, findMyTeam, getAllClubs } from './parsers'
 import { SchemaTab } from './components/Shared'
 import { O14OverzichtTab } from './components/O14'
 import { O16OverzichtTab } from './components/O16'
 import SimTab from './components/SimTab'
+import { useCompetitionData } from './hooks/useCompetitionData'
 
 function ChangelogContent() {
   return (
@@ -21,78 +21,30 @@ function ChangelogContent() {
 }
 
 export default function App() {
-  const [comps, setComps] = useState(null)
-  const [activeComp, setActiveComp] = useState(null)
   const [mainTab, setMainTab] = useState('overzicht')
-  const [loading, setLoading] = useState(true)
-  const [dataSource, setDataSource] = useState(null)
   const [showVersion, setShowVersion] = useState(false)
-  const [focusClub, setFocusClub] = useState(getSavedClub)
   const [showClubPicker, setShowClubPicker] = useState(false)
-  const [focusMode, setFocusMode] = useState(false)
 
-  const fetchFromServer = useCallback(() => {
-    setLoading(true)
-    const merged = {}
-    const promises = DATA_URLS.map(url =>
-      fetch(url + '?t=' + Date.now()).then(r => r.ok ? r.text() : null).then(raw => {
-        if (!raw) return
-        let parsed = parseO16(raw); if (Object.keys(parsed).length === 0) parsed = parseO14(raw)
-        for (const t in parsed) { if (!merged[t]) merged[t] = {}; Object.assign(merged[t], parsed[t]) }
-      }).catch(() => {})
-    )
-    Promise.all(promises).then(() => {
-      if (Object.keys(merged).length > 0) {
-        setComps(merged)
-        const saved = getSavedComp()
-        const first = saved && merged[saved] ? saved : COMP_ORDER.find(k => merged[k])
-        setActiveComp(prev => first || (prev && merged[prev] ? prev : Object.keys(merged)[0]))
-        if (first) saveComp(first)
-        setDataSource('server')
-      }
-      setLoading(false)
-    })
-  }, [])
-
-  useEffect(() => { fetchFromServer() }, [fetchFromServer])
-
-  const types = useMemo(() => comps ? COMP_ORDER.filter(k => comps[k]) : [], [comps])
-
-  const visibleTypes = useMemo(() => {
-    if (!comps || !focusMode || !focusClub) return types
-    return types.filter(t => {
-      const d = comps[t]
-      for (const p in d) {
-        if (d[p].teams && d[p].teams.indexOf(focusClub) >= 0) return true
-      }
-      return false
-    })
-  }, [focusMode, focusClub, types, comps])
-
-  const effectiveComp = useMemo(() => {
-    if (!comps) return null
-    if (focusMode && visibleTypes.indexOf(activeComp) < 0 && visibleTypes.length > 0) return visibleTypes[0]
-    return activeComp
-  }, [focusMode, visibleTypes, activeComp, comps])
-
-  const data = useMemo(() => (effectiveComp ? comps[effectiveComp] || {} : {}), [comps, effectiveComp])
-
-  const filteredData = useMemo(() => {
-    if (!focusMode || !focusClub) return data
-    const filtered = {}
-    for (const pk in data) {
-      if (data[pk].teams && data[pk].teams.indexOf(focusClub) >= 0) filtered[pk] = data[pk]
-    }
-    return filtered
-  }, [focusMode, focusClub, data])
-
-  const label = useMemo(() => effectiveComp ? COMP_LABELS_LONG[effectiveComp] || effectiveComp : '', [effectiveComp])
-
-  const myTeam = useMemo(() => (focusClub && comps && findMyTeam(comps, focusClub)) ? focusClub : null, [comps, focusClub])
-
-  const o16 = useMemo(() => IS_O16(effectiveComp), [effectiveComp])
-
-  const pouleOrder = useMemo(() => (o16 ? POULE_ORDER_16 : POULE_ORDER_14), [o16])
+  const {
+    comps,
+    loading,
+    dataSource,
+    focusClub,
+    focusMode,
+    effectiveComp,
+    data,
+    filteredData,
+    label,
+    myTeam,
+    o16,
+    pouleOrder,
+    visibleTypes,
+    allClubs,
+    fetchFromServer,
+    setActiveCompetition,
+    setFocusClub,
+    setFocusMode,
+  } = useCompetitionData()
 
   if (loading) return <div className="import-screen"><h2>🏑 NK Simulatie</h2><p>Data laden...</p></div>
   if (!comps) return (
@@ -122,7 +74,7 @@ export default function App() {
         </div>
         <div className="top-comp-row">
           {visibleTypes.map(t => <button key={t} className={`top-comp-btn ${effectiveComp === t ? 'active' : ''}`}
-            onClick={() => { setActiveComp(t); saveComp(t) }}>{COMP_LABELS[t] || t}</button>)}
+            onClick={() => { setActiveCompetition(t) }}>{COMP_LABELS[t] || t}</button>)}
         </div>
       </div>
 
@@ -140,10 +92,10 @@ export default function App() {
           <div className="version-popup-header"><span>🏑 Kies focus club</span><button className="version-close" onClick={() => setShowClubPicker(false)}>✕</button></div>
           <div className="version-popup-body">
             <div className="club-list">
-              {getAllClubs(comps).map(club => {
+              {allClubs.map(club => {
                 const active = club === focusClub
                 return <div key={club} className={'club-item' + (active ? ' club-active' : '')}
-                  onClick={() => { setFocusClub(club); saveClub(club); setShowClubPicker(false) }}>
+                  onClick={() => { setFocusClub(club); setShowClubPicker(false) }}>
                   {active && <span style={{ color: '#3b82f6', marginRight: 6 }}>✓</span>}{club}
                 </div>
               })}
