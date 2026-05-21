@@ -20,7 +20,7 @@ export function getSavedComp() { try { return localStorage.getItem(STORAGE_KEY_C
 export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, name) } catch {} }
 export function getSavedForm() { try { return localStorage.getItem(STORAGE_KEY_FORM) !== 'false' } catch { return true } }
 export function saveForm(v) { try { localStorage.setItem(STORAGE_KEY_FORM, v ? 'true' : 'false') } catch {} }
-export function getSavedPlayed() { try { return localStorage.getItem(STORAGE_KEY_PLAYED) !== 'false' } catch { return true } }
+export function getSavedPlayed() { try { return localStorage.getItem(STORAGE_KEY_PLAYED) === 'true' } catch { return false } }
 export function savePlayed(v) { try { localStorage.setItem(STORAGE_KEY_PLAYED, v ? 'true' : 'false') } catch {} }
 export function getSavedFocus() { try { return localStorage.getItem(STORAGE_KEY_FOCUS) === 'true' } catch { return false } }
 export function saveFocus(v) { try { localStorage.setItem(STORAGE_KEY_FOCUS, v ? 'true' : 'false') } catch {} }
