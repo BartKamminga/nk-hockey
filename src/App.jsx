@@ -36,14 +36,6 @@ export default function App() {
   const [showDisclaimer, setShowDisclaimer] = useState(() => {
     try { return localStorage.getItem('nk_disclaimer_seen') !== 'true' } catch { return true }
   })
-
-  // Easter egg on first visit
-  React.useEffect(() => {
-    if (showDisclaimer) {
-      const t = setTimeout(() => { setEasterEgg(true); setTimeout(() => setEasterEgg(false), 3500) }, 800)
-      return () => clearTimeout(t)
-    }
-  }, [])
   const [showForm, setShowForm] = useState(getSavedForm)
   const [showPlayed, setShowPlayed] = useState(getSavedPlayed)
   const [simCount, setSimCount] = useState(getSavedSimCount)
