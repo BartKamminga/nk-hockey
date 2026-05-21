@@ -12,6 +12,9 @@ export default function App() {
   const [mainTab, setMainTab] = useState('overzicht')
   const [showVersion, setShowVersion] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [showFeedback, setShowFeedback] = useState(false)
+  const [feedbackEmoji, setFeedbackEmoji] = useState(null)
+  const [feedbackText, setFeedbackText] = useState('')
   const [showDisclaimer, setShowDisclaimer] = useState(() => {
     try { return localStorage.getItem('nk_disclaimer_seen') !== 'true' } catch { return true }
   })
@@ -82,8 +85,9 @@ export default function App() {
         <div className="version-popup">
           <div className="version-popup-header"><span>Versiegeschiedenis</span><button className="version-close" onClick={() => setShowVersion(false)}>✕</button></div>
           <div className="version-popup-body">
-            <div style={{ marginBottom: 12 }}>
-              <button className="reload-btn" onClick={() => { setShowVersion(false); setShowDisclaimer(true) }} style={{ fontSize: 12, padding: '6px 12px' }}>ℹ️ Over deze website</button>
+            <div style={{ marginBottom: 12, display: 'flex', gap: 6 }}>
+              <button className="reload-btn" onClick={() => { setShowVersion(false); setShowDisclaimer(true) }} style={{ fontSize: 12, padding: '6px 12px' }}>ℹ️ Over</button>
+              <button className="reload-btn" onClick={() => { setShowVersion(false); setShowFeedback(true); setFeedbackEmoji(null); setFeedbackText('') }} style={{ fontSize: 12, padding: '6px 12px' }}>💬 Feedback</button>
             </div>
             <ChangelogContent />
           </div>
@@ -105,6 +109,43 @@ export default function App() {
             </div>
             <div style={{ marginTop: 16, textAlign: 'right' }}>
               <button className="run-btn" onClick={dismissDisclaimer} style={{ padding: '8px 24px' }}>Begrepen</button>
+            </div>
+          </div>
+        </div>
+      </>}
+
+      {showFeedback && <>
+        <div className="version-overlay" onClick={() => setShowFeedback(false)}></div>
+        <div className="version-popup" style={{ maxWidth: 420 }}>
+          <div className="version-popup-header"><span>💬 Feedback</span><button className="version-close" onClick={() => setShowFeedback(false)}>✕</button></div>
+          <div className="version-popup-body" style={{ padding: '16px 20px' }}>
+            <div style={{ fontSize: 13, marginBottom: 12, color: '#555' }}>Hoe vind je deze website?</div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 16 }}>
+              {[['😍','Top!'],['😊','Leuk'],['😐','Mwah'],['😤','Bah'],['🤯','Wauw']].map(([emoji, label]) => (
+                <div key={emoji} onClick={() => setFeedbackEmoji(emoji)} style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, cursor: 'pointer', padding: '8px 10px', borderRadius: 8,
+                  background: feedbackEmoji === emoji ? '#dbeafe' : 'transparent', border: feedbackEmoji === emoji ? '2px solid #3b82f6' : '2px solid transparent',
+                  transition: 'all .15s',
+                }}>
+                  <span style={{ fontSize: 28 }}>{emoji}</span>
+                  <span style={{ fontSize: 10, color: '#888' }}>{label}</span>
+                </div>
+              ))}
+            </div>
+            <textarea value={feedbackText} onChange={e => setFeedbackText(e.target.value)}
+              placeholder="Idee? Bug? Klacht over je doelsaldo?"
+              style={{ width: '100%', minHeight: 70, padding: '10px 12px', border: '1px solid #e0ddd8', borderRadius: 8, fontSize: 13, fontFamily: "'DM Sans',sans-serif", resize: 'vertical', boxSizing: 'border-box' }} />
+            <div style={{ marginTop: 12, textAlign: 'center' }}>
+              <button className="run-btn" style={{ padding: '8px 24px', fontSize: 13 }}
+                disabled={!feedbackEmoji && !feedbackText.trim()}
+                onClick={() => {
+                  const title = feedbackEmoji ? `Feedback: ${feedbackEmoji}` : 'Feedback'
+                  const body = [feedbackEmoji && `Rating: ${feedbackEmoji}`, feedbackText.trim(), `---`, `v${VERSION} · ${new Date().toLocaleString('nl-NL')}`].filter(Boolean).join('\n\n')
+                  window.open(`https://github.com/BartKamminga/nk-hockey/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`, '_blank')
+                  setShowFeedback(false)
+                }}>
+                Backhand in de kruising 🏑
+              </button>
             </div>
           </div>
         </div>

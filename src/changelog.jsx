@@ -1,7 +1,12 @@
 import React from 'react'
 
-export const VERSION = '5.18'
+export const VERSION = '5.19'
 export const CHANGELOG = [
+  { version: '5.19', date: '21 mei 2026', changes: [
+    '💬 Feedback popup: emoji-rating + tekstveld',
+    '"Backhand in de kruising 🏑" knop opent een GitHub Issue',
+    'Bereikbaar via versie-tab → 💬 Feedback knop',
+  ]},
   { version: '5.18', date: '21 mei 2026', changes: [
     'ℹ️ Over deze website — disclaimer popup bij eerste bezoek',
     'Verschijnt één keer, daarna opvraagbaar via versie-tab',
