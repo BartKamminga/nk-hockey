@@ -18,8 +18,15 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.5'
+export const VERSION = '5.6'
 export const CHANGELOG = [
+  { version: '5.6', date: '20 mei 2026', changes: [
+    'NK fase in Simulatie tab: O14 NK Poulefase en O16 Kwartfinales met klikbare wedstrijden',
+    'Teams worden ingevuld op basis van huidige stand + vastgezette what-if uitslagen',
+    'O14: NK Poule A en B schema met alle 10 wedstrijden per poule, met slot-labels',
+    'O16: 4 KF-wedstrijden met verwachte teamindeling',
+    'Wijzig poule-uitslagen → NK deelnemers updaten automatisch',
+  ]},
   { version: '5.5', date: '20 mei 2026', changes: [
     '✦ Voorspel-knop per ronde: berekent meest waarschijnlijke uitslagen via Monte Carlo',
     'Teamsterkte gebaseerd op huidige punten en doelsaldo',

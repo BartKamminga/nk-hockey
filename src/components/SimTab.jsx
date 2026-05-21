@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { NK14_SLOTS, POULE_ORDER_14, POULE_ORDER_16, IS_O16 } from '../constants'
+import { NK_SCHEDULES } from '../data/nk-schedules'
 import { runSimO14, runSimO16, predictMatches } from '../simulation'
 import { pct, pc, Bar, fmtMatchDate } from './Shared'
 
@@ -150,8 +151,203 @@ function RemainingPouleCards({ data, pouleIds, myTeam, locks, onToggle, onSetRou
 }
 
 // ══════════════════════════════════════
-// ADJUSTED STANDINGS
+// EXPECTED STANDINGS (with locks applied)
 // ══════════════════════════════════════
+function getExpectedStandings(data, locks, pouleOrder) {
+  const result = {}
+  for (const pouleId of pouleOrder) {
+    const poule = data[pouleId]
+    if (!poule) continue
+    const adjusted = poule.teams.map((team, i) => ({
+      team, pts: poule.pts[i], ds: poule.ds[i], delta: 0
+    }))
+    for (const [h, a] of poule.remaining) {
+      const lock = locks[`${h}_${a}`]
+      if (!lock) continue
+      const hi = poule.teams.indexOf(h), ai = poule.teams.indexOf(a)
+      if (hi < 0 || ai < 0) continue
+      if (lock === 'W') adjusted[hi].delta += 3
+      else if (lock === 'D') { adjusted[hi].delta += 1; adjusted[ai].delta += 1 }
+      else if (lock === 'L') adjusted[ai].delta += 3
+    }
+    adjusted.forEach(s => { s.newPts = s.pts + s.delta })
+    adjusted.sort((a, b) => b.newPts !== a.newPts ? b.newPts - a.newPts : b.ds - a.ds)
+    result[pouleId] = adjusted
+  }
+  return result
+}
+
+// ══════════════════════════════════════
+// O14 NK PHASE: Poulefase matches with real team names
+// ══════════════════════════════════════
+function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onToggle }) {
+  const expected = useMemo(() => getExpectedStandings(data, locks, POULE_ORDER_14), [data, locks])
+  if (!nkSchedule) return null
+
+  // Build slot→team mapping from expected standings
+  const slot2t = {}
+  for (const id of POULE_ORDER_14) {
+    if (!expected[id]) continue
+    slot2t[`${id} nr 1`] = expected[id][0]?.team || `${id} nr 1`
+    slot2t[`${id} nr 2`] = expected[id][1]?.team || `${id} nr 2`
+  }
+
+  const { schedA, schedB, timesA, timesB, poulefaseDate } = nkSchedule
+
+  // Convert NK schedule to clickable matches
+  const buildNKMatches = (schedule, times, pouleLabel) => {
+    const rounds = []
+    for (let ri = 0; ri < times.length; ri++) {
+      const time = times[ri]
+      const ms = schedule.filter(m => m.time === time)
+      if (!ms.length) continue
+      rounds.push({
+        roundNum: ri + 1,
+        date: poulefaseDate || '',
+        time,
+        matches: ms.map(m => ({
+          h: slot2t[m.home] || m.home,
+          a: slot2t[m.away] || m.away,
+          lockKey: `nk_${pouleLabel}_${m.home}_${m.away}`,
+          slotHome: m.home,
+          slotAway: m.away,
+          field: m.field,
+        }))
+      })
+    }
+    return rounds
+  }
+
+  const roundsA = buildNKMatches(schedA, timesA, 'A')
+  const roundsB = buildNKMatches(schedB, timesB, 'B')
+
+  const NKPouleCard = ({ rounds, label, headerClass }) => (
+    <div className="card">
+      <div className={`card-header ${headerClass}`}>
+        NK Poulefase {label}{poulefaseDate ? ` · ${poulefaseDate}` : ''}
+      </div>
+      {rounds.map(round => (
+        <div key={round.roundNum}>
+          <div style={{
+            padding: '5px 12px', fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono',monospace",
+            color: '#555', background: '#f0ede8', borderBottom: '1px solid #e0ddd8', borderTop: '1px solid #e0ddd8',
+            letterSpacing: '.5px', display: 'flex', justifyContent: 'space-between'
+          }}>
+            <span>Ronde {round.roundNum}</span><span style={{ fontWeight: 400, color: '#999' }}>{round.time}</span>
+          </div>
+          {round.matches.map(m => {
+            const locked = locks[m.lockKey] || null
+            const isMy = m.h === myTeam || m.a === myTeam
+            return (
+              <div key={m.lockKey} className="match-row" style={{ background: isMy && !locked ? '#eff6ff' : 'transparent', padding: '4px 0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                  <div style={{
+                    flex: 1, textAlign: 'right', padding: '5px 8px', fontSize: 12,
+                    fontWeight: m.h === myTeam ? 600 : 400,
+                    background: locked === 'W' ? '#dcfce7' : 'transparent',
+                    borderRadius: '4px 0 0 4px', cursor: 'pointer',
+                  }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'W' ? null : 'W')}>
+                    {m.h}<span className="origin"> {m.slotHome}</span>
+                  </div>
+                  <div style={{
+                    padding: '5px 10px', fontSize: 10, color: locked === 'D' ? '#b45309' : '#ccc',
+                    background: locked === 'D' ? '#fef3c7' : 'transparent',
+                    cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
+                  }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'D' ? null : 'D')}>
+                    {locked === 'D' ? 'G' : 'vs'}
+                  </div>
+                  <div style={{
+                    flex: 1, textAlign: 'left', padding: '5px 8px', fontSize: 12,
+                    fontWeight: m.a === myTeam ? 600 : 400,
+                    background: locked === 'L' ? '#dcfce7' : 'transparent',
+                    borderRadius: '0 4px 4px 0', cursor: 'pointer',
+                  }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'L' ? null : 'L')}>
+                    {m.a}<span className="origin"> {m.slotAway}</span>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      ))}
+    </div>
+  )
+
+  return (
+    <div>
+      <div className="section-label">NK Poulefase — klik om uitslagen in te stellen</div>
+      <div className="grid-2">
+        <NKPouleCard rounds={roundsA} label="A" headerClass="card-header-a" />
+        <NKPouleCard rounds={roundsB} label="B" headerClass="card-header-b" />
+      </div>
+    </div>
+  )
+}
+
+// ══════════════════════════════════════
+// O16 NK PHASE: KF matches with real team names
+// ══════════════════════════════════════
+function O16KFPhaseCard({ data, locks, myTeam, onToggle }) {
+  const expected = useMemo(() => getExpectedStandings(data, locks, POULE_ORDER_16), [data, locks])
+  const pk = POULE_ORDER_16.filter(id => expected[id])
+  if (pk.length < 4) return null
+
+  const nr1s = pk.map(k => ({ team: expected[k][0]?.team, poule: k, pts: (expected[k][0]?.newPts || expected[k][0]?.pts || 0) }))
+    .sort((a, b) => b.pts - a.pts)
+  const nr2s = pk.map(k => ({ team: expected[k][1]?.team, poule: k, pts: (expected[k][1]?.newPts || expected[k][1]?.pts || 0) }))
+    .sort((a, b) => b.pts - a.pts)
+
+  const kfMatches = [
+    { label: 'KF 1', h: nr1s[0].team, a: nr2s[3].team, desc: 'Beste #1 vs 4e #2', lockKey: 'nk_kf1' },
+    { label: 'KF 2', h: nr1s[1].team, a: nr2s[2].team, desc: '2e #1 vs 3e #2', lockKey: 'nk_kf2' },
+    { label: 'KF 3', h: nr1s[2].team, a: nr2s[1].team, desc: '3e #1 vs 2e #2', lockKey: 'nk_kf3' },
+    { label: 'KF 4', h: nr1s[3].team, a: nr2s[0].team, desc: '4e #1 vs Beste #2', lockKey: 'nk_kf4' },
+  ]
+
+  return (
+    <div>
+      <div className="section-label">NK Kwartfinales — klik om uitslagen in te stellen</div>
+      <div className="card" style={{ maxWidth: 600 }}>
+        <div className="card-header">Kwartfinales (verwachte indeling)</div>
+        {kfMatches.map(m => {
+          const locked = locks[m.lockKey] || null
+          const isMy = m.h === myTeam || m.a === myTeam
+          return (
+            <div key={m.lockKey} className="match-row" style={{ background: isMy && !locked ? '#eff6ff' : 'transparent', padding: '4px 0' }}>
+              <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 36, padding: '5px 8px' }}>{m.label}</div>
+              <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                <div style={{
+                  flex: 1, textAlign: 'right', padding: '5px 8px', fontSize: 12,
+                  fontWeight: m.h === myTeam ? 600 : 400,
+                  background: locked === 'W' ? '#dcfce7' : 'transparent',
+                  borderRadius: '4px 0 0 4px', cursor: 'pointer',
+                }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'W' ? null : 'W')}>
+                  {m.h}
+                </div>
+                <div style={{
+                  padding: '5px 10px', fontSize: 10, color: locked === 'D' ? '#b45309' : '#ccc',
+                  background: locked === 'D' ? '#fef3c7' : 'transparent',
+                  cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
+                }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'D' ? null : 'D')}>
+                  {locked === 'D' ? 'G' : 'vs'}
+                </div>
+                <div style={{
+                  flex: 1, textAlign: 'left', padding: '5px 8px', fontSize: 12,
+                  fontWeight: m.a === myTeam ? 600 : 400,
+                  background: locked === 'L' ? '#dcfce7' : 'transparent',
+                  borderRadius: '0 4px 4px 0', cursor: 'pointer',
+                }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'L' ? null : 'L')}>
+                  {m.a}
+                </div>
+              </div>
+              <span className="origin" style={{ padding: '0 8px' }}>{m.desc}</span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
 function calcAdjustedStandings(data, locks, pouleOrder) {
   if (Object.keys(locks).length === 0) return null
   const results = []
@@ -441,6 +637,11 @@ export default function SimTab({ data, myTeam, focusMode, effectiveComp }) {
 
       {/* Adjusted standings */}
       {hasLocks && <AdjustedStandingsCards data={data} locks={locks} pouleOrder={pouleOrder} myTeam={myTeam} />}
+
+      {/* NK Phase: Poulefase (O14) or KF (O16) with clickable matches */}
+      {!o16 && <O14NKPhaseCards data={data} locks={locks} myTeam={myTeam}
+        nkSchedule={NK_SCHEDULES[effectiveComp]} effectiveComp={effectiveComp} onToggle={onToggle} />}
+      {o16 && <O16KFPhaseCard data={data} locks={locks} myTeam={myTeam} onToggle={onToggle} />}
 
       {/* NK chances for focus club */}
       <NKChances myTeam={myTeam} results={results} baseResults={baseResults} N={N} o16={o16} hasLocks={hasLocks} />
