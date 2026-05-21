@@ -8,13 +8,13 @@
     "played_count": 95,
     "remaining_count": 25,
     "url": "https://app.hockeyweerelt.nl/competitions/national/21",
-    "timestamp": 1779219961542,
+    "timestamp": 1779372708921,
     "data": {
       "data": {
         "id": 21,
         "name": "Landelijk Jongens O16",
         "short_name": "Land JO16",
-        "next_match_date": "2026-05-25T00:00:00+00:00",
+        "next_match_date": "2026-05-25T11:00:00+00:00",
         "gender": null,
         "amount_live_games": 0,
         "poule_id": 179021,
@@ -7484,8 +7484,8 @@
               },
               {
                 "id": 2042657,
-                "date": "2026-05-25T00:00:00+02:00",
-                "status": "announced",
+                "date": "2026-05-25T11:00:00+02:00",
+                "status": "scheduled",
                 "cancellation_minute": null,
                 "home": {
                   "id": 4792,
@@ -7522,8 +7522,8 @@
                     "address": "Klatteweg 113\n2597KA Den Haag"
                   },
                   "field": {
-                    "name": null,
-                    "type": null
+                    "name": "Veld 4",
+                    "type": "Waterveld"
                   }
                 },
                 "poule_name": null,
