@@ -14,15 +14,15 @@ export function PouleCard({ id, poule, myTeam, slots, showForm, showPlayed }) {
         const isMy = team === myTeam
         const form = getTeamForm(team, poule.matches_played)
         return (
-          <tr key={team} style={isMy ? { background: '#eff6ff' } : {}}>
+          <tr key={team} style={isMy ? { background: 'var(--bg-highlight)' } : {}}>
             <td className="td-rank">{rank}</td>
-            <td className={is1 ? 'bold' : ''} style={{ ...(!slot ? { paddingLeft: 17 } : {}), fontWeight: isMy ? 600 : undefined }}>
-              {slot && <span className={`dot dot-${slot.toLowerCase()}`} style={{ marginRight: 5 }}></span>}{team}
+            <td className="td-name" style={{ fontWeight: (is1 || isMy) ? 600 : 400, paddingLeft: slot ? undefined : 8 }}>
+              {slot && <span className={`dot dot-${slot.toLowerCase()}`} style={{ marginRight: 4 }}></span>}{team}
             </td>
             <td className="td-pts">{poule.pts[i]}</td>
-            <td className="td-ds" style={{ color: poule.ds[i] >= 0 ? '#16a34a' : '#dc2626' }}>{poule.ds[i] >= 0 ? '+' : ''}{poule.ds[i]}</td>
-            {showPlayed && poule.standings && poule.standings[i] && <td style={{ padding: '0 6px', fontSize: 10, fontFamily: "'DM Mono',monospace", color: '#888', whiteSpace: 'nowrap' }}>{poule.standings[i].wins}-{poule.standings[i].draws}-{poule.standings[i].losses}</td>}
-            {showForm && <td style={{ padding: '0 8px' }}><FormBadge form={form} /></td>}
+            <td className="td-ds" style={{ color: poule.ds[i] >= 0 ? 'var(--win)' : 'var(--lose)' }}>{poule.ds[i] >= 0 ? '+' : ''}{poule.ds[i]}</td>
+            {showPlayed && poule.standings && poule.standings[i] && <td className="td-wdl">{poule.standings[i].wins}-{poule.standings[i].draws}-{poule.standings[i].losses}</td>}
+            {showForm && <td className="td-form"><FormBadge form={form} /></td>}
           </tr>
         )
       })}</tbody></table>

@@ -63,13 +63,13 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
             }
           }
           return (
-            <tr key={s.team} style={isMy ? { background: '#eff6ff' } : {}}>
+            <tr key={s.team} style={isMy ? { background: 'var(--bg-highlight)' } : {}}>
               <td className="td-rank">{i + 1}</td>
-              <td style={{ padding: '5px 12px', fontSize: 12.5, fontWeight: isMy ? 600 : 400 }}>{s.team}</td>
+              <td className="td-name" style={{ fontWeight: isMy ? 600 : 400 }}>{s.team}</td>
               <td className="td-pts">{s.pts > 0 ? s.pts : hasAnyBase ? '0' : '-'}</td>
-              <td className="td-ds" style={{ color: s.ds >= 0 ? '#16a34a' : '#dc2626' }}>{hasAnyBase ? (s.ds >= 0 ? '+' : '') + s.ds : ''}</td>
-              {showPlayed && (w + d + l) > 0 && <td style={{ padding: '0 6px', fontSize: 10, fontFamily: "'DM Mono',monospace", color: '#888', whiteSpace: 'nowrap' }}>{w}-{d}-{l}</td>}
-              {showForm && form.length > 0 && <td style={{ padding: '0 8px' }}><FormBadge form={form} /></td>}
+              <td className="td-ds" style={{ color: s.ds >= 0 ? 'var(--win)' : 'var(--lose)' }}>{hasAnyBase ? (s.ds >= 0 ? '+' : '') + s.ds : ''}</td>
+              {showPlayed && (w + d + l) > 0 && <td className="td-wdl">{w}-{d}-{l}</td>}
+              {showForm && form.length > 0 && <td className="td-form"><FormBadge form={form} /></td>}
             </tr>
           )
         })}
