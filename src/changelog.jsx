@@ -1,7 +1,13 @@
 import React from 'react'
 
-export const VERSION = '5.17'
+export const VERSION = '5.18'
 export const CHANGELOG = [
+  { version: '5.18', date: '21 mei 2026', changes: [
+    'ℹ️ Over deze website — disclaimer popup bij eerste bezoek',
+    'Verschijnt één keer, daarna opvraagbaar via versie-tab',
+    'Informatieve notice: hobbyproject, data van hockey.nl, geen officieel akkoord KNHB',
+    'Simulaties en voorspellingen zijn indicatief',
+  ]},
   { version: '5.17', date: '21 mei 2026', changes: [
     'Alle instellingen in één ⚙️ popup: club, focus mode, vorm-badges, gespeeld',
     'Club picker verplaatst naar settings popup met scrollbare lijst',

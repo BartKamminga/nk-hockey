@@ -12,8 +12,16 @@ export default function App() {
   const [mainTab, setMainTab] = useState('overzicht')
   const [showVersion, setShowVersion] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [showDisclaimer, setShowDisclaimer] = useState(() => {
+    try { return localStorage.getItem('nk_disclaimer_seen') !== 'true' } catch { return true }
+  })
   const [showForm, setShowForm] = useState(getSavedForm)
   const [showPlayed, setShowPlayed] = useState(getSavedPlayed)
+
+  function dismissDisclaimer() {
+    setShowDisclaimer(false)
+    try { localStorage.setItem('nk_disclaimer_seen', 'true') } catch {}
+  }
 
   const {
     comps,
@@ -73,7 +81,32 @@ export default function App() {
         <div className="version-overlay" onClick={() => setShowVersion(false)}></div>
         <div className="version-popup">
           <div className="version-popup-header"><span>Versiegeschiedenis</span><button className="version-close" onClick={() => setShowVersion(false)}>✕</button></div>
-          <div className="version-popup-body"><ChangelogContent /></div>
+          <div className="version-popup-body">
+            <div style={{ marginBottom: 12 }}>
+              <button className="reload-btn" onClick={() => { setShowVersion(false); setShowDisclaimer(true) }} style={{ fontSize: 12, padding: '6px 12px' }}>ℹ️ Over deze website</button>
+            </div>
+            <ChangelogContent />
+          </div>
+        </div>
+      </>}
+
+      {showDisclaimer && <>
+        <div className="version-overlay" onClick={dismissDisclaimer}></div>
+        <div className="version-popup" style={{ maxWidth: 520 }}>
+          <div className="version-popup-header"><span>ℹ️ Over deze website</span><button className="version-close" onClick={dismissDisclaimer}>✕</button></div>
+          <div className="version-popup-body" style={{ padding: '16px 20px' }}>
+            <div style={{ fontSize: 13, lineHeight: 1.7, color: '#333' }}>
+              <p style={{ fontWeight: 600, fontSize: 14, marginBottom: 12 }}>Onafhankelijk hobbyproject</p>
+              <p>Deze website is een persoonlijk hobbyproject en is op geen enkele wijze verbonden aan, goedgekeurd door, of geassocieerd met de Koninklijke Nederlandse Hockey Bond (KNHB) of hockey.nl.</p>
+              <p style={{ marginTop: 10 }}>De wedstrijddata die op deze website wordt getoond is afkomstig van publiek beschikbare informatie op hockey.nl. Er is op dit moment geen officieel akkoord of licentieovereenkomst met de KNHB voor het gebruik van deze data.</p>
+              <p style={{ marginTop: 10 }}>De op deze website getoonde simulaties, voorspellingen en scenario-analyses zijn puur indicatief en gebaseerd op statistische modellen (Monte Carlo simulatie). Aan de uitkomsten kunnen geen rechten worden ontleend.</p>
+              <p style={{ marginTop: 10 }}>De maker van deze website aanvaardt geen aansprakelijkheid voor de juistheid, volledigheid of actualiteit van de getoonde informatie. Raadpleeg altijd hockey.nl voor officiële standen en uitslagen.</p>
+              <p style={{ marginTop: 10, fontSize: 12, color: '#888' }}>Mocht de KNHB bezwaar hebben tegen het gebruik van de data, dan zal de website onmiddellijk worden aangepast of verwijderd.</p>
+            </div>
+            <div style={{ marginTop: 16, textAlign: 'right' }}>
+              <button className="run-btn" onClick={dismissDisclaimer} style={{ padding: '8px 24px' }}>Begrepen</button>
+            </div>
+          </div>
         </div>
       </>}
 
