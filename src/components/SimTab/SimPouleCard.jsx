@@ -1,7 +1,7 @@
 import React from 'react'
 import { fmtMatchDate, getTeamForm } from '../../lib/utils'
 
-const FORM_COLORS = { W: '#16a34a', D: '#b45309', L: '#dc2626' }
+const FORM_COLORS = { W: '#16a34a', D: '#817e7b', L: '#dc2626' }
 const FormDots = ({ form }) => {
   if (!form || form.length === 0) return null
   return (
