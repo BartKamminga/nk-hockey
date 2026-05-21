@@ -1,5 +1,5 @@
 import React from 'react'
-import { pct, pc } from '../Shared'
+import { pct, pc } from '../../lib/utils'
 
 export default function NKChances({ myTeam, results, baseResults, N, o16, hasLocks }) {
   if (!myTeam || !results) return null

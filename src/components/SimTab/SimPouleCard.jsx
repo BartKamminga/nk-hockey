@@ -1,5 +1,5 @@
 import React from 'react'
-import { fmtMatchDate } from '../Shared'
+import { fmtMatchDate } from '../../lib/utils'
 
 export default function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, locks, myTeam, onToggle, onSetRound, onPredict, onPredictAll, hideStandings }) {
   const pts = {}, ds = {}

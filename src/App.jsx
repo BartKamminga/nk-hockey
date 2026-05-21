@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { VERSION, COMP_LABELS } from './constants'
 import { ChangelogContent } from './changelog'
-import { NK_SCHEDULES } from './data/nk-schedules'
+import { NK_SCHEDULES } from './lib/nk-schedules'
 import { SchemaTab } from './components/Speelschema'
 import { O14OverzichtTab } from './components/Overzicht'
 import { O16OverzichtTab } from './components/Overzicht'

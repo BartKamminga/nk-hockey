@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { COMP_ORDER, COMP_LABELS_LONG, IS_O16, POULE_ORDER_14, POULE_ORDER_16, DATA_URLS, getSavedClub, saveClub, getSavedComp, saveComp } from '../constants'
-import { parseO14, parseO16, findMyTeam, getAllClubs } from '../parsers'
+import { parseO14, parseO16, findMyTeam, getAllClubs } from '../lib/parsers'
 
 export function useCompetitionData() {
   const [comps, setComps] = useState(null)

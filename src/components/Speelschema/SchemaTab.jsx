@@ -1,5 +1,5 @@
 import React from 'react'
-import { fmtMatchDate } from '../Shared'
+import { fmtMatchDate } from '../../lib/utils'
 
 function PlayedCard({ id, poule, myTeam }) {
   const ma = poule.matches_played || []

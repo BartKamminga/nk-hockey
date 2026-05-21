@@ -1,4 +1,4 @@
-import { POULE_ORDER_14, POULE_ORDER_16 } from './constants'
+import { POULE_ORDER_14, POULE_ORDER_16 } from '../constants'
 
 const clean14 = n => n.replace(/ [A-Z]?O?\d+-\d+/g, '').trim()
 const clean16 = n => n.replace(/ [MJ]O\d+-\d+/g, '').trim()
