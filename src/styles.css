@@ -83,6 +83,45 @@
   --nk-b-text: #34d058;
 }
 
+[data-theme="victoria"] {
+  --bg: #1a1a1a;
+  --bg-card: #222;
+  --bg-header: #2a2a2a;
+  --bg-hover: #333;
+  --bg-highlight: #2a2510;
+  --bg-played: #2a2a2a;
+  --bg-round-played: #2a2a2a;
+  --bg-round-remaining: #2a2510;
+  --bg-gold: #332d10;
+  --border: #444;
+  --border-light: #333;
+  --border-round-played: #444;
+  --border-round-remaining: #665a1a;
+  --text: #f5e6a0;
+  --text-secondary: #d4c478;
+  --text-muted: #a89850;
+  --text-faint: #776b38;
+  --text-vs: #555;
+  --text-round-remaining: #f5d040;
+  --accent: #f5d040;
+  --accent-bg: #332d10;
+  --win: #34d058;
+  --win-bg: #1a2d10;
+  --draw-text: #f5d040;
+  --draw-bg: #332d10;
+  --lose: #dc2626;
+  --lose-bg: #2d1518;
+  --btn-bg: #f5d040;
+  --btn-text: #1a1a1a;
+  --btn-hover: #e0b830;
+  --overlay: rgba(0,0,0,.7);
+  --shadow: 0 20px 60px rgba(0,0,0,.6);
+  --nk-a-bg: #1a2d4d;
+  --nk-a-text: #5b9ef5;
+  --nk-b-bg: #1a2d10;
+  --nk-b-text: #34d058;
+}
+
 /* ── Reset ── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); padding: 32px; color: var(--text); transition: background .2s, color .2s; }

@@ -21,15 +21,15 @@ export default function App() {
   })
   const [showForm, setShowForm] = useState(getSavedForm)
   const [showPlayed, setShowPlayed] = useState(getSavedPlayed)
-  const [darkMode, setDarkMode] = useState(() => {
-    try { const s = localStorage.getItem('nk_dark_mode'); return s === 'true' || (s === null && window.matchMedia('(prefers-color-scheme: dark)').matches) } catch { return false }
+  const [theme, setTheme] = useState(() => {
+    try { const s = localStorage.getItem('nk_theme'); return s || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') } catch { return 'light' }
   })
 
   // Apply theme to document
   React.useEffect(() => {
-    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
-    try { localStorage.setItem('nk_dark_mode', darkMode ? 'true' : 'false') } catch {}
-  }, [darkMode])
+    document.documentElement.setAttribute('data-theme', theme)
+    try { localStorage.setItem('nk_theme', theme) } catch {}
+  }, [theme])
 
   function dismissDisclaimer() {
     setShowDisclaimer(false)
@@ -56,8 +56,10 @@ export default function App() {
         <div className="top-row">
           <div className="top-team">
             <div className="top-team-icon" onClick={() => { if (focusClub) setFocusMode(!focusMode) }}
-              style={{ cursor: 'pointer', border: focusMode ? '2px solid #3b82f6' : '2px solid transparent', borderRadius: '50%' }}
-              title={focusMode ? 'Toon alles' : 'Toon alleen ' + focusClub}>🏑</div>
+              style={{ cursor: 'pointer', border: focusMode ? '2px solid var(--accent)' : '2px solid transparent', borderRadius: '50%', overflow: 'hidden' }}
+              title={focusMode ? 'Toon alles' : 'Toon alleen ' + focusClub}>
+              {theme === 'victoria' ? <img src={`${import.meta.env.BASE_URL}victoria-logo.png`} alt="V" style={{ width: 24, height: 24 }} /> : '🏑'}
+            </div>
             <div className="top-team-name" onClick={() => setShowSettings(true)} style={{ cursor: 'pointer' }} title="Instellingen">
               {focusClub || 'Kies club'}{focusMode && <span style={{ fontSize: 10, color: 'var(--accent)', marginLeft: 4 }}>focus</span>}
             </div>
@@ -92,7 +94,20 @@ export default function App() {
       {/* Settings */}
       {showSettings && <Popup title="⚙️ Instellingen" onClose={() => setShowSettings(false)} maxWidth={400}>
         <div style={{ padding: '12px 16px' }}>
-          <Toggle checked={darkMode} onChange={() => setDarkMode(!darkMode)} label="🌙 Dark mode" hint="donker thema" />
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 6, fontWeight: 600 }}>Thema</div>
+          <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
+            {[['light', '☀️', 'Licht'], ['dark', '🌙', 'Donker'], ['victoria', '', 'Victoria']].map(([id, icon, label]) => (
+              <button key={id} onClick={() => setTheme(id)} style={{
+                flex: 1, padding: '8px 6px', borderRadius: 8, border: theme === id ? '2px solid var(--accent)' : '2px solid var(--border)',
+                background: theme === id ? 'var(--accent-bg)' : 'var(--bg-card)', cursor: 'pointer',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: theme === id ? 600 : 400,
+                color: 'var(--text)', fontFamily: "'DM Sans',sans-serif",
+              }}>
+                {id === 'victoria' ? <img src={`${import.meta.env.BASE_URL}victoria-logo.png`} alt="Victoria" style={{ width: 20, height: 20, borderRadius: 4 }} /> : <span style={{ fontSize: 18 }}>{icon}</span>}
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
           <Toggle checked={showForm} onChange={() => { const v = !showForm; setShowForm(v); saveForm(v) }} label="🔥 Vorm-badges" hint="laatste 5 wedstrijden" />
           <Toggle checked={showPlayed} onChange={() => { const v = !showPlayed; setShowPlayed(v); savePlayed(v) }} label="🎮 Gespeeld" hint="W-G-V per team" />
           <div style={{ borderTop: '1px solid var(--border)', marginTop: 8, paddingTop: 12 }}>

@@ -1,7 +1,13 @@
 import React from 'react'
 
-export const VERSION = '5.22'
+export const VERSION = '5.23'
 export const CHANGELOG = [
+  { version: '5.23', date: '21 mei 2026', changes: [
+    'Victoria club thema: zwart/geel/rood kleurenschema',
+    'Thema-keuze in settings: ☀️ Licht, 🌙 Donker, Victoria (met logo)',
+    'Victoria logo in header wanneer Victoria thema actief',
+    'Thema opgeslagen in localStorage (nk_theme)',
+  ]},
   { version: '5.22', date: '21 mei 2026', changes: [
     '🌙 Dark mode — volledig donker thema met CSS variables',
     'Toggle in ⚙️ instellingen, opgeslagen in localStorage',
