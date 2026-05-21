@@ -268,10 +268,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); padding: 32px;
 .bar-val { font-size: 11px; min-width: 32px; text-align: right; font-family: 'DM Mono', monospace; color: var(--text-secondary); }
 
 /* ── My team highlight ── */
-.row-my td { outline: 2px solid var(--accent); outline-offset: -2px; }
-.row-my td:first-child { border-radius: 4px 0 0 4px; }
-.row-my td:last-child { border-radius: 0 4px 4px 0; }
-.row-my-match { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 4px; }
+.row-my { outline: 2px solid var(--accent); outline-offset: -1px; border-radius: 4px; }
+.row-my-match { outline: 2px solid var(--accent); outline-offset: -1px; border-radius: 4px; }
 .prob-hi { color: var(--win); font-weight: 600; font-family: 'DM Mono', monospace; font-size: 12px; }
 .prob-mid { color: var(--draw-text); font-family: 'DM Mono', monospace; font-size: 12px; }
 .prob-low { color: var(--text-faint); font-family: 'DM Mono', monospace; font-size: 12px; }
