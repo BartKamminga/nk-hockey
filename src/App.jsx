@@ -49,10 +49,11 @@ export default function App() {
     <>
       <div className="top-bar">
         <div className="top-row">
-          <div className="top-team" onClick={() => setShowSettings(true)} style={{ cursor: 'pointer' }} title="Instellingen">
-            <div className="top-team-icon"
-              style={{ border: focusMode ? '2px solid #3b82f6' : '2px solid transparent', borderRadius: '50%' }}>🏑</div>
-            <div className="top-team-name">
+          <div className="top-team">
+            <div className="top-team-icon" onClick={() => { if (focusClub) setFocusMode(!focusMode) }}
+              style={{ cursor: 'pointer', border: focusMode ? '2px solid #3b82f6' : '2px solid transparent', borderRadius: '50%' }}
+              title={focusMode ? 'Toon alles' : 'Toon alleen ' + focusClub}>🏑</div>
+            <div className="top-team-name" onClick={() => setShowSettings(true)} style={{ cursor: 'pointer' }} title="Instellingen">
               {focusClub || 'Kies club'}{focusMode && <span style={{ fontSize: 10, color: '#3b82f6', marginLeft: 4 }}>focus</span>}
             </div>
           </div>
@@ -81,21 +82,26 @@ export default function App() {
         <div className="version-popup" style={{ maxWidth: 400 }}>
           <div className="version-popup-header"><span>⚙️ Instellingen</span><button className="version-close" onClick={() => setShowSettings(false)}>✕</button></div>
           <div className="version-popup-body" style={{ padding: '12px 16px' }}>
-            {/* Club picker */}
-            <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 11, color: '#888', marginBottom: 6, fontWeight: 600 }}>Club</div>
-              <div className="club-list" style={{ maxHeight: 200, overflowY: 'auto', border: '1px solid #e0ddd8', borderRadius: 8 }}>
-                {allClubs.map(club => {
-                  const active = club === focusClub
-                  return <div key={club} className={'club-item' + (active ? ' club-active' : '')}
-                    onClick={() => setFocusClub(club)}>
-                    {active && <span style={{ color: '#3b82f6', marginRight: 6 }}>✓</span>}{club}
-                  </div>
-                })}
-              </div>
-            </div>
-            {/* Toggles */}
-            <div style={{ borderTop: '1px solid #e0ddd8', paddingTop: 12 }}>
+            {/* Display toggles */}
+            <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer', fontSize: 13 }}
+              onClick={() => { const v = !showForm; setShowForm(v); saveForm(v) }}>
+              <span style={{ width: 32, height: 18, borderRadius: 9, background: showForm ? '#3b82f6' : '#ccc', position: 'relative', display: 'inline-block', transition: 'background .2s', flexShrink: 0 }}>
+                <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, left: showForm ? 16 : 2, transition: 'left .2s' }} />
+              </span>
+              <span>🔥 Vorm-badges</span>
+              <span style={{ fontSize: 11, color: '#888', marginLeft: 'auto' }}>laatste 5 wedstrijden</span>
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer', fontSize: 13 }}
+              onClick={() => { const v = !showPlayed; setShowPlayed(v); savePlayed(v) }}>
+              <span style={{ width: 32, height: 18, borderRadius: 9, background: showPlayed ? '#3b82f6' : '#ccc', position: 'relative', display: 'inline-block', transition: 'background .2s', flexShrink: 0 }}>
+                <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, left: showPlayed ? 16 : 2, transition: 'left .2s' }} />
+              </span>
+              <span>🎮 Gespeeld</span>
+              <span style={{ fontSize: 11, color: '#888', marginLeft: 'auto' }}>W-G-V per team</span>
+            </label>
+
+            {/* Focus + Club */}
+            <div style={{ borderTop: '1px solid #e0ddd8', marginTop: 8, paddingTop: 12 }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer', fontSize: 13 }}
                 onClick={() => setFocusMode(!focusMode)}>
                 <span style={{ width: 32, height: 18, borderRadius: 9, background: focusMode ? '#3b82f6' : '#ccc', position: 'relative', display: 'inline-block', transition: 'background .2s', flexShrink: 0 }}>
@@ -104,22 +110,18 @@ export default function App() {
                 <span>🏑 Focus mode</span>
                 <span style={{ fontSize: 11, color: '#888', marginLeft: 'auto' }}>alleen poule van club</span>
               </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer', fontSize: 13 }}
-                onClick={() => { const v = !showForm; setShowForm(v); saveForm(v) }}>
-                <span style={{ width: 32, height: 18, borderRadius: 9, background: showForm ? '#3b82f6' : '#ccc', position: 'relative', display: 'inline-block', transition: 'background .2s', flexShrink: 0 }}>
-                  <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, left: showForm ? 16 : 2, transition: 'left .2s' }} />
-                </span>
-                <span>🔥 Vorm-badges</span>
-                <span style={{ fontSize: 11, color: '#888', marginLeft: 'auto' }}>laatste 5 wedstrijden</span>
-              </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', cursor: 'pointer', fontSize: 13 }}
-                onClick={() => { const v = !showPlayed; setShowPlayed(v); savePlayed(v) }}>
-                <span style={{ width: 32, height: 18, borderRadius: 9, background: showPlayed ? '#3b82f6' : '#ccc', position: 'relative', display: 'inline-block', transition: 'background .2s', flexShrink: 0 }}>
-                  <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, left: showPlayed ? 16 : 2, transition: 'left .2s' }} />
-                </span>
-                <span>🎮 Gespeeld</span>
-                <span style={{ fontSize: 11, color: '#888', marginLeft: 'auto' }}>W-G-V per team</span>
-              </label>
+              <div style={{ marginTop: 4 }}>
+                <div style={{ fontSize: 11, color: '#888', marginBottom: 6, fontWeight: 600 }}>Club</div>
+                <div className="club-list" style={{ maxHeight: 200, overflowY: 'auto', border: '1px solid #e0ddd8', borderRadius: 8 }}>
+                  {allClubs.map(club => {
+                    const active = club === focusClub
+                    return <div key={club} className={'club-item' + (active ? ' club-active' : '')}
+                      onClick={() => setFocusClub(club)}>
+                      {active && <span style={{ color: '#3b82f6', marginRight: 6 }}>✓</span>}{club}
+                    </div>
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         </div>
