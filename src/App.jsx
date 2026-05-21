@@ -163,7 +163,7 @@ export default function App() {
         : <O14OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]} />
       )}
       {mainTab === 'schema' && <SchemaTab data={focusMode ? filteredData : data} myTeam={myTeam} pouleOrder={pouleOrder} />}
-      {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} key={effectiveComp + '_sim'} />}
+      {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} focusMode={focusMode} effectiveComp={effectiveComp} key={effectiveComp + '_sim'} />}
 
       <footer>NK {label} · v{VERSION} · data {dataSource === 'server' ? 'van server' : 'handmatig'}</footer>
     </>
