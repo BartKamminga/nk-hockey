@@ -18,8 +18,16 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.7'
+export const VERSION = '5.8'
 export const CHANGELOG = [
+  { version: '5.8', date: '21 mei 2026', changes: [
+    'NK Halve Finales en Finale cards in Simulatie tab',
+    'O14: HF verschijnt zodra beide NK Poulefases volledig zijn ingevuld',
+    'O14: Finale + 3e/4e plaats verschijnt zodra HF is ingevuld',
+    'O16: HF verschijnt zodra alle 4 KF-winnaars bekend zijn',
+    'O16: Finale verschijnt zodra HF-winnaars bekend zijn',
+    'Alle cards gebruiken SimPouleCard met klik-interface',
+  ]},
   { version: '5.7', date: '21 mei 2026', changes: [
     'Sub-tabs Super-poules/NK Poulefase/Poules verwijderd — alleen Eindkansen blijft',
     'O16 Kwartfinales gebruikt nu SimPouleCard (zelfde interface als poule-cards)',
