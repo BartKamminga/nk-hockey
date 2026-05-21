@@ -18,8 +18,15 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.9.4'
+export const VERSION = '5.10'
 export const CHANGELOG = [
+  { version: '5.10', date: '21 mei 2026', changes: [
+    '✦ en ? knoppen op sectie-niveau: voorspel/reset een hele fase in één klik',
+    'Resterende wedstrijden: ✦ voorspelt alle poule-wedstrijden, ? reset',
+    'NK Poulefase: ✦ voorspelt Poule A + B samen, ? reset',
+    'NK Kwartfinales / Halve Finales / Finale: elk met eigen ✦ en ?',
+    'Herbruikbaar SectionLabel component voor consistente sectie-headers',
+  ]},
   { version: '5.9.4', date: '21 mei 2026', changes: [
     'KO-fases (KF/HF/Finale/3e4e): geen stand-tabel meer — alleen wedstrijden',
     'KO-fases: ✦ voorspelling geeft altijd een winnaar (nooit gelijkspel)',

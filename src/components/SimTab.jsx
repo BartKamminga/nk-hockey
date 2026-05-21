@@ -50,6 +50,21 @@ const OUTCOMES = [
 ]
 
 // ══════════════════════════════════════
+// SECTION HEADER with predict + reset buttons
+// ══════════════════════════════════════
+function SectionLabel({ label, style, onPredict, onReset }) {
+  return (
+    <div className="section-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', ...style }}>
+      <span>{label}</span>
+      <div style={{ display: 'flex', gap: 4 }}>
+        {onPredict && <div className="whatif-preset-sm" onClick={onPredict} title="Voorspel alle resterende" style={{ background: '#dbeafe', color: '#2563eb', fontStyle: 'italic' }}>✦</div>}
+        {onReset && <div className="whatif-preset-sm" onClick={onReset} title="Reset alles" style={{ background: '#f0ede8', color: '#888' }}>?</div>}
+      </div>
+    </div>
+  )
+}
+
+// ══════════════════════════════════════
 // SHARED: SimPouleCard — stand + remaining rounds with outcome picker
 // Used for both Super poules and NK Poulefase
 // ══════════════════════════════════════
@@ -166,16 +181,13 @@ function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, lock
 // ══════════════════════════════════════
 // SUPER POULE CARDS: use SimPouleCard for remaining matches
 // ══════════════════════════════════════
-function RemainingPouleCards({ data, pouleIds, myTeam, locks, onToggle, onSetRound, onPredict, onPredictAllRounds, onResetAll }) {
-  const lockedCount = Object.keys(locks).filter(k => locks[k]).length
+function RemainingPouleCards({ data, pouleIds, myTeam, locks, onToggle, onSetRound, onPredict, onPredictAllRounds, onResetAll, onPredictSection, onResetSection }) {
   const gridCls = pouleIds.length <= 2 ? 'grid-2' : pouleIds.length <= 4 ? 'grid-4' : 'grid-5'
 
   return (
     <div>
-      <div className="section-label" style={{ marginTop: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>Resterende wedstrijden — klik om resultaat in te stellen</span>
-        {lockedCount > 0 && <button className="whatif-preset" onClick={onResetAll} style={{ background: '#f0ede8', color: '#888', padding: '3px 8px', fontSize: 10, textTransform: 'none', letterSpacing: 0 }}>Reset alles ({lockedCount})</button>}
-      </div>
+      <SectionLabel label="Resterende wedstrijden" style={{ marginTop: 0 }}
+        onPredict={onPredictSection} onReset={onResetSection} />
       <div className={gridCls}>
         {pouleIds.map(pouleId => {
           const poule = data[pouleId]
@@ -234,7 +246,7 @@ function getExpectedStandings(data, locks, pouleOrder) {
 // ══════════════════════════════════════
 // O14 NK PHASE: Poulefase matches with real team names
 // ══════════════════════════════════════
-function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onToggle, onSetRound, onPredict, onPredictAll }) {
+function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onToggle, onSetRound, onPredict, onPredictAll, onPredictSection, onResetSection }) {
   const expected = useMemo(() => getExpectedStandings(data, locks, POULE_ORDER_14), [data, locks])
   if (!nkSchedule) return null
 
@@ -331,7 +343,9 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
 
   return (
     <div>
-      <div className="section-label">NK Poulefase — klik om uitslagen in te stellen</div>
+      <SectionLabel label="NK Poulefase"
+        onPredict={() => onPredictSection([...roundsA, ...roundsB])}
+        onReset={() => onResetSection([...roundsA, ...roundsB])} />
       <div className="grid-2">
         <SimPouleCard title={`NK Poulefase A${poulefaseDate ? ` · ${poulefaseDate}` : ''}`} headerClass="card-header-a"
           teams={nkTeamsA} basePts={nkTeamsA.map(() => 0)} baseDs={nkTeamsA.map(() => 0)}
@@ -344,14 +358,18 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
       </div>
 
       {showHF && <>
-        <div className="section-label">NK Halve Finales{finaleDate ? ` · ${finaleDate}` : ''}</div>
+        <SectionLabel label={`NK Halve Finales${finaleDate ? ` · ${finaleDate}` : ''}`}
+          onPredict={() => onPredictSection(hfRounds)}
+          onReset={() => onResetSection(hfRounds)} />
         <SimPouleCard title="Halve Finales" hideStandings teams={hfTeams} basePts={hfTeams.map(() => 0)} baseDs={hfTeams.map(() => 0)}
           rounds={hfRounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
           onPredict={onSetRound} onPredictAll={() => onPredictAll(hfRounds)} />
       </>}
 
       {showFin && <>
-        <div className="section-label">NK Finale 🏆{finaleDate ? ` · ${finaleDate}` : ''}</div>
+        <SectionLabel label={`NK Finale 🏆${finaleDate ? ` · ${finaleDate}` : ''}`}
+          onPredict={() => onPredictSection([{ matches: [...finMatches, ...fin34Matches] }])}
+          onReset={() => onResetSection([{ matches: [...finMatches, ...fin34Matches] }])} />
         <div className="grid-2">
           <SimPouleCard title="3e/4e plaats" hideStandings teams={[...new Set(fin34Matches.flatMap(m => [m.h, m.a]))]}
             basePts={[0, 0]} baseDs={[0, 0]}
@@ -372,7 +390,7 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
 // ══════════════════════════════════════
 // O16 NK PHASE: KF matches with real team names
 // ══════════════════════════════════════
-function O16KFPhaseCard({ data, locks, myTeam, onToggle, onSetRound, onPredictAll }) {
+function O16KFPhaseCard({ data, locks, myTeam, onToggle, onSetRound, onPredictAll, onPredictSection, onResetSection }) {
   const expected = useMemo(() => getExpectedStandings(data, locks, POULE_ORDER_16), [data, locks])
   const pk = POULE_ORDER_16.filter(id => expected[id])
   if (pk.length < 4) return null
@@ -421,20 +439,26 @@ function O16KFPhaseCard({ data, locks, myTeam, onToggle, onSetRound, onPredictAl
 
   return (
     <div>
-      <div className="section-label">NK Kwartfinales</div>
+      <SectionLabel label="NK Kwartfinales"
+        onPredict={() => onPredictSection(kfRounds)}
+        onReset={() => onResetSection(kfRounds)} />
       <SimPouleCard title="Kwartfinales" hideStandings teams={kfTeams} basePts={kfTeams.map(() => 0)} baseDs={kfTeams.map(() => 0)}
         rounds={kfRounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
         onPredict={onSetRound} onPredictAll={() => onPredictAll(kfRounds)} />
 
       {showHF && <>
-        <div className="section-label">NK Halve Finales</div>
+        <SectionLabel label="NK Halve Finales"
+          onPredict={() => onPredictSection(hfRounds)}
+          onReset={() => onResetSection(hfRounds)} />
         <SimPouleCard title="Halve Finales" hideStandings teams={hfTeams} basePts={hfTeams.map(() => 0)} baseDs={hfTeams.map(() => 0)}
           rounds={hfRounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
           onPredict={onSetRound} onPredictAll={() => onPredictAll(hfRounds)} />
       </>}
 
       {showFin && <>
-        <div className="section-label">NK Finale 🏆</div>
+        <SectionLabel label="NK Finale 🏆"
+          onPredict={() => onPredictSection(finRounds)}
+          onReset={() => onResetSection(finRounds)} />
         <SimPouleCard title="Finale" hideStandings teams={finTeams} basePts={finTeams.map(() => 0)} baseDs={finTeams.map(() => 0)}
           rounds={finRounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound}
           onPredict={onSetRound} onPredictAll={() => onPredictAll(finRounds)} />
@@ -701,18 +725,92 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
     doSim(newLocks)
   }
 
+  // Section-level predict: predict all unlocked matches in given rounds
+  function onPredictSectionNK(rounds) {
+    const newLocks = { ...locks }
+    for (const round of rounds) {
+      for (const m of round.matches) {
+        if (newLocks[m.lockKey]) continue
+        if (m.isKO) {
+          newLocks[m.lockKey] = Math.random() < 0.5 ? 'W' : 'L'
+        } else {
+          const r = Math.random()
+          newLocks[m.lockKey] = r < 0.4 ? 'W' : r < 0.65 ? 'D' : 'L'
+        }
+      }
+    }
+    setLocks(newLocks)
+    doSim(newLocks)
+  }
+
+  // Section-level predict for poule matches (uses team strength)
+  function onPredictSectionPoules() {
+    const newLocks = { ...locks }
+    for (const pouleId of timelinePouleIds) {
+      const poule = data[pouleId]
+      if (!poule) continue
+      const mpr = Math.floor(poule.teams.length / 2)
+      const ma = poule.matches_played || []
+      const lr = ma.length > 0 ? Math.max(...ma.map(m => parseInt(m.round) || 0)) : 0
+      const allMatches = []
+      if (mpr > 0) {
+        for (let i = 0; i < poule.remaining.length; i++) {
+          const [h, a] = poule.remaining[i]
+          allMatches.push({ h, a, lockKey: `${h}_${a}` })
+        }
+      }
+      const unlocked = allMatches.filter(m => !newLocks[m.lockKey])
+      if (unlocked.length === 0) continue
+      const predicted = predictMatches(unlocked, poule)
+      for (const [key, val] of Object.entries(predicted)) {
+        if (val) newLocks[key] = val
+      }
+    }
+    setLocks(newLocks)
+    doSim(newLocks)
+  }
+
+  // Section-level reset: clear all locks in given rounds
+  function onResetSectionRounds(rounds) {
+    const newLocks = { ...locks }
+    for (const round of rounds) {
+      for (const m of round.matches) {
+        delete newLocks[m.lockKey]
+      }
+    }
+    setLocks(newLocks)
+    doSim(newLocks)
+  }
+
+  // Reset all poule locks
+  function onResetPoules() {
+    const newLocks = { ...locks }
+    for (const pouleId of timelinePouleIds) {
+      const poule = data[pouleId]
+      if (!poule) continue
+      for (const [h, a] of poule.remaining) {
+        delete newLocks[`${h}_${a}`]
+      }
+    }
+    setLocks(newLocks)
+    doSim(newLocks)
+  }
+
   return (
     <div>
       {/* Remaining matches with outcome picker — per poule card */}
       <RemainingPouleCards data={data} pouleIds={timelinePouleIds} myTeam={myTeam} locks={locks}
-        onToggle={onToggle} onSetRound={onSetRound} onPredict={onPredict} onPredictAllRounds={onPredictAllRounds} onResetAll={() => onSetAll(null)} />
+        onToggle={onToggle} onSetRound={onSetRound} onPredict={onPredict} onPredictAllRounds={onPredictAllRounds}
+        onResetAll={() => onSetAll(null)} onPredictSection={onPredictSectionPoules} onResetSection={onResetPoules} />
 
       {/* NK Phase: Poulefase (O14) or KF (O16) with clickable matches */}
       {!o16 && <O14NKPhaseCards data={data} locks={locks} myTeam={myTeam}
         nkSchedule={NK_SCHEDULES[effectiveComp]} effectiveComp={effectiveComp}
-        onToggle={onToggle} onSetRound={onSetRound} onPredict={onPredictNK} onPredictAll={onPredictAllNK} />}
+        onToggle={onToggle} onSetRound={onSetRound} onPredict={onPredictNK} onPredictAll={onPredictAllNK}
+        onPredictSection={onPredictSectionNK} onResetSection={onResetSectionRounds} />}
       {o16 && <O16KFPhaseCard data={data} locks={locks} myTeam={myTeam}
-        onToggle={onToggle} onSetRound={onSetRound} onPredictAll={onPredictAllNK} />}
+        onToggle={onToggle} onSetRound={onSetRound} onPredictAll={onPredictAllNK}
+        onPredictSection={onPredictSectionNK} onResetSection={onResetSectionRounds} />}
 
       {/* NK chances for focus club */}
       <NKChances myTeam={myTeam} results={results} baseResults={baseResults} N={N} o16={o16} hasLocks={hasLocks} />
