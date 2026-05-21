@@ -1,5 +1,13 @@
-export const VERSION = '5.11'
+import React from 'react'
+
+export const VERSION = '5.12'
 export const CHANGELOG = [
+  { version: '5.12', date: '21 mei 2026', changes: [
+    'Refactor: simulation.js — shared resolveMatch helper, simPoulePhase deduplicatie',
+    'Refactor: inline ronde-header styles → CSS classes (round-header-played, round-header-remaining)',
+    'Refactor: ChangelogContent verplaatst naar changelog.jsx',
+    'simulation.js van 204 naar 179 regels',
+  ]},
   { version: '5.11', date: '21 mei 2026', changes: [
     'Grote refactor: SimTab.jsx (830 regels) opgesplitst in 8 bestanden',
     'SimPouleCard, SectionLabel, NKChances, RemainingPouleCards, O14NKPhase, O16KFPhase als eigen componenten',
@@ -236,3 +244,25 @@ export const CHANGELOG = [
     'Import via JSON plakken of bestand uploaden',
   ]},
 ]
+
+export function ChangelogContent() {
+  return (
+    <div style={{ maxWidth: 700 }}>
+      {CHANGELOG.map(e => (
+        <div key={e.version} className="card" style={{ marginBottom: 12 }}>
+          <div className="card-header" style={{ justifyContent: 'space-between' }}>
+            <span>v{e.version}</span>
+            <span style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', fontWeight: 400 }}>{e.date}</span>
+          </div>
+          <div style={{ padding: '10px 14px' }}>
+            {e.changes.map((c, i) => (
+              <div key={i} style={{ fontSize: 12.5, color: '#444', padding: '3px 0', display: 'flex', gap: 8 }}>
+                <span style={{ color: '#16a34a', flexShrink: 0 }}>+</span><span>{c}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}

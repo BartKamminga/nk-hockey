@@ -56,7 +56,7 @@ function PlayedCard({ id, poule, myTeam }) {
         const dateStr = fmtMatchDate(rounds[r][0] && rounds[r][0].date)
         return (
           <div key={r}>
-            <div style={{ padding: '5px 12px', fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono',monospace", color: '#888', background: '#f0ede8', borderBottom: '1px solid #e0ddd8', borderTop: '1px solid #e0ddd8', letterSpacing: '.5px', display: 'flex', justifyContent: 'space-between' }}>
+            <div className="round-header round-header-played">
               <span>Ronde {r}</span>{dateStr && <span style={{ fontWeight: 400, color: '#999' }}>{dateStr}</span>}
             </div>
             {rounds[r].map((m, i) => {
@@ -92,7 +92,7 @@ function RemainingCard({ id, poule, myTeam }) {
         const dateStr = fmtMatchDate(ms[0] && ms[0][2])
         return (
           <div key={ri}>
-            <div style={{ padding: '5px 12px', fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono',monospace", color: '#854d0e', background: '#fef9c3', borderBottom: '1px solid #fde68a', borderTop: '1px solid #fde68a', letterSpacing: '.5px', display: 'flex', justifyContent: 'space-between' }}>
+            <div className="round-header round-header-remaining">
               <span>Ronde {rn}</span>{dateStr && <span style={{ fontWeight: 400, color: '#766a3a' }}>{dateStr}</span>}
             </div>
             {ms.map((m, mi) => {

@@ -47,11 +47,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
         const timeStr = round.time || ''
         return (
           <div key={round.roundNum}>
-            <div style={{
-              padding: '5px 12px', fontSize: 11, fontWeight: 600, fontFamily: "'DM Mono',monospace",
-              color: '#854d0e', background: '#fef9c3', borderBottom: '1px solid #fde68a', borderTop: '1px solid #fde68a',
-              letterSpacing: '.5px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-            }}>
+            <div className="round-header round-header-remaining">
               <span>Ronde {round.roundNum}{dateStr ? ` · ${dateStr}` : ''}{timeStr ? ` · ${timeStr}` : ''}</span>
               <div style={{ display: 'flex', gap: 3 }}>
                 <div className="whatif-preset-sm" onClick={() => onPredict(round)} title="Voorspel deze ronde" style={{ background: '#dbeafe', color: '#2563eb', fontStyle: 'italic' }}>✦</div>

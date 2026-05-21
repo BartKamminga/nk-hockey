@@ -1,24 +1,12 @@
 import React, { useState } from 'react'
-import { VERSION, CHANGELOG, COMP_LABELS } from './constants'
+import { VERSION, COMP_LABELS } from './constants'
+import { ChangelogContent } from './changelog'
 import { NK_SCHEDULES } from './data/nk-schedules'
 import { SchemaTab } from './components/Shared'
 import { O14OverzichtTab } from './components/O14'
 import { O16OverzichtTab } from './components/O16'
 import SimTab from './components/SimTab'
 import { useCompetitionData } from './hooks/useCompetitionData'
-
-function ChangelogContent() {
-  return (
-    <div style={{ maxWidth: 700 }}>
-      {CHANGELOG.map(e => (
-        <div key={e.version} className="card" style={{ marginBottom: 12 }}>
-          <div className="card-header" style={{ justifyContent: 'space-between' }}><span>v{e.version}</span><span style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', fontWeight: 400 }}>{e.date}</span></div>
-          <div style={{ padding: '10px 14px' }}>{e.changes.map((c, i) => <div key={i} style={{ fontSize: 12.5, color: '#444', padding: '3px 0', display: 'flex', gap: 8 }}><span style={{ color: '#16a34a', flexShrink: 0 }}>+</span><span>{c}</span></div>)}</div>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 export default function App() {
   const [mainTab, setMainTab] = useState('overzicht')
