@@ -69,6 +69,7 @@ export default function App() {
           </div>
           <div className="top-end">
             <button className="reload-btn" onClick={() => setShowSettings(!showSettings)} title="Instellingen">⚙️</button>
+            <button className="reload-btn" onClick={() => setShowHelp(!showHelp)} title="Uitleg">❓</button>
             <button className="reload-btn" onClick={() => setShowVersion(!showVersion)} title="Menu">v{VERSION}</button>
           </div>
         </div>
