@@ -70,11 +70,15 @@ function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, lock
     .sort((a, b) => b.pts !== a.pts ? b.pts - a.pts : b.ds - a.ds)
   const hasAnyBase = basePts.some(p => p > 0)
 
+  const totalRounds = rounds.length
+  const completedRounds = rounds.filter(r => r.matches.every(m => locks[m.lockKey])).length
+  const openRounds = totalRounds - completedRounds
+
   return (
     <div className="card">
       <div className={`card-header ${headerClass || ''}`}>
         {title}
-        <span className="played-count">{rounds.length > 0 ? `nog ${rounds.length} ronde${rounds.length > 1 ? 's' : ''}` : '✓ klaar'}</span>
+        <span className="played-count">{openRounds > 0 ? `nog ${openRounds} ronde${openRounds > 1 ? 's' : ''}` : '✓ klaar'}</span>
       </div>
 
       {/* Standings */}
