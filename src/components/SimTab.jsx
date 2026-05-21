@@ -116,6 +116,7 @@ function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, lock
             {round.matches.map(m => {
               const locked = locks[m.lockKey] || null
               const isMy = m.h === myTeam || m.a === myTeam
+              const ko = m.isKO
               return (
                 <div key={m.lockKey} className="match-row" style={{ background: isMy && !locked ? '#eff6ff' : 'transparent', padding: '4px 0' }}>
                   <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
@@ -127,13 +128,22 @@ function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, lock
                     }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'W' ? null : 'W')}>
                       {m.h}
                     </div>
-                    <div style={{
-                      padding: '5px 10px', fontSize: 10, color: locked === 'D' ? '#b45309' : '#ccc',
-                      background: locked === 'D' ? '#fef3c7' : 'transparent',
-                      cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
-                    }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'D' ? null : 'D')}>
-                      {locked === 'D' ? 'G' : 'vs'}
-                    </div>
+                    {ko ? (
+                      <div style={{
+                        padding: '5px 10px', fontSize: 10, color: '#ccc',
+                        cursor: locked ? 'pointer' : 'default', fontWeight: 700, textAlign: 'center', minWidth: 30,
+                      }} onClick={() => { if (locked) onToggle(m.lockKey, null) }} title={locked ? 'Reset' : ''}>
+                        vs
+                      </div>
+                    ) : (
+                      <div style={{
+                        padding: '5px 10px', fontSize: 10, color: locked === 'D' ? '#b45309' : '#ccc',
+                        background: locked === 'D' ? '#fef3c7' : 'transparent',
+                        cursor: 'pointer', fontWeight: 700, textAlign: 'center', minWidth: 30,
+                      }} onClick={() => onToggle(m.lockKey, locks[m.lockKey] === 'D' ? null : 'D')}>
+                        {locked === 'D' ? 'G' : 'vs'}
+                      </div>
+                    )}
                     <div style={{
                       flex: 1, textAlign: 'left', padding: '5px 8px', fontSize: 12,
                       fontWeight: m.a === myTeam ? 600 : 400,
@@ -300,8 +310,8 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
   const hf1h = showHF ? stA[0] : 'NK A nr 1', hf1a = showHF ? stB[1] : 'NK B nr 2'
   const hf2h = showHF ? stB[0] : 'NK B nr 1', hf2a = showHF ? stA[1] : 'NK A nr 2'
   const hfMatches = [
-    { h: hf1h, a: hf1a, lockKey: 'nk_hf1' },
-    { h: hf2h, a: hf2a, lockKey: 'nk_hf2' },
+    { h: hf1h, a: hf1a, lockKey: 'nk_hf1', isKO: true },
+    { h: hf2h, a: hf2a, lockKey: 'nk_hf2', isKO: true },
   ]
   const hfTeams = [...new Set(hfMatches.flatMap(m => [m.h, m.a]))]
   const hfRounds = [{ roundNum: 1, date: finaleDate || '', time: '', matches: hfMatches }]
@@ -313,10 +323,10 @@ function O14NKPhaseCards({ data, locks, myTeam, nkSchedule, effectiveComp, onTog
   const hfL2 = winner('nk_hf2', hf2h, hf2a) ? (hfW2 === hf2h ? hf2a : hf2h) : null
   const showFin = hfW1 && hfW2
   const finMatches = [
-    { h: hfW1 || 'Winnaar HF1', a: hfW2 || 'Winnaar HF2', lockKey: 'nk_finale' },
+    { h: hfW1 || 'Winnaar HF1', a: hfW2 || 'Winnaar HF2', lockKey: 'nk_finale', isKO: true },
   ]
   const fin34Matches = [
-    { h: hfL1 || 'Verliezer HF1', a: hfL2 || 'Verliezer HF2', lockKey: 'nk_3e4e' },
+    { h: hfL1 || 'Verliezer HF1', a: hfL2 || 'Verliezer HF2', lockKey: 'nk_3e4e', isKO: true },
   ]
 
   return (
@@ -374,10 +384,10 @@ function O16KFPhaseCard({ data, locks, myTeam, onToggle, onSetRound, onPredictAl
 
   // KF matches
   const kf = [
-    { h: nr1s[0].team, a: nr2s[3].team, lockKey: 'nk_kf1' },
-    { h: nr1s[1].team, a: nr2s[2].team, lockKey: 'nk_kf2' },
-    { h: nr1s[2].team, a: nr2s[1].team, lockKey: 'nk_kf3' },
-    { h: nr1s[3].team, a: nr2s[0].team, lockKey: 'nk_kf4' },
+    { h: nr1s[0].team, a: nr2s[3].team, lockKey: 'nk_kf1', isKO: true },
+    { h: nr1s[1].team, a: nr2s[2].team, lockKey: 'nk_kf2', isKO: true },
+    { h: nr1s[2].team, a: nr2s[1].team, lockKey: 'nk_kf3', isKO: true },
+    { h: nr1s[3].team, a: nr2s[0].team, lockKey: 'nk_kf4', isKO: true },
   ]
   const kfTeams = [...new Set(kf.flatMap(m => [m.h, m.a]))]
   const kfRounds = [{ roundNum: 1, date: '', time: '', matches: kf }]
@@ -393,8 +403,8 @@ function O16KFPhaseCard({ data, locks, myTeam, onToggle, onSetRound, onPredictAl
   const hf1h = kfW1 || 'Winnaar KF1', hf1a = kfW4 || 'Winnaar KF4'
   const hf2h = kfW2 || 'Winnaar KF2', hf2a = kfW3 || 'Winnaar KF3'
   const hfMatches = [
-    { h: hf1h, a: hf1a, lockKey: 'nk_hf1' },
-    { h: hf2h, a: hf2a, lockKey: 'nk_hf2' },
+    { h: hf1h, a: hf1a, lockKey: 'nk_hf1', isKO: true },
+    { h: hf2h, a: hf2a, lockKey: 'nk_hf2', isKO: true },
   ]
   const hfTeams = [...new Set(hfMatches.flatMap(m => [m.h, m.a]))]
   const hfRounds = [{ roundNum: 1, date: '', time: '', matches: hfMatches }]
@@ -404,7 +414,7 @@ function O16KFPhaseCard({ data, locks, myTeam, onToggle, onSetRound, onPredictAl
   const hfW1 = winner('nk_hf1', hf1h, hf1a)
   const hfW2 = winner('nk_hf2', hf2h, hf2a)
   const finH = hfW1 || 'Winnaar HF1', finA = hfW2 || 'Winnaar HF2'
-  const finMatches = [{ h: finH, a: finA, lockKey: 'nk_finale' }]
+  const finMatches = [{ h: finH, a: finA, lockKey: 'nk_finale', isKO: true }]
   const finTeams = [...new Set(finMatches.flatMap(m => [m.h, m.a]))]
   const finRounds = [{ roundNum: 1, date: '', time: '', matches: finMatches }]
   const showFin = hfW1 && hfW2
