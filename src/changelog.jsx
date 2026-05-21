@@ -1,7 +1,12 @@
 import React from 'react'
 
-export const VERSION = '5.20'
+export const VERSION = '5.21'
 export const CHANGELOG = [
+  { version: '5.21', date: '21 mei 2026', changes: [
+    'CSS opgeschoond: 16 ongebruikte classes verwijderd (import-screen, sub-tabs, sim-table, etc.)',
+    'Stylesheet geformateerd en logisch gegroepeerd (Reset, Top bar, Cards, Match rows, etc.)',
+    'Van 118 regels compacte CSS naar 210 regels leesbare CSS',
+  ]},
   { version: '5.20', date: '21 mei 2026', changes: [
     'Grote refactor: App.jsx van 220 naar 118 regels',
     'Herbruikbare componenten: Popup, Toggle, FormBadge in common/',
