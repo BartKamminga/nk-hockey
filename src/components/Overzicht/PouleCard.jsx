@@ -1,5 +1,6 @@
 import React from 'react'
 import { getTeamForm } from '../../lib/utils'
+import { SHOW_FORM_DOTS } from '../../constants'
 
 const FORM_COLORS = { W: '#16a34a', D: '#817e7b', L: '#dc2626' }
 const FormDots = ({ form }) => {
@@ -30,7 +31,7 @@ export function PouleCard({ id, poule, myTeam, slots }) {
             </td>
             <td className="td-pts">{poule.pts[i]}</td>
             <td className="td-ds" style={{ color: poule.ds[i] >= 0 ? '#16a34a' : '#dc2626' }}>{poule.ds[i] >= 0 ? '+' : ''}{poule.ds[i]}</td>
-            <td style={{ padding: '0 8px' }}><FormDots form={form} /></td>
+            <td style={{ padding: '0 8px' }}>{SHOW_FORM_DOTS ? <FormDots form={form} /> : null}</td>
           </tr>
         )
       })}</tbody></table>

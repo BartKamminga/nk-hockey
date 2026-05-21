@@ -20,3 +20,6 @@ export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 
 
 
 export { VERSION, CHANGELOG } from './changelog'
+
+// Feature flags (can be set at build time via Vite env vars, e.g. VITE_SHOW_FORM_DOTS=false)
+export const SHOW_FORM_DOTS = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_SHOW_FORM_DOTS === 'false' ? false : true
