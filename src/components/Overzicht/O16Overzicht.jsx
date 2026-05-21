@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { POULE_ORDER_16 } from '../../constants'
-import { PouleCard } from '../Shared'
+import { PouleCard } from './PouleCard'
 
 const sortRanking = (items) =>
   [...items].sort((a, b) => (b.pts !== a.pts ? b.pts - a.pts : b.ds - a.ds))

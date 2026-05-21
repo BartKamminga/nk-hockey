@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { NK14_SLOTS, POULE_ORDER_14 } from '../../constants'
-import { PouleCard } from '../Shared'
+import { PouleCard } from './PouleCard'
 
 const resolveMatchTeam = (slot2t, teamRef) => slot2t[teamRef] || teamRef
 
