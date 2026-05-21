@@ -1,7 +1,12 @@
 import React from 'react'
 
-export const VERSION = '5.12'
+export const VERSION = '5.13'
 export const CHANGELOG = [
+  { version: '5.13', date: '21 mei 2026', changes: [
+    'Vorm-indicator: laatste 5 wedstrijden als gekleurde bolletjes (groen/geel/rood)',
+    'Zichtbaar in Overzicht (PouleCard) en Simulaties (SimPouleCard)',
+    'Achter het doelsaldo per team',
+  ]},
   { version: '5.12', date: '21 mei 2026', changes: [
     'Refactor: simulation.js — shared resolveMatch helper, simPoulePhase deduplicatie',
     'Refactor: inline ronde-header styles → CSS classes (round-header-played, round-header-remaining)',

@@ -30,7 +30,7 @@ export default function RemainingPouleCards({ data, pouleIds, myTeam, locks, onT
           }
           return <SimPouleCard key={pouleId} title={`Poule ${pouleId}`} teams={poule.teams} basePts={poule.pts} baseDs={poule.ds}
             rounds={rounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound} onPredict={onPredict}
-            onPredictAll={() => onPredictAllRounds(rounds, poule)} />
+            onPredictAll={() => onPredictAllRounds(rounds, poule)} matchesPlayed={poule.matches_played} />
         })}
       </div>
     </div>

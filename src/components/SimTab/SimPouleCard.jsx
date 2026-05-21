@@ -1,7 +1,17 @@
 import React from 'react'
-import { fmtMatchDate } from '../../lib/utils'
+import { fmtMatchDate, getTeamForm } from '../../lib/utils'
 
-export default function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, locks, myTeam, onToggle, onSetRound, onPredict, onPredictAll, hideStandings }) {
+const FORM_COLORS = { W: '#16a34a', D: '#b45309', L: '#dc2626' }
+const FormDots = ({ form }) => {
+  if (!form || form.length === 0) return null
+  return (
+    <span style={{ display: 'inline-flex', gap: 2, marginLeft: 4 }}>
+      {form.map((r, i) => <span key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: FORM_COLORS[r], display: 'inline-block' }} title={r === 'W' ? 'Winst' : r === 'D' ? 'Gelijk' : 'Verlies'} />)}
+    </span>
+  )
+}
+
+export default function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, locks, myTeam, onToggle, onSetRound, onPredict, onPredictAll, hideStandings, matchesPlayed }) {
   const pts = {}, ds = {}
   teams.forEach((t, i) => { pts[t] = basePts[i] || 0; ds[t] = baseDs[i] || 0 })
   for (const round of rounds) {
@@ -31,12 +41,14 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
       {!hideStandings && <table><tbody>
         {standings.map((s, i) => {
           const isMy = s.team === myTeam
+          const form = matchesPlayed ? getTeamForm(s.team, matchesPlayed) : []
           return (
             <tr key={s.team} style={isMy ? { background: '#eff6ff' } : {}}>
               <td className="td-rank">{i + 1}</td>
               <td style={{ padding: '5px 12px', fontSize: 12.5, fontWeight: isMy ? 600 : 400 }}>{s.team}</td>
               <td className="td-pts">{s.pts > 0 ? s.pts : hasAnyBase ? '0' : '-'}</td>
               <td className="td-ds" style={{ color: s.ds >= 0 ? '#16a34a' : '#dc2626' }}>{hasAnyBase ? (s.ds >= 0 ? '+' : '') + s.ds : ''}</td>
+              {form.length > 0 && <td style={{ padding: '0 8px' }}><FormDots form={form} /></td>}
             </tr>
           )
         })}
