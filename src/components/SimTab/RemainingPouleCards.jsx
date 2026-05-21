@@ -2,7 +2,7 @@ import React from 'react'
 import SimPouleCard from './SimPouleCard'
 import SectionLabel from './SectionLabel'
 
-export default function RemainingPouleCards({ data, pouleIds, myTeam, locks, onToggle, onSetRound, onPredict, onPredictAllRounds, onResetAll, onPredictSection, onResetSection }) {
+export default function RemainingPouleCards({ data, pouleIds, myTeam, locks, showForm, onToggle, onSetRound, onPredict, onPredictAllRounds, onResetAll, onPredictSection, onResetSection }) {
   const gridCls = pouleIds.length <= 2 ? 'grid-2' : pouleIds.length <= 4 ? 'grid-4' : 'grid-5'
 
   return (
@@ -30,7 +30,7 @@ export default function RemainingPouleCards({ data, pouleIds, myTeam, locks, onT
           }
           return <SimPouleCard key={pouleId} title={`Poule ${pouleId}`} teams={poule.teams} basePts={poule.pts} baseDs={poule.ds}
             rounds={rounds} locks={locks} myTeam={myTeam} onToggle={onToggle} onSetRound={onSetRound} onPredict={onPredict}
-            onPredictAll={() => onPredictAllRounds(rounds, poule)} matchesPlayed={poule.matches_played} />
+            onPredictAll={() => onPredictAllRounds(rounds, poule)} matchesPlayed={poule.matches_played} showForm={showForm} />
         })}
       </div>
     </div>

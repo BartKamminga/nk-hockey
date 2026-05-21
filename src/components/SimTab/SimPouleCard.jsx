@@ -22,7 +22,7 @@ const FormBadge = ({ form }) => {
   )
 }
 
-export default function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, locks, myTeam, onToggle, onSetRound, onPredict, onPredictAll, hideStandings, matchesPlayed }) {
+export default function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, locks, myTeam, onToggle, onSetRound, onPredict, onPredictAll, hideStandings, matchesPlayed, showForm }) {
   const pts = {}, ds = {}
   teams.forEach((t, i) => { pts[t] = basePts[i] || 0; ds[t] = baseDs[i] || 0 })
   for (const round of rounds) {
@@ -64,7 +64,7 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
               <td style={{ padding: '5px 12px', fontSize: 12.5, fontWeight: isMy ? 600 : 400 }}>{s.team}</td>
               <td className="td-pts">{s.pts > 0 ? s.pts : hasAnyBase ? '0' : '-'}</td>
               <td className="td-ds" style={{ color: s.ds >= 0 ? '#16a34a' : '#dc2626' }}>{hasAnyBase ? (s.ds >= 0 ? '+' : '') + s.ds : ''}</td>
-              {form.length > 0 && <td style={{ padding: '0 8px' }}><FormBadge form={form} /></td>}
+              {showForm && form.length > 0 && <td style={{ padding: '0 8px' }}><FormBadge form={form} /></td>}
             </tr>
           )
         })}

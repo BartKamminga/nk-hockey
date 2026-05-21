@@ -22,7 +22,7 @@ const FormBadge = ({ form }) => {
   )
 }
 
-export function PouleCard({ id, poule, myTeam, slots }) {
+export function PouleCard({ id, poule, myTeam, slots, showForm }) {
   const mpr = Math.floor(poule.teams.length / 2)
   const remR = mpr > 0 ? Math.round(poule.remaining.length / mpr) : 0
   return (
@@ -41,7 +41,7 @@ export function PouleCard({ id, poule, myTeam, slots }) {
             </td>
             <td className="td-pts">{poule.pts[i]}</td>
             <td className="td-ds" style={{ color: poule.ds[i] >= 0 ? '#16a34a' : '#dc2626' }}>{poule.ds[i] >= 0 ? '+' : ''}{poule.ds[i]}</td>
-            <td style={{ padding: '0 8px' }}><FormBadge form={form} /></td>
+            {showForm && <td style={{ padding: '0 8px' }}><FormBadge form={form} /></td>}
           </tr>
         )
       })}</tbody></table>

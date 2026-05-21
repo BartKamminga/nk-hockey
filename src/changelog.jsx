@@ -1,7 +1,13 @@
 import React from 'react'
 
-export const VERSION = '5.14'
+export const VERSION = '5.15'
 export const CHANGELOG = [
+  { version: '5.15', date: '21 mei 2026', changes: [
+    '📊 toggle in header: toon/verberg vorm-badges globaal',
+    'Instelling wordt opgeslagen via localStorage (persistent over sessies)',
+    'Blauwe rand op 📊 knop wanneer actief',
+    'Werkt op alle tabs: Overzicht en Simulaties',
+  ]},
   { version: '5.14', date: '21 mei 2026', changes: [
     'Score-voorspelling: ✦ genereert realistische scores (bijv. 3-1, 0-0, 2-4)',
     'Scores zichtbaar in de wedstrijd-cards (i.p.v. alleen groene highlight)',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { VERSION, COMP_LABELS } from './constants'
+import { VERSION, COMP_LABELS, getSavedForm, saveForm } from './constants'
 import { ChangelogContent } from './changelog'
 import { NK_SCHEDULES } from './lib/nk-schedules'
 import { SchemaTab } from './components/Speelschema'
@@ -12,6 +12,7 @@ export default function App() {
   const [mainTab, setMainTab] = useState('overzicht')
   const [showVersion, setShowVersion] = useState(false)
   const [showClubPicker, setShowClubPicker] = useState(false)
+  const [showForm, setShowForm] = useState(getSavedForm)
 
   const {
     comps,
@@ -56,6 +57,9 @@ export default function App() {
             </div>
           </div>
           <div className="top-end">
+            <button className="reload-btn" onClick={() => { const v = !showForm; setShowForm(v); saveForm(v) }}
+              title={showForm ? 'Verberg vorm-badges' : 'Toon vorm-badges'}
+              style={showForm ? { borderColor: '#3b82f6', color: '#3b82f6' } : {}}>📊</button>
             <button className="reload-btn" onClick={() => fetchFromServer()} title="Herlaad data">↻</button>
             <button className="reload-btn" onClick={() => setShowVersion(!showVersion)} title="Versiegeschiedenis">v{VERSION}</button>
           </div>
@@ -99,11 +103,11 @@ export default function App() {
       </div>
 
       {mainTab === 'overzicht' && (o16
-        ? <O16OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} />
-        : <O14OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]} />
+        ? <O16OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} showForm={showForm} />
+        : <O14OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]} showForm={showForm} />
       )}
       {mainTab === 'schema' && <SchemaTab data={focusMode ? filteredData : data} myTeam={myTeam} pouleOrder={pouleOrder} />}
-      {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} key={effectiveComp + '_sim'} />}
+      {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} showForm={showForm} key={effectiveComp + '_sim'} />}
 
       <footer>NK {label} · v{VERSION} · data {dataSource === 'server' ? 'van server' : 'handmatig'}</footer>
     </>
