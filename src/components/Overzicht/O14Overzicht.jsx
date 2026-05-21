@@ -32,7 +32,7 @@ function MatchRow({ match, slot2t, myTeam }) {
   const isMyAway = away === myTeam
 
   return (
-    <div className="match-row" style={(isMyHome || isMyAway) ? { background: '#eff6ff' } : {}}>
+    <div className="match-row" style={(isMyHome || isMyAway) ? { background: 'var(--bg-highlight)' } : {}}>
       <div style={{ fontFamily: "'DM Mono',monospace", fontSize: 11, color: '#888', minWidth: 38 }}>{match.time}</div>
       <div className="match-teams">
         <div className="match-team right" style={isMyHome ? { fontWeight: 600, color: '#1d4ed8' } : {}}>
@@ -67,21 +67,9 @@ function ScheduleSection({ schedule, times, headerClass, label, slot2t, myTeam, 
         const matches = filtered.filter(m => m.time === time)
         return (
           <div key={time}>
-            <div style={{
-              padding: '5px 12px',
-              fontSize: 11,
-              fontWeight: 600,
-              fontFamily: "'DM Mono',monospace",
-              color: '#555',
-              background: '#f0ede8',
-              borderBottom: '1px solid #e0ddd8',
-              borderTop: index > 0 ? '1px solid #e0ddd8' : 'none',
-              letterSpacing: '.5px',
-              display: 'flex',
-              justifyContent: 'space-between'
-            }}>
+            <div className="round-header round-header-remaining" style={{ borderTop: index > 0 ? '1px solid var(--border-round-remaining)' : 'none' }}>
               <span>Ronde {timeToRound[time] || index + 1}</span>
-              <span style={{ fontWeight: 400, color: '#999' }}>{time}</span>
+              <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>{time}</span>
             </div>
             {matches.map((match, i) => <MatchRow key={i} match={match} slot2t={slot2t} myTeam={myTeam} />)}
           </div>
@@ -98,7 +86,7 @@ function NkPhaseTable({ label, entries, headerClass, myTeam }) {
       <table>
         <tbody>
           {entries.map((entry, i) => (
-            <tr key={i} style={entry.team === myTeam ? { background: '#eff6ff' } : {}}>
+            <tr key={i} style={entry.team === myTeam ? { background: 'var(--bg-highlight)' } : {}}>
               <td className="td-rank">{i + 1}</td>
               <td style={entry.team === myTeam ? { fontWeight: 600 } : {}}>
                 {entry.team}<span className="origin"> {entry.origin}</span>
