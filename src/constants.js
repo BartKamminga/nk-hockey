@@ -18,8 +18,15 @@ export function saveComp(name) { try { localStorage.setItem(STORAGE_KEY_COMP, na
 
 export const DATA_URLS = ['data/mo14.json', 'data/jo14.json', 'data/mo16.json', 'data/jo16.json']
 
-export const VERSION = '5.8'
+export const VERSION = '5.9'
 export const CHANGELOG = [
+  { version: '5.9', date: '21 mei 2026', changes: [
+    'Eindkansen verwerken nu alle ingevulde resultaten uit alle fases',
+    'O14: NK Poulefase locks, HF locks en Finale locks meegerekend in Monte Carlo',
+    'O16: KF locks, HF locks en Finale locks meegerekend in Monte Carlo',
+    'Vastgezette NK-wedstrijden worden niet meer random gesimuleerd',
+    'Simulatie-engine uitgebreid: simNKPoule accepteert locks, simKOWithLock voor KO-rondes',
+  ]},
   { version: '5.8', date: '21 mei 2026', changes: [
     'NK Halve Finales en Finale cards in Simulatie tab',
     'O14: HF verschijnt zodra beide NK Poulefases volledig zijn ingevuld',

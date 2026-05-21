@@ -594,7 +594,8 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
     const simLocks = buildAllSimLocks(currentLocks || locks)
     setRunning(true)
     setTimeout(() => {
-      const r = o16 ? runSimO16(data, N, 0, simLocks) : runSimO14(data, N, 0, simLocks)
+      const nkSched = o16 ? null : NK_SCHEDULES[effectiveComp]
+      const r = o16 ? runSimO16(data, N, 0, simLocks) : runSimO14(data, N, 0, simLocks, nkSched)
       setResults(r)
       setSimNote(`${N.toLocaleString('nl-NL')} sim · ${new Date().toLocaleString('nl-NL')}`)
       setRunning(false)
@@ -602,7 +603,8 @@ export default function SimTab({ data, myTeam, effectiveComp }) {
   }
 
   useEffect(() => {
-    const base = o16 ? runSimO16(data, N, 0) : runSimO14(data, N, 0)
+    const nkSched = o16 ? null : NK_SCHEDULES[effectiveComp]
+    const base = o16 ? runSimO16(data, N, 0) : runSimO14(data, N, 0, null, nkSched)
     setBaseResults(base)
     setResults(base)
     setSimNote(`${N.toLocaleString('nl-NL')} sim · ${new Date().toLocaleString('nl-NL')}`)
