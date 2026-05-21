@@ -2,10 +2,10 @@ import React from 'react'
 import { getTeamForm } from '../../lib/utils'
 
 function formColor(pts) {
-  if (pts >= 12) return '#16a34a'   // topvorm (12-15)
-  if (pts >= 9) return '#65a30d'    // goed (9-11)
-  if (pts >= 5) return '#d97706'    // matig (5-8)
-  return '#dc2626'                   // slecht (0-4)
+  if (pts >= 12) return '#16a34a'
+  if (pts >= 9) return '#65a30d'
+  if (pts >= 5) return '#d97706'
+  return '#dc2626'
 }
 
 const FormBadge = ({ form }) => {
