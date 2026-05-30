@@ -7,7 +7,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179024/teams/2068",
-    "timestamp": 1779212738525,
+    "timestamp": 1780159739918,
     "data": {
       "data": {
         "team": {
@@ -73,16 +73,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 1,
-              "played": 8,
-              "points": 21,
+              "played": 9,
+              "points": 22,
               "wins": 7,
-              "draws": 0,
+              "draws": 1,
               "losses": 1,
-              "goals_for": 66,
-              "goals_against": 8,
+              "goals_for": 69,
+              "goals_against": 11,
               "penalties": 0,
               "poule_name": "Poule Poule A",
               "poule_id": 179024,
@@ -98,16 +98,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 2,
-              "played": 8,
-              "points": 18,
-              "wins": 6,
+              "played": 9,
+              "points": 21,
+              "wins": 7,
               "draws": 0,
               "losses": 2,
-              "goals_for": 46,
-              "goals_against": 15,
+              "goals_for": 55,
+              "goals_against": 18,
               "penalties": 0,
               "poule_name": "Poule Poule A",
               "poule_id": 179024,
@@ -123,16 +123,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 3,
-              "played": 8,
-              "points": 18,
+              "played": 9,
+              "points": 19,
               "wins": 6,
-              "draws": 0,
+              "draws": 1,
               "losses": 2,
-              "goals_for": 25,
-              "goals_against": 11,
+              "goals_for": 28,
+              "goals_against": 14,
               "penalties": 0,
               "poule_name": "Poule Poule A",
               "poule_id": 179024,
@@ -148,16 +148,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 4,
-              "played": 8,
-              "points": 12,
+              "played": 9,
+              "points": 13,
               "wins": 4,
-              "draws": 0,
+              "draws": 1,
               "losses": 4,
-              "goals_for": 26,
-              "goals_against": 42,
+              "goals_for": 28,
+              "goals_against": 44,
               "penalties": 0,
               "poule_name": "Poule Poule A",
               "poule_id": 179024,
@@ -171,43 +171,18 @@
               }
             },
             {
-              "change": "equal",
-              "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "change": "up",
+              "rank_change": 1,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 5,
-              "played": 8,
-              "points": 1,
+              "played": 9,
+              "points": 2,
               "wins": 0,
-              "draws": 1,
+              "draws": 2,
               "losses": 7,
-              "goals_for": 14,
-              "goals_against": 53,
-              "penalties": 0,
-              "poule_name": "Poule Poule A",
-              "poule_id": 179024,
-              "team": {
-                "id": 21266,
-                "name": "Zwolle JO14-1",
-                "short_name": "JO14-1",
-                "logo": "https://images.static-hw.nl/bXXZAa5k4SW-DzSbAS0BGjfPjtM=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/MK12LJ1/d266ae54-8e95-4ef9-8988-f1989ba07456/logo.png",
-                "federation_reference_id": "MK12LJ1",
-                "hockey_type": "VE"
-              }
-            },
-            {
-              "change": "equal",
-              "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
-              "rank": 6,
-              "played": 8,
-              "points": 1,
-              "wins": 0,
-              "draws": 1,
-              "losses": 7,
-              "goals_for": 9,
-              "goals_against": 57,
+              "goals_for": 11,
+              "goals_against": 59,
               "penalties": 0,
               "poule_name": "Poule Poule A",
               "poule_id": 179024,
@@ -217,6 +192,31 @@
                 "short_name": "JO14-1",
                 "logo": "https://images.static-hw.nl/JCqdAAJuVcqp387CyFsVcjmDKeY=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11QP7/087dac2c-ec3c-4c53-bc6c-0c2cb10141b0/logo.jpg",
                 "federation_reference_id": "HH11QP7",
+                "hockey_type": "VE"
+              }
+            },
+            {
+              "change": "down",
+              "rank_change": -1,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
+              "rank": 6,
+              "played": 9,
+              "points": 1,
+              "wins": 0,
+              "draws": 1,
+              "losses": 8,
+              "goals_for": 17,
+              "goals_against": 62,
+              "penalties": 0,
+              "poule_name": "Poule Poule A",
+              "poule_id": 179024,
+              "team": {
+                "id": 21266,
+                "name": "Zwolle JO14-1",
+                "short_name": "JO14-1",
+                "logo": "https://images.static-hw.nl/bXXZAa5k4SW-DzSbAS0BGjfPjtM=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/MK12LJ1/d266ae54-8e95-4ef9-8988-f1989ba07456/logo.png",
+                "federation_reference_id": "MK12LJ1",
                 "hockey_type": "VE"
               }
             }
@@ -1641,7 +1641,7 @@
             {
               "id": 1988371,
               "date": "2026-05-30T10:15:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 3930,
@@ -1669,8 +1669,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 3,
+                "away": 3
               },
               "location": {
                 "facility": {
@@ -1700,7 +1700,7 @@
             {
               "id": 1988369,
               "date": "2026-05-30T10:20:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 2068,
@@ -1728,16 +1728,16 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 9,
+                "away": 3
               },
               "location": {
                 "facility": {
-                  "name": "Amsterdamse Bos (Amsterdam)",
-                  "address": "Nieuwe Kalfjeslaan 19\n1182AA Amstelveen"
+                  "name": "Wagener Stadion",
+                  "address": "Nieuwe Kalfjeslaan 18\n1182AA Amstelveen"
                 },
                 "field": {
-                  "name": "Validata - veld 4",
+                  "name": "Wagener Stadion",
                   "type": "Waterveld"
                 }
               },
@@ -1759,7 +1759,7 @@
             {
               "id": 1988370,
               "date": "2026-05-30T14:00:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 7349,
@@ -1787,8 +1787,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 2,
+                "away": 2
               },
               "location": {
                 "facility": {
@@ -2005,7 +2005,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179025/teams/6678",
-    "timestamp": 1779213044368,
+    "timestamp": 1780159749138,
     "data": {
       "data": {
         "team": {
@@ -2071,18 +2071,18 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 1,
-              "played": 8,
-              "points": 22,
-              "wins": 7,
+              "played": 9,
+              "points": 25,
+              "wins": 8,
               "draws": 1,
               "losses": 0,
-              "goals_for": 37,
-              "goals_against": 12,
+              "goals_for": 43,
+              "goals_against": 13,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 6678,
@@ -2094,20 +2094,20 @@
               }
             },
             {
-              "change": "up",
-              "rank_change": 1,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "change": "equal",
+              "rank_change": 0,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 2,
-              "played": 8,
-              "points": 16,
-              "wins": 5,
+              "played": 9,
+              "points": 19,
+              "wins": 6,
               "draws": 1,
               "losses": 2,
-              "goals_for": 38,
-              "goals_against": 22,
+              "goals_for": 41,
+              "goals_against": 23,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 2554,
@@ -2119,20 +2119,20 @@
               }
             },
             {
-              "change": "down",
-              "rank_change": -1,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "change": "equal",
+              "rank_change": 0,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 3,
-              "played": 8,
-              "points": 16,
-              "wins": 5,
+              "played": 9,
+              "points": 19,
+              "wins": 6,
               "draws": 1,
               "losses": 2,
-              "goals_for": 32,
+              "goals_for": 41,
               "goals_against": 23,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 6031,
@@ -2146,18 +2146,18 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 4,
-              "played": 8,
+              "played": 9,
               "points": 10,
               "wins": 3,
               "draws": 1,
-              "losses": 4,
-              "goals_for": 28,
-              "goals_against": 29,
+              "losses": 5,
+              "goals_for": 29,
+              "goals_against": 32,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 2744,
@@ -2169,20 +2169,20 @@
               }
             },
             {
-              "change": "up",
-              "rank_change": 1,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "change": "equal",
+              "rank_change": 0,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 5,
-              "played": 8,
+              "played": 9,
               "points": 3,
               "wins": 1,
               "draws": 0,
-              "losses": 7,
-              "goals_for": 11,
-              "goals_against": 33,
+              "losses": 8,
+              "goals_for": 12,
+              "goals_against": 39,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 6518,
@@ -2194,20 +2194,20 @@
               }
             },
             {
-              "change": "down",
-              "rank_change": -1,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "change": "equal",
+              "rank_change": 0,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 6,
-              "played": 8,
+              "played": 9,
               "points": 3,
               "wins": 1,
               "draws": 0,
-              "losses": 7,
+              "losses": 8,
               "goals_for": 14,
-              "goals_against": 41,
+              "goals_against": 50,
               "penalties": 0,
-              "poule_name": null,
+              "poule_name": "Poule Poule B",
               "poule_id": 179025,
               "team": {
                 "id": 3364,
@@ -3639,7 +3639,7 @@
             {
               "id": 1988399,
               "date": "2026-05-30T10:20:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 6031,
@@ -3667,7 +3667,7 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
+                "home": 9,
                 "away": 0
               },
               "location": {
@@ -3698,7 +3698,7 @@
             {
               "id": 1988400,
               "date": "2026-05-30T10:20:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 2744,
@@ -3726,8 +3726,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 1,
+                "away": 3
               },
               "location": {
                 "facility": {
@@ -3757,7 +3757,7 @@
             {
               "id": 1988401,
               "date": "2026-05-30T10:20:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 6518,
@@ -3785,8 +3785,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 1,
+                "away": 6
               },
               "location": {
                 "facility": {
@@ -4003,7 +4003,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179026/teams/4805",
-    "timestamp": 1779213037143,
+    "timestamp": 1780159743904,
     "data": {
       "data": {
         "team": {
@@ -4069,16 +4069,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-13",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 1,
-              "played": 8,
-              "points": 20,
-              "wins": 6,
+              "played": 9,
+              "points": 23,
+              "wins": 7,
               "draws": 2,
               "losses": 0,
-              "goals_for": 44,
-              "goals_against": 21,
+              "goals_for": 54,
+              "goals_against": 22,
               "penalties": 0,
               "poule_name": "Poule Poule C",
               "poule_id": 179026,
@@ -4094,16 +4094,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-13",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 2,
-              "played": 8,
-              "points": 18,
-              "wins": 6,
+              "played": 9,
+              "points": 21,
+              "wins": 7,
               "draws": 0,
               "losses": 2,
-              "goals_for": 30,
-              "goals_against": 18,
+              "goals_for": 33,
+              "goals_against": 19,
               "penalties": 0,
               "poule_name": "Poule Poule C",
               "poule_id": 179026,
@@ -4117,18 +4117,43 @@
               }
             },
             {
-              "change": "equal",
-              "rank_change": 0,
-              "rank_date_previous": "2026-05-13",
-              "rank_date_current": "2026-05-16",
+              "change": "up",
+              "rank_change": 1,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 3,
-              "played": 8,
+              "played": 9,
+              "points": 13,
+              "wins": 4,
+              "draws": 1,
+              "losses": 4,
+              "goals_for": 23,
+              "goals_against": 23,
+              "penalties": 0,
+              "poule_name": "Poule Poule C",
+              "poule_id": 179026,
+              "team": {
+                "id": 4805,
+                "name": "Klein Zwitserland JO14-1",
+                "short_name": "JO14-1",
+                "logo": "https://images.static-hw.nl/J3N-FYwSymrD0k1wSf4fdhbowW4=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11KB1/ab754634-5585-432d-9e45-bdf660334545/logo.jpg",
+                "federation_reference_id": "HH11KB1",
+                "hockey_type": "VE"
+              }
+            },
+            {
+              "change": "down",
+              "rank_change": -1,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
+              "rank": 4,
+              "played": 9,
               "points": 10,
               "wins": 3,
               "draws": 1,
-              "losses": 4,
-              "goals_for": 28,
-              "goals_against": 25,
+              "losses": 5,
+              "goals_for": 29,
+              "goals_against": 28,
               "penalties": 0,
               "poule_name": "Poule Poule C",
               "poule_id": 179026,
@@ -4144,41 +4169,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-13",
-              "rank_date_current": "2026-05-16",
-              "rank": 4,
-              "played": 8,
-              "points": 10,
-              "wins": 3,
-              "draws": 1,
-              "losses": 4,
-              "goals_for": 20,
-              "goals_against": 22,
-              "penalties": 0,
-              "poule_name": "Poule Poule C",
-              "poule_id": 179026,
-              "team": {
-                "id": 4805,
-                "name": "Klein Zwitserland JO14-1",
-                "short_name": "JO14-1",
-                "logo": "https://images.static-hw.nl/J3N-FYwSymrD0k1wSf4fdhbowW4=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11KB1/ab754634-5585-432d-9e45-bdf660334545/logo.jpg",
-                "federation_reference_id": "HH11KB1",
-                "hockey_type": "VE"
-              }
-            },
-            {
-              "change": "equal",
-              "rank_change": 0,
-              "rank_date_previous": "2026-05-13",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 5,
-              "played": 8,
+              "played": 9,
               "points": 7,
               "wins": 2,
               "draws": 1,
-              "losses": 5,
-              "goals_for": 20,
-              "goals_against": 34,
+              "losses": 6,
+              "goals_for": 21,
+              "goals_against": 44,
               "penalties": 0,
               "poule_name": "Poule Poule C",
               "poule_id": 179026,
@@ -4194,16 +4194,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-13",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 6,
-              "played": 8,
+              "played": 9,
               "points": 4,
               "wins": 1,
               "draws": 1,
-              "losses": 6,
-              "goals_for": 27,
-              "goals_against": 49,
+              "losses": 7,
+              "goals_for": 28,
+              "goals_against": 52,
               "penalties": 0,
               "poule_name": "Poule Poule C",
               "poule_id": 179026,
@@ -5623,9 +5623,65 @@
               "user_action_description": null
             },
             {
+              "id": 1988431,
+              "date": "2026-05-30T10:05:00+02:00",
+              "status": "final",
+              "cancellation_minute": null,
+              "home": {
+                "id": 4805,
+                "name": "Klein Zwitserland JO14-1",
+                "short_name": "JO14-1",
+                "logo": "https://images.static-hw.nl/J3N-FYwSymrD0k1wSf4fdhbowW4=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11KB1/ab754634-5585-432d-9e45-bdf660334545/logo.jpg",
+                "hockey_type": "VE",
+                "category_group_name": "Junioren",
+                "federation_reference_id": "HH11KB1",
+                "recent_poule_id": 179026
+              },
+              "away": {
+                "id": 5009,
+                "name": "Leiden JO14-1",
+                "short_name": "JO14-1",
+                "logo": "https://images.static-hw.nl/nf0Ce-4x2J_M1Ep1LZAqkC2D7YA=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11KK4/cabfa6b8-b84e-4176-8fd5-b07f32df3199/logo.jpg",
+                "hockey_type": "VE",
+                "category_group_name": "Junioren",
+                "federation_reference_id": "HH11KK4",
+                "recent_poule_id": 179026
+              },
+              "own_team_id": null,
+              "shootouts": {
+                "home": 0,
+                "away": 0
+              },
+              "score": {
+                "home": 3,
+                "away": 1
+              },
+              "location": {
+                "facility": {
+                  "name": "Sportpark 'HCKZ'",
+                  "address": "Klatteweg 113\n2597KA Den Haag"
+                },
+                "field": {
+                  "name": "Main Capital Partners Veld 1",
+                  "type": "Waterveld"
+                }
+              },
+              "poule_name": null,
+              "poule_id": 179026,
+              "remarks": null,
+              "competition_name": null,
+              "gender": null,
+              "role": "none",
+              "role_name": null,
+              "announcement": null,
+              "round": 9,
+              "user_action_required": false,
+              "user_action_description": null
+            },
+            {
               "id": 1988429,
               "date": "2026-05-30T10:20:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 4522,
@@ -5653,8 +5709,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 1,
+                "away": 3
               },
               "location": {
                 "facility": {
@@ -5684,7 +5740,7 @@
             {
               "id": 1988430,
               "date": "2026-05-30T10:20:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 5243,
@@ -5712,8 +5768,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 1,
+                "away": 10
               },
               "location": {
                 "facility": {
@@ -5731,62 +5787,6 @@
                 "official": "",
                 "info": null
               },
-              "competition_name": null,
-              "gender": null,
-              "role": "none",
-              "role_name": null,
-              "announcement": null,
-              "round": 9,
-              "user_action_required": false,
-              "user_action_description": null
-            },
-            {
-              "id": 1988431,
-              "date": "2026-05-30T10:20:00+02:00",
-              "status": "scheduled",
-              "cancellation_minute": null,
-              "home": {
-                "id": 4805,
-                "name": "Klein Zwitserland JO14-1",
-                "short_name": "JO14-1",
-                "logo": "https://images.static-hw.nl/J3N-FYwSymrD0k1wSf4fdhbowW4=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11KB1/ab754634-5585-432d-9e45-bdf660334545/logo.jpg",
-                "hockey_type": "VE",
-                "category_group_name": "Junioren",
-                "federation_reference_id": "HH11KB1",
-                "recent_poule_id": 179026
-              },
-              "away": {
-                "id": 5009,
-                "name": "Leiden JO14-1",
-                "short_name": "JO14-1",
-                "logo": "https://images.static-hw.nl/nf0Ce-4x2J_M1Ep1LZAqkC2D7YA=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11KK4/cabfa6b8-b84e-4176-8fd5-b07f32df3199/logo.jpg",
-                "hockey_type": "VE",
-                "category_group_name": "Junioren",
-                "federation_reference_id": "HH11KK4",
-                "recent_poule_id": 179026
-              },
-              "own_team_id": null,
-              "shootouts": {
-                "home": 0,
-                "away": 0
-              },
-              "score": {
-                "home": 0,
-                "away": 0
-              },
-              "location": {
-                "facility": {
-                  "name": "Sportpark 'HCKZ'",
-                  "address": "Klatteweg 113\n2597KA Den Haag"
-                },
-                "field": {
-                  "name": "Main Capital Partners Veld 1",
-                  "type": "Waterveld"
-                }
-              },
-              "poule_name": null,
-              "poule_id": 179026,
-              "remarks": null,
               "competition_name": null,
               "gender": null,
               "role": "none",
@@ -5986,7 +5986,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179027/teams/8299",
-    "timestamp": 1779213034486,
+    "timestamp": 1780159741900,
     "data": {
       "data": {
         "team": {
@@ -6052,16 +6052,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 1,
-              "played": 8,
-              "points": 17,
+              "played": 9,
+              "points": 18,
               "wins": 5,
-              "draws": 2,
+              "draws": 3,
               "losses": 1,
-              "goals_for": 30,
-              "goals_against": 20,
+              "goals_for": 33,
+              "goals_against": 23,
               "penalties": 0,
               "poule_name": "Poule Poule D",
               "poule_id": 179027,
@@ -6077,16 +6077,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 2,
-              "played": 8,
+              "played": 9,
               "points": 15,
               "wins": 5,
               "draws": 0,
-              "losses": 3,
-              "goals_for": 25,
-              "goals_against": 19,
+              "losses": 4,
+              "goals_for": 28,
+              "goals_against": 23,
               "penalties": 0,
               "poule_name": "Poule Poule D",
               "poule_id": 179027,
@@ -6100,18 +6100,18 @@
               }
             },
             {
-              "change": "up",
-              "rank_change": 1,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "change": "equal",
+              "rank_change": 0,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 3,
-              "played": 8,
-              "points": 14,
+              "played": 9,
+              "points": 15,
               "wins": 4,
-              "draws": 2,
+              "draws": 3,
               "losses": 2,
-              "goals_for": 22,
-              "goals_against": 20,
+              "goals_for": 25,
+              "goals_against": 23,
               "penalties": 0,
               "poule_name": "Poule Poule D",
               "poule_id": 179027,
@@ -6125,18 +6125,18 @@
               }
             },
             {
-              "change": "down",
-              "rank_change": -1,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "change": "equal",
+              "rank_change": 0,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 4,
-              "played": 8,
-              "points": 11,
-              "wins": 3,
+              "played": 9,
+              "points": 14,
+              "wins": 4,
               "draws": 2,
               "losses": 3,
-              "goals_for": 30,
-              "goals_against": 25,
+              "goals_for": 34,
+              "goals_against": 28,
               "penalties": 0,
               "poule_name": "Poule Poule D",
               "poule_id": 179027,
@@ -6152,15 +6152,15 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 5,
-              "played": 8,
-              "points": 8,
-              "wins": 2,
+              "played": 9,
+              "points": 11,
+              "wins": 3,
               "draws": 2,
               "losses": 4,
-              "goals_for": 23,
+              "goals_for": 26,
               "goals_against": 27,
               "penalties": 0,
               "poule_name": "Poule Poule D",
@@ -6177,16 +6177,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 6,
-              "played": 8,
+              "played": 9,
               "points": 2,
               "wins": 0,
               "draws": 2,
-              "losses": 6,
+              "losses": 7,
               "goals_for": 17,
-              "goals_against": 36,
+              "goals_against": 39,
               "penalties": 0,
               "poule_name": "Poule Poule D",
               "poule_id": 179027,
@@ -7608,7 +7608,7 @@
             {
               "id": 1988459,
               "date": "2026-05-30T10:15:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 5579,
@@ -7636,7 +7636,7 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
+                "home": 3,
                 "away": 0
               },
               "location": {
@@ -7667,7 +7667,7 @@
             {
               "id": 1988460,
               "date": "2026-05-30T10:45:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 6871,
@@ -7695,8 +7695,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 4,
+                "away": 3
               },
               "location": {
                 "facility": {
@@ -7726,7 +7726,7 @@
             {
               "id": 1988461,
               "date": "2026-05-30T14:30:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 5722,
@@ -7754,8 +7754,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 3,
+                "away": 3
               },
               "location": {
                 "facility": {
@@ -7969,7 +7969,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179028/teams/7463",
-    "timestamp": 1779213375316,
+    "timestamp": 1780159737479,
     "data": {
       "data": {
         "team": {
@@ -8035,16 +8035,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 1,
-              "played": 8,
-              "points": 21,
-              "wins": 7,
+              "played": 9,
+              "points": 24,
+              "wins": 8,
               "draws": 0,
               "losses": 1,
-              "goals_for": 53,
-              "goals_against": 15,
+              "goals_for": 59,
+              "goals_against": 18,
               "penalties": 0,
               "poule_name": "Poule Poule E",
               "poule_id": 179028,
@@ -8060,15 +8060,15 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 2,
-              "played": 8,
-              "points": 21,
-              "wins": 7,
+              "played": 9,
+              "points": 24,
+              "wins": 8,
               "draws": 0,
               "losses": 1,
-              "goals_for": 31,
+              "goals_for": 36,
               "goals_against": 10,
               "penalties": 0,
               "poule_name": "Poule Poule E",
@@ -8085,40 +8085,15 @@
             {
               "change": "up",
               "rank_change": 1,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 3,
-              "played": 8,
+              "played": 9,
               "points": 15,
               "wins": 5,
               "draws": 0,
-              "losses": 3,
-              "goals_for": 22,
-              "goals_against": 32,
-              "penalties": 0,
-              "poule_name": "Poule Poule E",
-              "poule_id": 179028,
-              "team": {
-                "id": 6195,
-                "name": "Push JO14-1",
-                "short_name": "JO14-1",
-                "logo": "https://images.static-hw.nl/_d8NNOUPyo1l7QgVvr7NHiNIqY4=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11NC7/9eff24da-3e8c-4444-8ad3-e7575b94592c/logo.png",
-                "federation_reference_id": "HH11NC7",
-                "hockey_type": "VE"
-              }
-            },
-            {
-              "change": "down",
-              "rank_change": -1,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
-              "rank": 4,
-              "played": 8,
-              "points": 12,
-              "wins": 4,
-              "draws": 0,
               "losses": 4,
-              "goals_for": 38,
+              "goals_for": 41,
               "goals_against": 18,
               "penalties": 0,
               "poule_name": "Poule Poule E",
@@ -8133,18 +8108,43 @@
               }
             },
             {
+              "change": "down",
+              "rank_change": -1,
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
+              "rank": 4,
+              "played": 9,
+              "points": 15,
+              "wins": 5,
+              "draws": 0,
+              "losses": 4,
+              "goals_for": 25,
+              "goals_against": 38,
+              "penalties": 0,
+              "poule_name": "Poule Poule E",
+              "poule_id": 179028,
+              "team": {
+                "id": 6195,
+                "name": "Push JO14-1",
+                "short_name": "JO14-1",
+                "logo": "https://images.static-hw.nl/_d8NNOUPyo1l7QgVvr7NHiNIqY4=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11NC7/9eff24da-3e8c-4444-8ad3-e7575b94592c/logo.png",
+                "federation_reference_id": "HH11NC7",
+                "hockey_type": "VE"
+              }
+            },
+            {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 5,
-              "played": 8,
+              "played": 9,
               "points": 3,
               "wins": 1,
               "draws": 0,
-              "losses": 7,
+              "losses": 8,
               "goals_for": 14,
-              "goals_against": 34,
+              "goals_against": 37,
               "penalties": 0,
               "poule_name": "Poule Poule E",
               "poule_id": 179028,
@@ -8160,16 +8160,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-09",
-              "rank_date_current": "2026-05-16",
+              "rank_date_previous": "2026-05-16",
+              "rank_date_current": "2026-05-30",
               "rank": 6,
-              "played": 8,
+              "played": 9,
               "points": 0,
               "wins": 0,
               "draws": 0,
-              "losses": 8,
+              "losses": 9,
               "goals_for": 8,
-              "goals_against": 57,
+              "goals_against": 62,
               "penalties": 0,
               "poule_name": "Poule Poule E",
               "poule_id": 179028,
@@ -8456,7 +8456,7 @@
               },
               "location": {
                 "facility": {
-                  "name": "Sportpark Burg. de Manlaan",
+                  "name": "Sportpark Burg. de Manlaan (Breda)",
                   "address": "Burgemeester de Manlaan 26\n4837BN Breda"
                 },
                 "field": {
@@ -8869,7 +8869,7 @@
               },
               "location": {
                 "facility": {
-                  "name": "Sportpark Burg. de Manlaan",
+                  "name": "Sportpark Burg. de Manlaan (Breda)",
                   "address": "Burgemeester de Manlaan 26\n4837BN Breda"
                 },
                 "field": {
@@ -9105,7 +9105,7 @@
               },
               "location": {
                 "facility": {
-                  "name": "Sportpark Burg. de Manlaan",
+                  "name": "Sportpark Burg. de Manlaan (Breda)",
                   "address": "Burgemeester de Manlaan 26\n4837BN Breda"
                 },
                 "field": {
@@ -9518,7 +9518,7 @@
               },
               "location": {
                 "facility": {
-                  "name": "Sportpark Burg. de Manlaan",
+                  "name": "Sportpark Burg. de Manlaan (Breda)",
                   "address": "Burgemeester de Manlaan 26\n4837BN Breda"
                 },
                 "field": {
@@ -9603,7 +9603,7 @@
             {
               "id": 1988489,
               "date": "2026-05-30T10:20:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 6195,
@@ -9631,8 +9631,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 3,
+                "away": 6
               },
               "location": {
                 "facility": {
@@ -9662,7 +9662,7 @@
             {
               "id": 1988490,
               "date": "2026-05-30T10:30:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 7463,
@@ -9690,7 +9690,7 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
+                "home": 5,
                 "away": 0
               },
               "location": {
@@ -9721,7 +9721,7 @@
             {
               "id": 1988491,
               "date": "2026-05-30T13:45:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 9335,
@@ -9750,7 +9750,7 @@
               },
               "score": {
                 "home": 0,
-                "away": 0
+                "away": 3
               },
               "location": {
                 "facility": {
@@ -9774,62 +9774,6 @@
               "role_name": null,
               "announcement": null,
               "round": 9,
-              "user_action_required": false,
-              "user_action_description": null
-            },
-            {
-              "id": 1988494,
-              "date": "2026-06-06T00:00:00+02:00",
-              "status": "announced",
-              "cancellation_minute": null,
-              "home": {
-                "id": 2645,
-                "name": "Breda JO14-1",
-                "short_name": "JO14-1",
-                "logo": "https://images.static-hw.nl/mor_XwIDUKJgp_moPNrxa_R_zX0=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11CC4/0ed10b21-91d9-4482-be11-4fd169e8c033/logo.png",
-                "hockey_type": "VE",
-                "category_group_name": "Junioren",
-                "federation_reference_id": "HH11CC4",
-                "recent_poule_id": 179028
-              },
-              "away": {
-                "id": 9335,
-                "name": "Spandersbosch JO14-1",
-                "short_name": "JO14-1",
-                "logo": "https://images.static-hw.nl/N7JvoHfHYN7_UfYx1bHq0wRzxiQ=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11PQ1/455fad74-9154-432c-8177-66c79b037a99/logo.jpg",
-                "hockey_type": "VE",
-                "category_group_name": "Junioren",
-                "federation_reference_id": "HH11PQ1",
-                "recent_poule_id": 179028
-              },
-              "own_team_id": null,
-              "shootouts": {
-                "home": 0,
-                "away": 0
-              },
-              "score": {
-                "home": 0,
-                "away": 0
-              },
-              "location": {
-                "facility": {
-                  "name": "Sportpark Burg. de Manlaan",
-                  "address": "Burgemeester de Manlaan 26\n4837BN Breda"
-                },
-                "field": {
-                  "name": null,
-                  "type": null
-                }
-              },
-              "poule_name": null,
-              "poule_id": 179028,
-              "remarks": null,
-              "competition_name": null,
-              "gender": null,
-              "role": "none",
-              "role_name": null,
-              "announcement": null,
-              "round": 10,
               "user_action_required": false,
               "user_action_description": null
             },
@@ -9933,6 +9877,65 @@
                 },
                 "field": {
                   "name": "1 Rabo-veld",
+                  "type": "Waterveld"
+                }
+              },
+              "poule_name": null,
+              "poule_id": 179028,
+              "remarks": {
+                "official": "",
+                "info": null
+              },
+              "competition_name": null,
+              "gender": null,
+              "role": "none",
+              "role_name": null,
+              "announcement": null,
+              "round": 10,
+              "user_action_required": false,
+              "user_action_description": null
+            },
+            {
+              "id": 1988494,
+              "date": "2026-06-06T12:10:00+02:00",
+              "status": "scheduled",
+              "cancellation_minute": null,
+              "home": {
+                "id": 2645,
+                "name": "Breda JO14-1",
+                "short_name": "JO14-1",
+                "logo": "https://images.static-hw.nl/mor_XwIDUKJgp_moPNrxa_R_zX0=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11CC4/0ed10b21-91d9-4482-be11-4fd169e8c033/logo.png",
+                "hockey_type": "VE",
+                "category_group_name": "Junioren",
+                "federation_reference_id": "HH11CC4",
+                "recent_poule_id": 179028
+              },
+              "away": {
+                "id": 9335,
+                "name": "Spandersbosch JO14-1",
+                "short_name": "JO14-1",
+                "logo": "https://images.static-hw.nl/N7JvoHfHYN7_UfYx1bHq0wRzxiQ=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11PQ1/455fad74-9154-432c-8177-66c79b037a99/logo.jpg",
+                "hockey_type": "VE",
+                "category_group_name": "Junioren",
+                "federation_reference_id": "HH11PQ1",
+                "recent_poule_id": 179028
+              },
+              "own_team_id": null,
+              "shootouts": {
+                "home": 0,
+                "away": 0
+              },
+              "score": {
+                "home": 0,
+                "away": 0
+              },
+              "location": {
+                "facility": {
+                  "name": "Sportpark Burg. de Manlaan (Breda)",
+                  "address": "Burgemeester de Manlaan 26\n4837BN Breda"
+                },
+                "field": {
+                  "name": "Oryx",
                   "type": "Waterveld"
                 }
               },
