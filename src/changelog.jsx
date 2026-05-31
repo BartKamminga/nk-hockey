@@ -1,7 +1,13 @@
 import React from 'react'
 
-export const VERSION = '6.0'
+export const VERSION = '6.1'
 export const CHANGELOG = [
+  { version: '6.1', date: '31 mei 2026', changes: [
+    'Toernooi-pad visualisatie: zie het pad van jouw club naar het NK',
+    '✦ Voorspel het hele toernooi: poules → NK poulefase → HF → finale in één klik',
+    'Reset alles knop: wis alle voorspellingen',
+    'Pad toont poule-positie, NK poule, HF/Finale kansen als gekleurde stappen',
+  ]},
   { version: '6.0', date: '31 mei 2026', changes: [
     '🎉 Grote update: alles op één pagina — geen tabs meer',
     'Poule-cards tonen stand + gespeelde wedstrijden + resterende wedstrijden in één card',

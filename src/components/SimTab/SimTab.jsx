@@ -7,6 +7,7 @@ import RemainingPouleCards from './RemainingPouleCards'
 import O14NKPhase from './O14NKPhase'
 import O16KFPhase from './O16KFPhase'
 import NKChances from './NKChances'
+import TournamentPath from './TournamentPath'
 
 export default function SimTab({ data, myTeam, effectiveComp, focusMode, showForm, showPlayed, showMatches, simCount }) {
   const o16 = IS_O16(effectiveComp)
@@ -158,10 +159,80 @@ export default function SimTab({ data, myTeam, effectiveComp, focusMode, showFor
     doSim(newLocks)
   }
 
+  // Predict entire tournament in one go
+  function predictAll() {
+    const newLocks = {}
+
+    // 1. Predict all poule matches
+    for (const pouleId of pouleOrder.filter(id => data[id])) {
+      const poule = data[pouleId]
+      const allMatches = poule.remaining.map(([h, a]) => ({ h, a, lockKey: `${h}_${a}` }))
+      const unlocked = allMatches.filter(m => !newLocks[m.lockKey])
+      if (unlocked.length > 0) {
+        const predicted = predictMatches(unlocked, poule)
+        for (const [key, val] of Object.entries(predicted)) { if (val) newLocks[key] = val }
+      }
+    }
+
+    // 2. Predict NK poulefase (O14) or KF matches (O16)
+    if (!o16) {
+      const nkSched = NK_SCHEDULES[effectiveComp]
+      if (nkSched) {
+        for (const m of (nkSched.schedA || [])) {
+          const key = `nk_A_${m.home}_${m.away}`
+          const r = Math.random(); const result = r < 0.4 ? 'W' : r < 0.65 ? 'D' : 'L'
+          const [scoreH, scoreA] = generateScore(result)
+          newLocks[key] = { result, scoreH, scoreA }
+        }
+        for (const m of (nkSched.schedB || [])) {
+          const key = `nk_B_${m.home}_${m.away}`
+          const r = Math.random(); const result = r < 0.4 ? 'W' : r < 0.65 ? 'D' : 'L'
+          const [scoreH, scoreA] = generateScore(result)
+          newLocks[key] = { result, scoreH, scoreA }
+        }
+      }
+      // HF + Finale + 3e/4e
+      for (const key of ['nk_hf1', 'nk_hf2', 'nk_finale', 'nk_3e4e']) {
+        const result = Math.random() < 0.5 ? 'W' : 'L'
+        const [scoreH, scoreA] = generateScore(result)
+        newLocks[key] = { result, scoreH, scoreA }
+      }
+    } else {
+      // O16: KF + HF + Finale
+      for (const key of ['nk_kf1', 'nk_kf2', 'nk_kf3', 'nk_kf4', 'nk_hf1', 'nk_hf2', 'nk_finale']) {
+        const result = Math.random() < 0.5 ? 'W' : 'L'
+        const [scoreH, scoreA] = generateScore(result)
+        newLocks[key] = { result, scoreH, scoreA }
+      }
+    }
+
+    setLocks(newLocks)
+    doSim(newLocks)
+  }
+
+  // Reset everything
+  function resetAll() {
+    setLocks({})
+    doSim({})
+  }
+
   // ── Render ──
 
   return (
     <div>
+      {/* Tournament path for focus club */}
+      <TournamentPath data={data} locks={locks} myTeam={myTeam} results={results} N={N} effectiveComp={effectiveComp} />
+
+      {/* Predict all / Reset all */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button className="run-btn" onClick={predictAll} style={{ marginLeft: 0, background: 'var(--btn-predict-bg)', color: 'var(--btn-predict-text)' }}>
+          ✦ Voorspel het hele toernooi
+        </button>
+        {hasLocks && <button className="run-btn" onClick={resetAll} style={{ marginLeft: 0, background: 'var(--btn-reset-bg)', color: 'var(--btn-reset-text)' }}>
+          Reset alles
+        </button>}
+      </div>
+
       <RemainingPouleCards data={data} showForm={showForm} showPlayed={showPlayed} showMatches={showMatches} pouleIds={timelinePouleIds} myTeam={myTeam} locks={locks}
         onToggle={onToggle} onSetRound={onSetRound} onPredict={onPredict} onPredictAllRounds={onPredictAllRounds}
         onPredictSection={onPredictSectionPoules} onResetSection={onResetPoules} />
