@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { VERSION, COMP_LABELS, getSavedForm, saveForm, getSavedPlayed, savePlayed, getSavedSimCount, saveSimCount } from './constants'
+import { VERSION, COMP_LABELS, getSavedForm, saveForm, getSavedPlayed, savePlayed, getSavedMatches, saveMatches, getSavedSimCount, saveSimCount } from './constants'
 import { NK_SCHEDULES } from './lib/nk-schedules'
 import SimTab from './components/SimTab'
 import { useCompetitionData } from './dataloader/useCompetitionData'
@@ -24,6 +24,7 @@ export default function App() {
   })
   const [showForm, setShowForm] = useState(getSavedForm)
   const [showPlayed, setShowPlayed] = useState(getSavedPlayed)
+  const [showMatches, setShowMatches] = useState(getSavedMatches)
   const [simCount, setSimCount] = useState(getSavedSimCount)
   const [theme, setTheme] = useState(() => {
     try { const s = localStorage.getItem('nk_theme'); return s || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') } catch { return 'light' }
@@ -98,13 +99,14 @@ export default function App() {
         theme={theme} setTheme={setTheme}
         showForm={showForm} setShowForm={setShowForm} saveForm={saveForm}
         showPlayed={showPlayed} setShowPlayed={setShowPlayed} savePlayed={savePlayed}
+        showMatches={showMatches} setShowMatches={setShowMatches} saveMatches={saveMatches}
         simCount={simCount} setSimCount={setSimCount} saveSimCount={saveSimCount}
         focusMode={focusMode} setFocusMode={setFocusMode}
         focusClub={focusClub} setFocusClub={setFocusClub} allClubs={allClubs} />}
 
       {/* Main content */}
       <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp}
-        showForm={showForm} showPlayed={showPlayed} simCount={simCount} key={effectiveComp + '_sim'} />
+        showForm={showForm} showPlayed={showPlayed} showMatches={showMatches} simCount={simCount} key={effectiveComp + '_sim'} />
 
       {/* Easter egg */}
       {easterEgg && <EasterEgg />}

@@ -2,7 +2,7 @@ import React from 'react'
 import Popup from '../common/Popup'
 import Toggle from '../common/Toggle'
 
-export default function SettingsPopup({ onClose, theme, setTheme, showForm, setShowForm, saveForm, showPlayed, setShowPlayed, savePlayed, simCount, setSimCount, saveSimCount, focusMode, setFocusMode, focusClub, setFocusClub, allClubs }) {
+export default function SettingsPopup({ onClose, theme, setTheme, showForm, setShowForm, saveForm, showPlayed, setShowPlayed, savePlayed, showMatches, setShowMatches, saveMatches, simCount, setSimCount, saveSimCount, focusMode, setFocusMode, focusClub, setFocusClub, allClubs }) {
   return (
     <Popup title="⚙️ Instellingen" onClose={onClose} maxWidth={400}>
       <div style={{ padding: '12px 16px' }}>
@@ -21,7 +21,8 @@ export default function SettingsPopup({ onClose, theme, setTheme, showForm, setS
           ))}
         </div>
         <Toggle checked={showForm} onChange={() => { const v = !showForm; setShowForm(v); saveForm(v) }} label="🔥 Vorm-badges" hint="laatste 5 wedstrijden" />
-        <Toggle checked={showPlayed} onChange={() => { const v = !showPlayed; setShowPlayed(v); savePlayed(v) }} label="🎮 Gespeeld" hint="W-G-V per team" />
+        <Toggle checked={showPlayed} onChange={() => { const v = !showPlayed; setShowPlayed(v); savePlayed(v) }} label="🎮 W-G-V" hint="winst-gelijk-verlies" />
+        <Toggle checked={showMatches} onChange={() => { const v = !showMatches; setShowMatches(v); saveMatches(v) }} label="📋 Wedstrijden" hint="gespeelde uitslagen" />
         <div style={{ padding: '8px 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
             <span>🎲 Simulaties</span>

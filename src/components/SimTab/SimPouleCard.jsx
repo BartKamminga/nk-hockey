@@ -2,7 +2,7 @@ import React from 'react'
 import { fmtMatchDate, getTeamForm } from '../../lib/utils'
 import FormBadge from '../common/FormBadge'
 
-export default function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, locks, myTeam, onToggle, onSetRound, onPredict, onPredictAll, hideStandings, matchesPlayed, showForm, showPlayed }) {
+export default function SimPouleCard({ title, headerClass, teams, basePts, baseDs, rounds, locks, myTeam, onToggle, onSetRound, onPredict, onPredictAll, hideStandings, matchesPlayed, showForm, showPlayed, showMatches }) {
   const pts = {}, ds = {}
   teams.forEach((t, i) => { pts[t] = basePts[i] || 0; ds[t] = baseDs[i] || 0 })
   for (const round of rounds) {
@@ -75,8 +75,8 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
         })}
       </tbody></table>}
 
-      {/* Played matches (toggle via showPlayed) */}
-      {showPlayed && matchesPlayed && matchesPlayed.length > 0 && (() => {
+      {/* Played matches (toggle via showMatches) */}
+      {showMatches && matchesPlayed && matchesPlayed.length > 0 && (() => {
         const playedRounds = {}
         matchesPlayed.forEach(m => { const r = m.round || '?'; if (!playedRounds[r]) playedRounds[r] = []; playedRounds[r].push(m) })
         const sortedRounds = Object.keys(playedRounds).sort((a, b) => parseInt(a) - parseInt(b))

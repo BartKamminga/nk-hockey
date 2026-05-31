@@ -8,7 +8,7 @@ import O14NKPhase from './O14NKPhase'
 import O16KFPhase from './O16KFPhase'
 import NKChances from './NKChances'
 
-export default function SimTab({ data, myTeam, effectiveComp, showForm, showPlayed, simCount }) {
+export default function SimTab({ data, myTeam, effectiveComp, showForm, showPlayed, showMatches, simCount }) {
   const o16 = IS_O16(effectiveComp)
   const pouleOrder = o16 ? POULE_ORDER_16 : POULE_ORDER_14
   const N = simCount || 15000
@@ -158,7 +158,7 @@ export default function SimTab({ data, myTeam, effectiveComp, showForm, showPlay
 
   return (
     <div>
-      <RemainingPouleCards data={data} showForm={showForm} showPlayed={showPlayed} pouleIds={timelinePouleIds} myTeam={myTeam} locks={locks}
+      <RemainingPouleCards data={data} showForm={showForm} showPlayed={showPlayed} showMatches={showMatches} pouleIds={timelinePouleIds} myTeam={myTeam} locks={locks}
         onToggle={onToggle} onSetRound={onSetRound} onPredict={onPredict} onPredictAllRounds={onPredictAllRounds}
         onPredictSection={onPredictSectionPoules} onResetSection={onResetPoules} />
 
