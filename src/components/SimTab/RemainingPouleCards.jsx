@@ -1,14 +1,11 @@
 import React from 'react'
 import SimPouleCard from './SimPouleCard'
-import SectionLabel from './SectionLabel'
 
 export default function RemainingPouleCards({ data, pouleIds, myTeam, locks, showForm, showPlayed, showMatches, onToggle, onSetRound, onPredict, onPredictAllRounds, onResetAll, onPredictSection, onResetSection }) {
   const gridCls = pouleIds.length <= 2 ? 'grid-2' : pouleIds.length <= 4 ? 'grid-4' : 'grid-5'
 
   return (
     <div>
-      <SectionLabel label="Resterende wedstrijden" style={{ marginTop: 0 }}
-        onPredict={onPredictSection} onReset={onResetSection} />
       <div className={gridCls}>
         {pouleIds.map(pouleId => {
           const poule = data[pouleId]

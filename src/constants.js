@@ -22,7 +22,7 @@ export function getSavedForm() { try { return localStorage.getItem(STORAGE_KEY_F
 export function saveForm(v) { try { localStorage.setItem(STORAGE_KEY_FORM, v ? 'true' : 'false') } catch {} }
 export function getSavedPlayed() { try { return localStorage.getItem(STORAGE_KEY_PLAYED) === 'true' } catch { return false } }
 export function savePlayed(v) { try { localStorage.setItem(STORAGE_KEY_PLAYED, v ? 'true' : 'false') } catch {} }
-export function getSavedMatches() { try { return localStorage.getItem('nk_show_matches') !== 'false' } catch { return true } }
+export function getSavedMatches() { try { return localStorage.getItem('nk_show_matches') === 'true' } catch { return false } }
 export function saveMatches(v) { try { localStorage.setItem('nk_show_matches', v ? 'true' : 'false') } catch {} }
 export function getSavedFocus() { try { return localStorage.getItem(STORAGE_KEY_FOCUS) === 'true' } catch { return false } }
 export function saveFocus(v) { try { localStorage.setItem(STORAGE_KEY_FOCUS, v ? 'true' : 'false') } catch {} }
