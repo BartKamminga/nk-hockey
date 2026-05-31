@@ -172,14 +172,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); padding: 32px;
 }
 .reload-btn:hover { border-color: var(--text-muted); color: var(--text-secondary); }
 
-/* ── Main tabs ── */
-.main-tabs { display: flex; border-bottom: 2px solid var(--text); margin-bottom: 28px; overflow-x: auto; overflow-y: hidden; }
-.main-tab {
-  padding: 10px 28px; font-size: 14px; font-weight: 500; cursor: pointer;
-  border: none; background: none; color: var(--text-muted); border-bottom: 2px solid transparent;
-  margin-bottom: -2px; font-family: 'DM Sans', sans-serif; white-space: nowrap;
-}
-.main-tab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+/* ── Content area ── */
 
 /* ── Section labels ── */
 .section-label {

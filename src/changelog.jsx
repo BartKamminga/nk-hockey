@@ -1,7 +1,15 @@
 import React from 'react'
 
-export const VERSION = '5.25'
+export const VERSION = '6.0'
 export const CHANGELOG = [
+  { version: '6.0', date: '31 mei 2026', changes: [
+    '🎉 Grote update: alles op één pagina — geen tabs meer',
+    'Poule-cards tonen stand + gespeelde wedstrijden + resterende wedstrijden in één card',
+    'Gespeelde wedstrijden zichtbaar via ⚙️ → 🎮 Gespeeld toggle',
+    'Overzicht en Speelschema tab verwijderd — SimPouleCard is nu de universele card',
+    'NK fases (Poulefase, HF, Finale) direct zichtbaar onder de poule-cards',
+    'Uitleg popup aangepast voor de nieuwe indeling',
+  ]},
   { version: '5.25', date: '21 mei 2026', changes: [
     'Grote refactor: App.jsx van 206 naar 125 regels',
     'SettingsPopup, MenuPopup, EasterEgg als eigen componenten',

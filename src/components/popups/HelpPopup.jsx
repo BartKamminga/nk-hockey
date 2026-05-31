@@ -2,61 +2,36 @@ import React from 'react'
 import Popup from '../common/Popup'
 
 const HELP = {
-  overzicht: {
-    title: '❓ Overzicht',
-    content: (
-      <div>
-        <p>Hier zie je de <strong>huidige stand</strong> per poule.</p>
-        <ul>
-          <li>Stand met punten, doelsaldo en vorm</li>
-          <li><span style={{ color: 'var(--nk-a-text)' }}>●</span> <span style={{ color: 'var(--nk-b-text)' }}>●</span> NK-slot indicators — welk team naar NK Poule A of B gaat (O14)</li>
-          <li>Verwachte NK indeling op basis van de huidige stand</li>
-          <li>NK Speelschema met tijden en velden</li>
-        </ul>
-        <p className="help-tip">💡 Klik op 🏑 om alleen jouw poule te zien (focus mode)</p>
-      </div>
-    )
-  },
-  schema: {
-    title: '❓ Speelschema',
-    content: (
-      <div>
-        <p>Alle <strong>wedstrijden per poule</strong> op een rij.</p>
-        <ul>
-          <li>Resterende wedstrijden met datums</li>
-          <li>Gespeelde wedstrijden met scores</li>
-          <li>Jouw club is gemarkeerd met een accent-rand</li>
-        </ul>
-        <p className="help-tip">💡 In focus mode zie je alleen de poule van jouw club</p>
-      </div>
-    )
-  },
   sim: {
-    title: '❓ Simulaties',
+    title: '❓ Hoe werkt het?',
     content: (
       <div>
-        <p>Voorspel uitslagen en bekijk hoe de <strong>NK-kansen</strong> veranderen.</p>
-        <p style={{ fontWeight: 600, marginTop: 12 }}>Wedstrijden invullen</p>
+        <p style={{ fontWeight: 600, marginBottom: 8 }}>Stand & wedstrijden</p>
+        <p>Elke poule-card toont de huidige stand, gespeelde wedstrijden en resterende wedstrijden. Gebruik ⚙️ om gespeelde wedstrijden te tonen/verbergen.</p>
+
+        <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Uitslagen voorspellen</p>
         <ul>
           <li>Klik op een <strong>teamnaam</strong> → dat team wint</li>
-          <li>Klik op <strong>vs</strong> → gelijkspel (alleen bij poule-wedstrijden)</li>
+          <li>Klik op <strong>vs</strong> → gelijkspel (alleen poule-wedstrijden)</li>
           <li>Klik nogmaals → reset die wedstrijd</li>
         </ul>
-        <p style={{ fontWeight: 600, marginTop: 12 }}>Snelknoppen</p>
+
+        <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>Snelknoppen</p>
         <ul>
           <li><strong>✦</strong> = automatische voorspelling (Monte Carlo)</li>
           <li><strong>?</strong> = reset ronde of sectie</li>
           <li>✦ bovenaan een card = voorspel alle wedstrijden in die poule</li>
-          <li>✦ naast sectie-titel = voorspel hele fase in één klik</li>
+          <li>✦ naast een sectie-titel = voorspel de hele fase</li>
         </ul>
-        <p style={{ fontWeight: 600, marginTop: 12 }}>NK fases</p>
+
+        <p style={{ fontWeight: 600, marginTop: 16, marginBottom: 8 }}>NK fases</p>
         <ul>
-          <li>NK Poulefase / Kwartfinales verschijnen altijd</li>
+          <li>NK Poulefase / Kwartfinales zijn altijd zichtbaar</li>
           <li>Halve finales verschijnen zodra de vorige fase is ingevuld</li>
           <li>Finale verschijnt zodra de halve finales zijn ingevuld</li>
-          <li>Scores en doelsaldo worden meegenomen in de stand</li>
         </ul>
-        <p className="help-tip">💡 De NK-kansen bovenaan updaten automatisch bij elke wijziging. Alle ingevulde resultaten worden meegenomen in de Monte Carlo simulatie.</p>
+
+        <p className="help-tip">💡 De NK-kansen updaten automatisch. Alle ingevulde resultaten worden meegenomen in de simulatie.</p>
       </div>
     )
   },
@@ -67,13 +42,13 @@ const HELP = {
         <p>Pas de website aan naar jouw voorkeuren.</p>
         <ul>
           <li><strong>Thema</strong> — kies tussen Licht, Donker of Victoria (zwart/geel/rood)</li>
-          <li><strong>🔥 Vorm-badges</strong> — toon een gekleurde cirkel met punten uit de laatste 5 wedstrijden per team</li>
-          <li><strong>🎮 Gespeeld</strong> — toon het W-G-V record (winst-gelijk-verlies) per team</li>
-          <li><strong>🎲 Simulaties</strong> — aantal Monte Carlo simulaties (meer = nauwkeuriger, langzamer)</li>
-          <li><strong>🏑 Focus mode</strong> — toon alleen de poule van jouw club op Overzicht en Speelschema</li>
+          <li><strong>🔥 Vorm-badges</strong> — gekleurde cirkel met punten uit de laatste 5 wedstrijden</li>
+          <li><strong>🎮 Gespeeld</strong> — toon W-G-V record en gespeelde wedstrijden in de cards</li>
+          <li><strong>🎲 Simulaties</strong> — aantal Monte Carlo simulaties (meer = nauwkeuriger)</li>
+          <li><strong>🏑 Focus mode</strong> — toon alleen de poule van jouw club</li>
           <li><strong>Club</strong> — kies jouw club voor highlighting en focus mode</li>
         </ul>
-        <p className="help-tip">💡 Alle instellingen worden automatisch opgeslagen en onthouden bij een volgend bezoek.</p>
+        <p className="help-tip">💡 Alle instellingen worden automatisch opgeslagen.</p>
       </div>
     )
   }
@@ -94,7 +69,7 @@ export default function HelpPopup({ tab, onClose }) {
       </Popup>
     )
   }
-  const help = HELP[tab] || HELP.overzicht
+  const help = HELP[tab] || HELP.sim
   return (
     <Popup title={help.title} onClose={onClose} maxWidth={520}>
       <div className="help-content">

@@ -75,6 +75,37 @@ export default function SimPouleCard({ title, headerClass, teams, basePts, baseD
         })}
       </tbody></table>}
 
+      {/* Played matches (toggle via showPlayed) */}
+      {showPlayed && matchesPlayed && matchesPlayed.length > 0 && (() => {
+        const playedRounds = {}
+        matchesPlayed.forEach(m => { const r = m.round || '?'; if (!playedRounds[r]) playedRounds[r] = []; playedRounds[r].push(m) })
+        const sortedRounds = Object.keys(playedRounds).sort((a, b) => parseInt(a) - parseInt(b))
+        return sortedRounds.map(r => {
+          const ms = playedRounds[r]
+          const dateStr = fmtMatchDate(ms[0] && ms[0].date)
+          return (
+            <div key={`played_${r}`}>
+              <div className="round-header round-header-played">
+                <span>Ronde {r}{dateStr ? ` · ${dateStr}` : ''}</span>
+              </div>
+              {ms.map((m, i) => {
+                const isMy = m.home === myTeam || m.away === myTeam
+                return (
+                  <div key={i} className={`match-row${isMy ? ' row-my-match' : ''}`} style={{ padding: '4px 0' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+                      <div style={{ flex: 1, textAlign: 'right', padding: '5px 8px', fontSize: 12, fontWeight: m.home === myTeam ? 600 : 400 }}>{m.home}</div>
+                      <div className="match-score">{m.score}</div>
+                      <div style={{ flex: 1, textAlign: 'left', padding: '5px 8px', fontSize: 12, fontWeight: m.away === myTeam ? 600 : 400 }}>{m.away}</div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )
+        })
+      })()}
+
+      {/* Remaining rounds with outcome picker */}
       {rounds.map(round => {
         const dateStr = fmtMatchDate(round.date)
         const timeStr = round.time || ''
