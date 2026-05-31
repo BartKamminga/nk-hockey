@@ -111,11 +111,11 @@ export default function TournamentPath({ data, locks, myTeam, results, N, effect
         <span>{myTeam}</span>
         <span className="played-count">pad naar het NK</span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', padding: '12px 8px', gap: 0, overflowX: 'auto' }}>
+      <div className="tournament-path-steps" style={{ display: 'flex', alignItems: 'center', padding: '12px 8px', gap: 0, overflowX: 'auto' }}>
         {steps.map((step, i) => (
           <React.Fragment key={i}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 52, flex: 1 }}>
-              <div style={{
+            <div className="tournament-path-step" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 52, flex: 1 }}>
+              <div className="tournament-path-circle" style={{
                 width: 36, height: 36, borderRadius: '50%',
                 background: statusColor(step.status), color: '#fff',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -123,10 +123,10 @@ export default function TournamentPath({ data, locks, myTeam, results, N, effect
               }}>
                 {step.value}
               </div>
-              <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 4, whiteSpace: 'nowrap' }}>{step.label}</div>
+              <div className="tournament-path-label" style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 4, whiteSpace: 'nowrap' }}>{step.label}</div>
             </div>
             {i < steps.length - 1 && (
-              <div style={{ width: 24, height: 2, background: 'var(--border)', flexShrink: 0, marginBottom: 14 }} />
+              <div className="tournament-path-line" style={{ width: 24, height: 2, background: 'var(--border)', flexShrink: 0, marginBottom: 14 }} />
             )}
           </React.Fragment>
         ))}

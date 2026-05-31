@@ -1,7 +1,14 @@
 import React from 'react'
 
-export const VERSION = '6.1'
+export const VERSION = '6.2'
 export const CHANGELOG = [
+  { version: '6.2', date: '31 mei 2026', changes: [
+    'Mobile optimalisatie: betere responsive CSS, kleinere padding/fonts',
+    'Competitie knoppen horizontaal scrollbaar op mobile',
+    'Tournament path responsive: kleinere cirkels en lijnen',
+    'PWA: installeerbaar op homescreen (standalone, geen browser-balk)',
+    'Focus mode standaard aan op mobile (< 768px) bij eerste bezoek',
+  ]},
   { version: '6.1', date: '31 mei 2026', changes: [
     'Toernooi-pad visualisatie: zie het pad van jouw club naar het NK',
     '✦ Voorspel het hele toernooi: poules → NK poulefase → HF → finale in één klik',

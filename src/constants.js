@@ -24,7 +24,14 @@ export function getSavedPlayed() { try { return localStorage.getItem(STORAGE_KEY
 export function savePlayed(v) { try { localStorage.setItem(STORAGE_KEY_PLAYED, v ? 'true' : 'false') } catch {} }
 export function getSavedMatches() { try { return localStorage.getItem('nk_show_matches') === 'true' } catch { return false } }
 export function saveMatches(v) { try { localStorage.setItem('nk_show_matches', v ? 'true' : 'false') } catch {} }
-export function getSavedFocus() { try { return localStorage.getItem(STORAGE_KEY_FOCUS) === 'true' } catch { return false } }
+export function getSavedFocus() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY_FOCUS)
+    if (saved !== null) return saved === 'true'
+    // First visit: auto-enable on mobile
+    return window.innerWidth < 768
+  } catch { return false }
+}
 export function saveFocus(v) { try { localStorage.setItem(STORAGE_KEY_FOCUS, v ? 'true' : 'false') } catch {} }
 export function getSavedSimCount() { try { return parseInt(localStorage.getItem('nk_sim_count')) || 15000 } catch { return 15000 } }
 export function saveSimCount(v) { try { localStorage.setItem('nk_sim_count', String(v)) } catch {} }

@@ -1,0 +1,19 @@
+{
+  "name": "NK Hockey",
+  "short_name": "NK Hockey",
+  "description": "NK Hockey simulaties en standen",
+  "start_url": "/nk-hockey/",
+  "scope": "/nk-hockey/",
+  "display": "standalone",
+  "background_color": "#f0ede8",
+  "theme_color": "#1a1a1a",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "victoria-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
