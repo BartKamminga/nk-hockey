@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { VERSION, COMP_LABELS, getSavedForm, saveForm, getSavedPlayed, savePlayed, getSavedSimCount, saveSimCount } from './constants'
 import { NK_SCHEDULES } from './lib/nk-schedules'
-import { SchemaTab } from './components/Speelschema'
-import { O14OverzichtTab, O16OverzichtTab } from './components/Overzicht'
 import SimTab from './components/SimTab'
 import { useCompetitionData } from './dataloader/useCompetitionData'
 import DisclaimerPopup from './components/popups/DisclaimerPopup'
@@ -13,7 +11,6 @@ import SettingsPopup from './components/popups/SettingsPopup'
 import EasterEgg from './components/common/EasterEgg'
 
 export default function App() {
-  const [mainTab, setMainTab] = useState('overzicht')
   const [showVersion, setShowVersion] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showFeedback, setShowFeedback] = useState(false)
@@ -51,8 +48,8 @@ export default function App() {
   }
 
   const {
-    comps, loading, focusClub, focusMode, effectiveComp, data, filteredData,
-    myTeam, allClubs, visibleTypes, pouleOrder, o16,
+    comps, loading, focusClub, focusMode, effectiveComp, data,
+    myTeam, allClubs, visibleTypes, o16,
     setFocusClub, setFocusMode, setActiveCompetition, fetchFromServer
   } = useCompetitionData()
 
@@ -96,7 +93,7 @@ export default function App() {
         onShowDisclaimer={() => setShowDisclaimer(true)} onShowFeedback={() => setShowFeedback(true)} onShowHelp={() => { setHelpMode('all'); setShowHelp(true) }} />}
       {showDisclaimer && <DisclaimerPopup onClose={dismissDisclaimer} />}
       {showFeedback && <FeedbackPopup onClose={() => setShowFeedback(false)} />}
-      {showHelp && <HelpPopup tab={helpMode === 'all' ? 'all' : mainTab} onClose={() => setShowHelp(false)} />}
+      {showHelp && <HelpPopup tab={helpMode === 'all' ? 'all' : 'sim'} onClose={() => setShowHelp(false)} />}
       {showSettings && <SettingsPopup onClose={() => setShowSettings(false)}
         theme={theme} setTheme={setTheme}
         showForm={showForm} setShowForm={setShowForm} saveForm={saveForm}
@@ -105,19 +102,9 @@ export default function App() {
         focusMode={focusMode} setFocusMode={setFocusMode}
         focusClub={focusClub} setFocusClub={setFocusClub} allClubs={allClubs} />}
 
-      {/* Main tabs */}
-      <div className="main-tabs">
-        {[['overzicht', '📋 Overzicht'], ['schema', '📅 Speelschema'], ['sim', '🎲 Simulaties']].map(([id, lbl]) =>
-          <button key={id} className={`main-tab ${mainTab === id ? 'active' : ''}`} onClick={() => setMainTab(id)}>{lbl}</button>)}
-      </div>
-
-      {/* Tab content */}
-      {mainTab === 'overzicht' && (o16
-        ? <O16OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} showForm={showForm} showPlayed={showPlayed} />
-        : <O14OverzichtTab data={data} filteredData={focusMode ? filteredData : null} myTeam={myTeam} nkSchedule={NK_SCHEDULES[effectiveComp]} showForm={showForm} showPlayed={showPlayed} />
-      )}
-      {mainTab === 'schema' && <SchemaTab data={focusMode ? filteredData : data} myTeam={myTeam} pouleOrder={pouleOrder} />}
-      {mainTab === 'sim' && <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} showForm={showForm} showPlayed={showPlayed} simCount={simCount} key={effectiveComp + '_sim'} />}
+      {/* Main content */}
+      <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp}
+        showForm={showForm} showPlayed={showPlayed} simCount={simCount} key={effectiveComp + '_sim'} />
 
       {/* Easter egg */}
       {easterEgg && <EasterEgg />}
