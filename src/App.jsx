@@ -105,7 +105,7 @@ export default function App() {
         focusClub={focusClub} setFocusClub={setFocusClub} allClubs={allClubs} />}
 
       {/* Main content */}
-      <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp}
+      <SimTab data={data} myTeam={myTeam} effectiveComp={effectiveComp} focusMode={focusMode}
         showForm={showForm} showPlayed={showPlayed} showMatches={showMatches} simCount={simCount} key={effectiveComp + '_sim'} />
 
       {/* Easter egg */}
