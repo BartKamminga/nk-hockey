@@ -7,7 +7,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179024/teams/2068",
-    "timestamp": 1780159739918,
+    "timestamp": 1780759126636,
     "data": {
       "data": {
         "team": {
@@ -73,16 +73,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
               "rank": 1,
-              "played": 9,
-              "points": 22,
-              "wins": 7,
+              "played": 10,
+              "points": 25,
+              "wins": 8,
               "draws": 1,
               "losses": 1,
-              "goals_for": 69,
-              "goals_against": 11,
+              "goals_for": 74,
+              "goals_against": 15,
               "penalties": 0,
               "poule_name": "Poule Poule A",
               "poule_id": 179024,
@@ -98,16 +98,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
               "rank": 2,
-              "played": 9,
+              "played": 10,
               "points": 21,
               "wins": 7,
               "draws": 0,
-              "losses": 2,
-              "goals_for": 55,
-              "goals_against": 18,
+              "losses": 3,
+              "goals_for": 59,
+              "goals_against": 23,
               "penalties": 0,
               "poule_name": "Poule Poule A",
               "poule_id": 179024,
@@ -123,8 +123,8 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
               "rank": 3,
               "played": 9,
               "points": 19,
@@ -148,8 +148,8 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
               "rank": 4,
               "played": 9,
               "points": 13,
@@ -173,41 +173,16 @@
             {
               "change": "up",
               "rank_change": 1,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
               "rank": 5,
-              "played": 9,
-              "points": 2,
-              "wins": 0,
-              "draws": 2,
-              "losses": 7,
-              "goals_for": 11,
-              "goals_against": 59,
-              "penalties": 0,
-              "poule_name": "Poule Poule A",
-              "poule_id": 179024,
-              "team": {
-                "id": 7349,
-                "name": "Upward JO14-1",
-                "short_name": "JO14-1",
-                "logo": "https://images.static-hw.nl/JCqdAAJuVcqp387CyFsVcjmDKeY=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11QP7/087dac2c-ec3c-4c53-bc6c-0c2cb10141b0/logo.jpg",
-                "federation_reference_id": "HH11QP7",
-                "hockey_type": "VE"
-              }
-            },
-            {
-              "change": "down",
-              "rank_change": -1,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
-              "rank": 6,
-              "played": 9,
-              "points": 1,
-              "wins": 0,
+              "played": 10,
+              "points": 4,
+              "wins": 1,
               "draws": 1,
               "losses": 8,
-              "goals_for": 17,
-              "goals_against": 62,
+              "goals_for": 20,
+              "goals_against": 64,
               "penalties": 0,
               "poule_name": "Poule Poule A",
               "poule_id": 179024,
@@ -217,6 +192,31 @@
                 "short_name": "JO14-1",
                 "logo": "https://images.static-hw.nl/bXXZAa5k4SW-DzSbAS0BGjfPjtM=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/MK12LJ1/d266ae54-8e95-4ef9-8988-f1989ba07456/logo.png",
                 "federation_reference_id": "MK12LJ1",
+                "hockey_type": "VE"
+              }
+            },
+            {
+              "change": "down",
+              "rank_change": -1,
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
+              "rank": 6,
+              "played": 10,
+              "points": 2,
+              "wins": 0,
+              "draws": 2,
+              "losses": 8,
+              "goals_for": 13,
+              "goals_against": 62,
+              "penalties": 0,
+              "poule_name": "Poule Poule A",
+              "poule_id": 179024,
+              "team": {
+                "id": 7349,
+                "name": "Upward JO14-1",
+                "short_name": "JO14-1",
+                "logo": "https://images.static-hw.nl/JCqdAAJuVcqp387CyFsVcjmDKeY=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11QP7/087dac2c-ec3c-4c53-bc6c-0c2cb10141b0/logo.jpg",
+                "federation_reference_id": "HH11QP7",
                 "hockey_type": "VE"
               }
             }
@@ -337,6 +337,23 @@
               "role_name": null,
               "announcement": null,
               "round": 1,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 9.08,
+                "temperature_apparent": 8.55,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 88,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -396,6 +413,23 @@
               "role_name": null,
               "announcement": null,
               "round": 1,
+              "weather": {
+                "condition_code": "PartlyCloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 13.47,
+                "temperature_apparent": 13.53,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 75,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.png",
+                  "name": "cloud.sun"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -455,6 +489,23 @@
               "role_name": null,
               "announcement": null,
               "round": 2,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 7.07,
+                "temperature_apparent": 5.16,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 80,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -514,6 +565,23 @@
               "role_name": null,
               "announcement": null,
               "round": 2,
+              "weather": {
+                "condition_code": "Drizzle",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 5.58,
+                "temperature_apparent": 4.35,
+                "precipitation_type": "rain",
+                "precipitation_chance": 67,
+                "precipitation_amount": 0.63,
+                "humidity": 86,
+                "description": "Het wordt fris en regenachtig vandaag. Kleed je goed aan!",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.drizzle.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.drizzle.png",
+                  "name": "cloud.drizzle"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -573,6 +641,23 @@
               "role_name": null,
               "announcement": null,
               "round": 2,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 7.54,
+                "temperature_apparent": 2.16,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 75,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -632,6 +717,23 @@
               "role_name": null,
               "announcement": null,
               "round": 3,
+              "weather": {
+                "condition_code": "MostlyClear",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 8.38,
+                "temperature_apparent": 7.83,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 74,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -691,6 +793,23 @@
               "role_name": null,
               "announcement": null,
               "round": 3,
+              "weather": {
+                "condition_code": "Clear",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 9.18,
+                "temperature_apparent": 10.26,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 71,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -750,6 +869,23 @@
               "role_name": null,
               "announcement": null,
               "round": 3,
+              "weather": {
+                "condition_code": "Clear",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 9.59,
+                "temperature_apparent": 9.9,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 70,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -809,6 +945,23 @@
               "role_name": null,
               "announcement": null,
               "round": 4,
+              "weather": {
+                "condition_code": "PartlyCloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 8.69,
+                "temperature_apparent": 3.01,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 66,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.png",
+                  "name": "cloud.sun"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -868,6 +1021,23 @@
               "role_name": null,
               "announcement": null,
               "round": 4,
+              "weather": {
+                "condition_code": "Windy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 8.92,
+                "temperature_apparent": 2.62,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 67,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/wind.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/wind.png",
+                  "name": "wind"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -927,6 +1097,23 @@
               "role_name": null,
               "announcement": null,
               "round": 4,
+              "weather": {
+                "condition_code": "PartlyCloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 9.3,
+                "temperature_apparent": 4.04,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 59,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.png",
+                  "name": "cloud.sun"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -986,6 +1173,23 @@
               "role_name": null,
               "announcement": null,
               "round": 5,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 13.72,
+                "temperature_apparent": 8.12,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 56,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1045,6 +1249,23 @@
               "role_name": null,
               "announcement": null,
               "round": 5,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 15.17,
+                "temperature_apparent": 9.41,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 55,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1104,6 +1325,23 @@
               "role_name": null,
               "announcement": null,
               "round": 5,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 15.11,
+                "temperature_apparent": 9.4,
+                "precipitation_type": "rain",
+                "precipitation_chance": 14,
+                "precipitation_amount": 0.49,
+                "humidity": 60,
+                "description": "Het wordt koud vandaag. Kleed je goed aan.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1163,6 +1401,23 @@
               "role_name": null,
               "announcement": null,
               "round": 6,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 12.13,
+                "temperature_apparent": 9.05,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 84,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1222,6 +1477,23 @@
               "role_name": null,
               "announcement": null,
               "round": 6,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 14.31,
+                "temperature_apparent": 13.24,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 68,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1281,6 +1553,23 @@
               "role_name": null,
               "announcement": null,
               "round": 6,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 9,
+                "temperature": 14.89,
+                "temperature_apparent": 10.74,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 74,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1340,6 +1629,23 @@
               "role_name": null,
               "announcement": null,
               "round": 7,
+              "weather": {
+                "condition_code": "Clear",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 15.7,
+                "temperature_apparent": 17.06,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 59,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1399,6 +1705,23 @@
               "role_name": null,
               "announcement": null,
               "round": 7,
+              "weather": {
+                "condition_code": "MostlyClear",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 17.08,
+                "temperature_apparent": 18.3,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 52,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1458,6 +1781,23 @@
               "role_name": null,
               "announcement": null,
               "round": 7,
+              "weather": {
+                "condition_code": "PartlyCloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 16.35,
+                "temperature_apparent": 16.11,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 57,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.png",
+                  "name": "cloud.sun"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1517,6 +1857,23 @@
               "role_name": null,
               "announcement": null,
               "round": 8,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 10.27,
+                "temperature_apparent": 6.02,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 72,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1576,6 +1933,23 @@
               "role_name": null,
               "announcement": null,
               "round": 8,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 10.64,
+                "temperature_apparent": 4.45,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 69,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1635,6 +2009,23 @@
               "role_name": null,
               "announcement": null,
               "round": 8,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 11.74,
+                "temperature_apparent": 6.6,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 65,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1694,6 +2085,23 @@
               "role_name": null,
               "announcement": null,
               "round": 9,
+              "weather": {
+                "condition_code": "MostlyClear",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 18.89,
+                "temperature_apparent": 20.77,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 64,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1753,6 +2161,23 @@
               "role_name": null,
               "announcement": null,
               "round": 9,
+              "weather": {
+                "condition_code": "MostlyClear",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 19.91,
+                "temperature_apparent": 22.13,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 60,
+                "description": "Het wordt lekker weer om te hockeyen vandaag!",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1812,13 +2237,30 @@
               "role_name": null,
               "announcement": null,
               "round": 9,
+              "weather": {
+                "condition_code": "MostlyClear",
+                "rating": "average",
+                "grade": 5,
+                "temperature": 24.49,
+                "temperature_apparent": 26.26,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 49,
+                "description": "Poeh, het wordt erg warm vandaag. Drink genoeg water!",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
             {
               "id": 1988372,
               "date": "2026-06-06T10:20:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 6807,
@@ -1846,8 +2288,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 5,
+                "away": 4
               },
               "location": {
                 "facility": {
@@ -1871,6 +2313,23 @@
               "role_name": null,
               "announcement": null,
               "round": 10,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 16.16,
+                "temperature_apparent": 13.67,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 76,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -1930,13 +2389,30 @@
               "role_name": null,
               "announcement": null,
               "round": 10,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 18.91,
+                "temperature_apparent": 15.91,
+                "precipitation_type": "rain",
+                "precipitation_chance": 2,
+                "precipitation_amount": 0.04,
+                "humidity": 65,
+                "description": "Het wordt lekker weer om te hockeyen vandaag!",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
             {
               "id": 1988373,
               "date": "2026-06-06T12:25:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 21266,
@@ -1964,8 +2440,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 3,
+                "away": 2
               },
               "location": {
                 "facility": {
@@ -1989,6 +2465,23 @@
               "role_name": null,
               "announcement": null,
               "round": 10,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 9,
+                "temperature": 18.47,
+                "temperature_apparent": 14.88,
+                "precipitation_type": "rain",
+                "precipitation_chance": 2,
+                "precipitation_amount": 0.02,
+                "humidity": 65,
+                "description": "Het wordt lekker weer om te hockeyen vandaag!",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             }
@@ -4003,7 +4496,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179026/teams/4805",
-    "timestamp": 1780159743904,
+    "timestamp": 1780759131715,
     "data": {
       "data": {
         "team": {
@@ -4069,16 +4562,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
               "rank": 1,
-              "played": 9,
-              "points": 23,
-              "wins": 7,
+              "played": 10,
+              "points": 26,
+              "wins": 8,
               "draws": 2,
               "losses": 0,
-              "goals_for": 54,
-              "goals_against": 22,
+              "goals_for": 64,
+              "goals_against": 26,
               "penalties": 0,
               "poule_name": "Poule Poule C",
               "poule_id": 179026,
@@ -4094,16 +4587,16 @@
             {
               "change": "equal",
               "rank_change": 0,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
               "rank": 2,
-              "played": 9,
-              "points": 21,
-              "wins": 7,
+              "played": 10,
+              "points": 24,
+              "wins": 8,
               "draws": 0,
               "losses": 2,
-              "goals_for": 33,
-              "goals_against": 19,
+              "goals_for": 41,
+              "goals_against": 20,
               "penalties": 0,
               "poule_name": "Poule Poule C",
               "poule_id": 179026,
@@ -4117,18 +4610,18 @@
               }
             },
             {
-              "change": "up",
-              "rank_change": 1,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
+              "change": "equal",
+              "rank_change": 0,
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
               "rank": 3,
-              "played": 9,
+              "played": 10,
               "points": 13,
               "wins": 4,
               "draws": 1,
-              "losses": 4,
-              "goals_for": 23,
-              "goals_against": 23,
+              "losses": 5,
+              "goals_for": 27,
+              "goals_against": 33,
               "penalties": 0,
               "poule_name": "Poule Poule C",
               "poule_id": 179026,
@@ -4142,18 +4635,18 @@
               }
             },
             {
-              "change": "down",
-              "rank_change": -1,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
+              "change": "equal",
+              "rank_change": 0,
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
               "rank": 4,
-              "played": 9,
+              "played": 10,
               "points": 10,
               "wins": 3,
               "draws": 1,
-              "losses": 5,
-              "goals_for": 29,
-              "goals_against": 28,
+              "losses": 6,
+              "goals_for": 33,
+              "goals_against": 33,
               "penalties": 0,
               "poule_name": "Poule Poule C",
               "poule_id": 179026,
@@ -4167,43 +4660,18 @@
               }
             },
             {
-              "change": "equal",
-              "rank_change": 0,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
+              "change": "up",
+              "rank_change": 1,
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
               "rank": 5,
-              "played": 9,
+              "played": 10,
               "points": 7,
               "wins": 2,
               "draws": 1,
-              "losses": 6,
-              "goals_for": 21,
-              "goals_against": 44,
-              "penalties": 0,
-              "poule_name": "Poule Poule C",
-              "poule_id": 179026,
-              "team": {
-                "id": 5243,
-                "name": "Maarssen JO14-1",
-                "short_name": "JO14-1",
-                "logo": "https://images.static-hw.nl/QLhVs-Wjv5zv0dNnLK0hSTYf6qw=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11KW8/6965fbc6-a458-41a2-9014-b79a32bca2cc/logo.png",
-                "federation_reference_id": "HH11KW8",
-                "hockey_type": "VE"
-              }
-            },
-            {
-              "change": "equal",
-              "rank_change": 0,
-              "rank_date_previous": "2026-05-16",
-              "rank_date_current": "2026-05-30",
-              "rank": 6,
-              "played": 9,
-              "points": 4,
-              "wins": 1,
-              "draws": 1,
               "losses": 7,
-              "goals_for": 28,
-              "goals_against": 52,
+              "goals_for": 33,
+              "goals_against": 56,
               "penalties": 0,
               "poule_name": "Poule Poule C",
               "poule_id": 179026,
@@ -4213,6 +4681,31 @@
                 "short_name": "JO14-1",
                 "logo": "https://images.static-hw.nl/nf0Ce-4x2J_M1Ep1LZAqkC2D7YA=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11KK4/cabfa6b8-b84e-4176-8fd5-b07f32df3199/logo.jpg",
                 "federation_reference_id": "HH11KK4",
+                "hockey_type": "VE"
+              }
+            },
+            {
+              "change": "down",
+              "rank_change": -1,
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
+              "rank": 6,
+              "played": 10,
+              "points": 7,
+              "wins": 2,
+              "draws": 1,
+              "losses": 7,
+              "goals_for": 22,
+              "goals_against": 52,
+              "penalties": 0,
+              "poule_name": "Poule Poule C",
+              "poule_id": 179026,
+              "team": {
+                "id": 5243,
+                "name": "Maarssen JO14-1",
+                "short_name": "JO14-1",
+                "logo": "https://images.static-hw.nl/QLhVs-Wjv5zv0dNnLK0hSTYf6qw=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11KW8/6965fbc6-a458-41a2-9014-b79a32bca2cc/logo.png",
+                "federation_reference_id": "HH11KW8",
                 "hockey_type": "VE"
               }
             }
@@ -4333,6 +4826,23 @@
               "role_name": null,
               "announcement": null,
               "round": 1,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 9.65,
+                "temperature_apparent": 8.79,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 85,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4392,6 +4902,23 @@
               "role_name": null,
               "announcement": null,
               "round": 1,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 10.46,
+                "temperature_apparent": 9.13,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 82,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4451,6 +4978,23 @@
               "role_name": null,
               "announcement": null,
               "round": 2,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 5.67,
+                "temperature_apparent": 4.16,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 88,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4507,6 +5051,23 @@
               "role_name": null,
               "announcement": null,
               "round": 2,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 6.82,
+                "temperature_apparent": 3.11,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 79,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4566,6 +5127,23 @@
               "role_name": null,
               "announcement": null,
               "round": 2,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 7.23,
+                "temperature_apparent": 4.34,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 77,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4625,6 +5203,23 @@
               "role_name": null,
               "announcement": null,
               "round": 3,
+              "weather": {
+                "condition_code": "PartlyCloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 5.74,
+                "temperature_apparent": 4.36,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 85,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.png",
+                  "name": "cloud.sun"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4684,6 +5279,23 @@
               "role_name": null,
               "announcement": null,
               "round": 3,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 4.48,
+                "temperature_apparent": 1.99,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 86,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4743,6 +5355,23 @@
               "role_name": null,
               "announcement": null,
               "round": 3,
+              "weather": {
+                "condition_code": "MostlyClear",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 6.81,
+                "temperature_apparent": 5.86,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 80,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4802,6 +5431,23 @@
               "role_name": null,
               "announcement": null,
               "round": 4,
+              "weather": {
+                "condition_code": "PartlyCloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 8.13,
+                "temperature_apparent": 3.59,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 74,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.png",
+                  "name": "cloud.sun"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4861,6 +5507,23 @@
               "role_name": null,
               "announcement": null,
               "round": 4,
+              "weather": {
+                "condition_code": "Windy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 7.89,
+                "temperature_apparent": 1.52,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 72,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/wind.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/wind.png",
+                  "name": "wind"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4920,6 +5583,23 @@
               "role_name": null,
               "announcement": null,
               "round": 4,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 8.02,
+                "temperature_apparent": 2.65,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 82,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -4979,6 +5659,23 @@
               "role_name": null,
               "announcement": null,
               "round": 5,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 9.77,
+                "temperature_apparent": 3.53,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 64,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5038,6 +5735,23 @@
               "role_name": null,
               "announcement": null,
               "round": 5,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 10.04,
+                "temperature_apparent": 4.03,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 64,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5094,6 +5808,23 @@
               "role_name": null,
               "announcement": null,
               "round": 5,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "average",
+                "grade": 7,
+                "temperature": 12.81,
+                "temperature_apparent": 6.57,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 59,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5153,6 +5884,23 @@
               "role_name": null,
               "announcement": null,
               "round": 6,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 13.16,
+                "temperature_apparent": 10.81,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 75,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5209,6 +5957,23 @@
               "role_name": null,
               "announcement": null,
               "round": 6,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 12.39,
+                "temperature_apparent": 9.49,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 80,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5268,6 +6033,23 @@
               "role_name": null,
               "announcement": null,
               "round": 6,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 15.37,
+                "temperature_apparent": 12,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 72,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5327,6 +6109,23 @@
               "role_name": null,
               "announcement": null,
               "round": 7,
+              "weather": {
+                "condition_code": "Clear",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 14.03,
+                "temperature_apparent": 15.42,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 68,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5386,6 +6185,23 @@
               "role_name": null,
               "announcement": null,
               "round": 7,
+              "weather": {
+                "condition_code": "MostlyClear",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 17.01,
+                "temperature_apparent": 17.65,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 55,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5445,6 +6261,23 @@
               "role_name": null,
               "announcement": null,
               "round": 7,
+              "weather": {
+                "condition_code": "Clear",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 17.72,
+                "temperature_apparent": 19.06,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 54,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5501,6 +6334,23 @@
               "role_name": null,
               "announcement": null,
               "round": 8,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 9.72,
+                "temperature_apparent": 6.77,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 73,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5560,6 +6410,23 @@
               "role_name": null,
               "announcement": null,
               "round": 8,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 9.53,
+                "temperature_apparent": 6.15,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 74,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5619,6 +6486,23 @@
               "role_name": null,
               "announcement": null,
               "round": 8,
+              "weather": {
+                "condition_code": "MostlyCloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 12.82,
+                "temperature_apparent": 9.19,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 50,
+                "description": "Brrr… Het wordt koud vandaag.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5675,6 +6559,23 @@
               "role_name": null,
               "announcement": null,
               "round": 9,
+              "weather": {
+                "condition_code": "PartlyCloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 19.75,
+                "temperature_apparent": 20.62,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 58,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.png",
+                  "name": "cloud.sun"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5734,6 +6635,23 @@
               "role_name": null,
               "announcement": null,
               "round": 9,
+              "weather": {
+                "condition_code": "MostlyClear",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 19.99,
+                "temperature_apparent": 22.25,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 60,
+                "description": "Het wordt lekker weer om te hockeyen vandaag!",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/sun.max.png",
+                  "name": "sun.max"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
@@ -5793,13 +6711,30 @@
               "role_name": null,
               "announcement": null,
               "round": 9,
+              "weather": {
+                "condition_code": "PartlyCloudy",
+                "rating": "fantastic",
+                "grade": 8,
+                "temperature": 20.23,
+                "temperature_apparent": 22.02,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 62,
+                "description": "Het wordt lekker weer om te hockeyen vandaag!",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.sun.png",
+                  "name": "cloud.sun"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
             {
               "id": 1988433,
               "date": "2026-06-06T10:20:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 25601,
@@ -5827,8 +6762,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 8,
+                "away": 1
               },
               "location": {
                 "facility": {
@@ -5852,13 +6787,30 @@
               "role_name": null,
               "announcement": null,
               "round": 10,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 16.05,
+                "temperature_apparent": 13.78,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 75,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
             {
               "id": 1988432,
               "date": "2026-06-06T10:30:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 5009,
@@ -5886,8 +6838,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 5,
+                "away": 4
               },
               "location": {
                 "facility": {
@@ -5911,13 +6863,30 @@
               "role_name": null,
               "announcement": null,
               "round": 10,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 16.25,
+                "temperature_apparent": 12.89,
+                "precipitation_type": "clear",
+                "precipitation_chance": 0,
+                "precipitation_amount": 0,
+                "humidity": 71,
+                "description": "Gelukkig, het blijft droog vandaag! Lekker weer om te hockeyen.",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             },
             {
               "id": 1988434,
               "date": "2026-06-06T12:00:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 3674,
@@ -5945,8 +6914,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 10,
+                "away": 4
               },
               "location": {
                 "facility": {
@@ -5970,6 +6939,23 @@
               "role_name": null,
               "announcement": null,
               "round": 10,
+              "weather": {
+                "condition_code": "Cloudy",
+                "rating": "fantastic",
+                "grade": 10,
+                "temperature": 18.52,
+                "temperature_apparent": 15.2,
+                "precipitation_type": "rain",
+                "precipitation_chance": 3,
+                "precipitation_amount": 0.01,
+                "humidity": 60,
+                "description": "Het wordt lekker weer om te hockeyen vandaag!",
+                "icon": {
+                  "vector": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.svg",
+                  "raster": "https://app.hockeyweerelt.nl//storage/feed/weather/cloud.png",
+                  "name": "cloud"
+                }
+              },
               "user_action_required": false,
               "user_action_description": null
             }
@@ -5986,7 +6972,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179027/teams/8299",
-    "timestamp": 1780159741900,
+    "timestamp": 1780226792133,
     "data": {
       "data": {
         "team": {
