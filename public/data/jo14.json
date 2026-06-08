@@ -7,7 +7,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179024/teams/2068",
-    "timestamp": 1780759126636,
+    "timestamp": 1780930313071,
     "data": {
       "data": {
         "team": {
@@ -96,11 +96,36 @@
               }
             },
             {
-              "change": "equal",
-              "rank_change": 0,
+              "change": "up",
+              "rank_change": 1,
               "rank_date_previous": "2026-05-30",
               "rank_date_current": "2026-06-06",
               "rank": 2,
+              "played": 10,
+              "points": 22,
+              "wins": 7,
+              "draws": 1,
+              "losses": 2,
+              "goals_for": 33,
+              "goals_against": 15,
+              "penalties": 0,
+              "poule_name": "Poule Poule A",
+              "poule_id": 179024,
+              "team": {
+                "id": 3930,
+                "name": "HBS JO14-1",
+                "short_name": "JO14-1",
+                "logo": "https://images.static-hw.nl/fFqVf9ZlgezJYCu7Ri_YlLt-RAQ=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11GQ4/bac35e27-db71-4799-810a-c2dbc455f910/logo.jpg",
+                "federation_reference_id": "HH11GQ4",
+                "hockey_type": "VE"
+              }
+            },
+            {
+              "change": "down",
+              "rank_change": -1,
+              "rank_date_previous": "2026-05-30",
+              "rank_date_current": "2026-06-06",
+              "rank": 3,
               "played": 10,
               "points": 21,
               "wins": 7,
@@ -125,39 +150,14 @@
               "rank_change": 0,
               "rank_date_previous": "2026-05-30",
               "rank_date_current": "2026-06-06",
-              "rank": 3,
-              "played": 9,
-              "points": 19,
-              "wins": 6,
-              "draws": 1,
-              "losses": 2,
-              "goals_for": 28,
-              "goals_against": 14,
-              "penalties": 0,
-              "poule_name": "Poule Poule A",
-              "poule_id": 179024,
-              "team": {
-                "id": 3930,
-                "name": "HBS JO14-1",
-                "short_name": "JO14-1",
-                "logo": "https://images.static-hw.nl/fFqVf9ZlgezJYCu7Ri_YlLt-RAQ=/fit-in/80x80/filters:fill(fff):background_color(fff)/club/HH11GQ4/bac35e27-db71-4799-810a-c2dbc455f910/logo.jpg",
-                "federation_reference_id": "HH11GQ4",
-                "hockey_type": "VE"
-              }
-            },
-            {
-              "change": "equal",
-              "rank_change": 0,
-              "rank_date_previous": "2026-05-30",
-              "rank_date_current": "2026-06-06",
               "rank": 4,
-              "played": 9,
+              "played": 10,
               "points": 13,
               "wins": 4,
               "draws": 1,
-              "losses": 4,
-              "goals_for": 28,
-              "goals_against": 44,
+              "losses": 5,
+              "goals_for": 29,
+              "goals_against": 49,
               "penalties": 0,
               "poule_name": "Poule Poule A",
               "poule_id": 179024,
@@ -245,7 +245,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11GQ4",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180779
               },
               "own_team_id": null,
               "shootouts": {
@@ -294,7 +294,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11PC3",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180778
               },
               "away": {
                 "id": 7349,
@@ -456,7 +456,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11PC3",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180778
               },
               "own_team_id": null,
               "shootouts": {
@@ -598,7 +598,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11GQ4",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180779
               },
               "away": {
                 "id": 21266,
@@ -750,7 +750,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11PC3",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180778
               },
               "away": {
                 "id": 21266,
@@ -836,7 +836,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11GQ4",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180779
               },
               "own_team_id": null,
               "shootouts": {
@@ -1054,7 +1054,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11PC3",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180778
               },
               "away": {
                 "id": 3930,
@@ -1064,7 +1064,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11GQ4",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180779
               },
               "own_team_id": null,
               "shootouts": {
@@ -1216,7 +1216,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11PC3",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180778
               },
               "own_team_id": null,
               "shootouts": {
@@ -1282,7 +1282,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11GQ4",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180779
               },
               "away": {
                 "id": 3801,
@@ -1358,7 +1358,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11GQ4",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180779
               },
               "away": {
                 "id": 2068,
@@ -1444,7 +1444,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11PC3",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180778
               },
               "own_team_id": null,
               "shootouts": {
@@ -1662,7 +1662,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11PC3",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180778
               },
               "away": {
                 "id": 3801,
@@ -1748,7 +1748,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11GQ4",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180779
               },
               "own_team_id": null,
               "shootouts": {
@@ -1814,7 +1814,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11GQ4",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180779
               },
               "away": {
                 "id": 7349,
@@ -1976,7 +1976,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11PC3",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180778
               },
               "own_team_id": null,
               "shootouts": {
@@ -2042,7 +2042,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11GQ4",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180779
               },
               "away": {
                 "id": 6807,
@@ -2052,7 +2052,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11PC3",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180778
               },
               "own_team_id": null,
               "shootouts": {
@@ -2270,7 +2270,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11PC3",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180778
               },
               "away": {
                 "id": 2068,
@@ -2336,7 +2336,7 @@
             {
               "id": 1988374,
               "date": "2026-06-06T12:10:00+02:00",
-              "status": "scheduled",
+              "status": "final",
               "cancellation_minute": null,
               "home": {
                 "id": 3801,
@@ -2356,7 +2356,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11GQ4",
-                "recent_poule_id": 179024
+                "recent_poule_id": 180779
               },
               "own_team_id": null,
               "shootouts": {
@@ -2364,8 +2364,8 @@
                 "away": 0
               },
               "score": {
-                "home": 0,
-                "away": 0
+                "home": 1,
+                "away": 5
               },
               "location": {
                 "facility": {
@@ -4496,7 +4496,7 @@
     "competition": "Jongens O14 Lente",
     "class_name": "Super",
     "url": "https://app.hockeyweerelt.nl/poules/179026/teams/4805",
-    "timestamp": 1780759131715,
+    "timestamp": 1780930320236,
     "data": {
       "data": {
         "team": {
@@ -4724,7 +4724,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "MK22GS0",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180779
               },
               "away": {
                 "id": 3674,
@@ -4734,7 +4734,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11FY7",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180778
               },
               "own_team_id": null,
               "shootouts": {
@@ -4935,7 +4935,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11FY7",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180778
               },
               "away": {
                 "id": 5009,
@@ -5021,7 +5021,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "MK22GS0",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180779
               },
               "own_team_id": null,
               "shootouts": {
@@ -5170,7 +5170,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "MK22GS0",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180779
               },
               "own_team_id": null,
               "shootouts": {
@@ -5322,7 +5322,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11FY7",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180778
               },
               "own_team_id": null,
               "shootouts": {
@@ -5388,7 +5388,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11FY7",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180778
               },
               "away": {
                 "id": 5243,
@@ -5540,7 +5540,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "MK22GS0",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180779
               },
               "away": {
                 "id": 4522,
@@ -5702,7 +5702,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "MK22GS0",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180779
               },
               "own_team_id": null,
               "shootouts": {
@@ -5778,7 +5778,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11FY7",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180778
               },
               "own_team_id": null,
               "shootouts": {
@@ -5841,7 +5841,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11FY7",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180778
               },
               "away": {
                 "id": 25601,
@@ -5851,7 +5851,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "MK22GS0",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180779
               },
               "own_team_id": null,
               "shootouts": {
@@ -6152,7 +6152,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11FY7",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180778
               },
               "own_team_id": null,
               "shootouts": {
@@ -6218,7 +6218,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "MK22GS0",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180779
               },
               "away": {
                 "id": 4805,
@@ -6367,7 +6367,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11FY7",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180778
               },
               "away": {
                 "id": 4522,
@@ -6443,7 +6443,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "MK22GS0",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180779
               },
               "away": {
                 "id": 5009,
@@ -6602,7 +6602,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "MK22GS0",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180779
               },
               "own_team_id": null,
               "shootouts": {
@@ -6678,7 +6678,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11FY7",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180778
               },
               "own_team_id": null,
               "shootouts": {
@@ -6744,7 +6744,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "MK22GS0",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180779
               },
               "away": {
                 "id": 5243,
@@ -6896,7 +6896,7 @@
                 "hockey_type": "VE",
                 "category_group_name": "Junioren",
                 "federation_reference_id": "HH11FY7",
-                "recent_poule_id": 179026
+                "recent_poule_id": 180778
               },
               "away": {
                 "id": 4805,
